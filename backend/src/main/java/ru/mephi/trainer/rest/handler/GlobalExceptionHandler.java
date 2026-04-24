@@ -7,8 +7,6 @@ import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 import ru.mephi.trainer.rest.dto.response.ErrorResponse;
 
-import java.time.Instant;
-
 @Slf4j
 @Provider
 public class GlobalExceptionHandler {
@@ -17,9 +15,9 @@ public class GlobalExceptionHandler {
     public RestResponse<ErrorResponse> handleException(Exception e) {
         log.error("Unexpected exception: ", e);
 
-        ErrorResponse response = new ErrorResponse();
-        response.setMessage("Упс! Что-то пошло не так");
-        response.setTimestamp(Instant.now());
+        ErrorResponse response = ErrorResponse.builder()
+                .message("Упс! Что-то пошло не так")
+                .build();
 
         return RestResponse.status(Response.Status.INTERNAL_SERVER_ERROR, response);
     }

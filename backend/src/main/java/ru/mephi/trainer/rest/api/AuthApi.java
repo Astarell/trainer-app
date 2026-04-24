@@ -8,11 +8,14 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
 import ru.mephi.trainer.rest.dto.request.RegisterRequest;
+import ru.mephi.trainer.rest.dto.response.ErrorResponse;
 import ru.mephi.trainer.rest.dto.response.HelloResponse;
 import ru.mephi.trainer.rest.dto.response.RegisterResponse;
 
@@ -31,9 +34,10 @@ public interface AuthApi {
     )
     @APIResponse(
             responseCode = "200",
-            description = "Сервис работает"
+            description = "Сервис работает",
+            content = @Content(schema = @Schema(implementation = HelloResponse.class))
     )
-    RestResponse<HelloResponse> hello();
+    RestResponse<HelloResponse> sayHello();
 
     @GET
     @Path("/error")
@@ -44,9 +48,10 @@ public interface AuthApi {
     )
     @APIResponse(
             responseCode = "500",
-            description = "Неожиданная ошибка"
+            description = "Неожиданная ошибка",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
     )
-    RestResponse<HelloResponse> error();
+    RestResponse<HelloResponse> showError();
 
     @POST
     @Path("/register")
@@ -57,17 +62,25 @@ public interface AuthApi {
     )
     @APIResponses(value = {
             @APIResponse(
-                    responseCode = "200",
-                    description = "Пользователь успешно зарегистрирован"
+                    responseCode = "201",
+                    description = "Пользователь успешно зарегистрирован",
+                    content = @Content(schema = @Schema(implementation = RegisterResponse.class))
             ),
             @APIResponse(
                     responseCode = "400",
-                    description = "Неверные данные запроса"
+                    description = "Неверные данные запроса",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             ),
             @APIResponse(
                     responseCode = "409",
-                    description = "Пользователь с таким email уже существует"
+                    description = "Пользователь с таким email уже существует",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @APIResponse(
+                    responseCode = "500",
+                    description = "Неожиданная ошибка",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<RegisterResponse> register(@Valid RegisterRequest registerRequest);
+    RestResponse<RegisterResponse> registerUser(@Valid RegisterRequest registerRequest);
 }

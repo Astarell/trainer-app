@@ -13,6 +13,7 @@ import java.time.Instant;
 @AllArgsConstructor
 public class RegisterResponse {
 
+    @Builder.Default
+    private final Instant timestamp = Instant.now();
     private String message;
-    private Instant timestamp;
 }
