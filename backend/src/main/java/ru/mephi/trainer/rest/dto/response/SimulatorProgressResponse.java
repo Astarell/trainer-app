@@ -2,7 +2,7 @@ package ru.mephi.trainer.rest.dto.response;
 
 import lombok.Data;
 
-import java.util.Map;
+import java.util.List;
 
 @Data
 public class SimulatorProgressResponse {
@@ -12,4 +12,5 @@ public class SimulatorProgressResponse {
     private Integer maxPossibleScore; // максимум можно
     private Integer tasksCompleted;   // решено задач
     private Integer totalTasks;       // всего задач в тренажёре
+    private List<CompletedTaskSimulatorPointDto> tasksInSimulator;  // баллы за тренажер
 }
