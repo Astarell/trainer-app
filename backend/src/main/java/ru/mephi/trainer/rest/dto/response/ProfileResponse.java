@@ -5,6 +5,7 @@ import java.util.List;
 
 @Data
 public class ProfileResponse {
+    private String id;
     private String email;
     private String firstName;
     private String lastName;

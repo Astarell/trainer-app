@@ -98,5 +98,5 @@ public interface ProfileApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<SimulatorProgressResponse> getSimulatorProgress(@PathParam("id") Long simulatorId);
+    RestResponse<SimulatorProgressResponse> getSimulatorProgress(@PathParam("id") String simulatorId);
 }
