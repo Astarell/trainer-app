@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class SimulatorDto {
-    private Long id;
+    private String id;
     private String name;
 }
 

@@ -22,7 +22,7 @@ public class SimulatorsController implements SimulatorsAPI {
     public RestResponse<SimulatorsResponse> getSimulators() {
         // TODO: временная заглушка
         SimulatorDto simulatorDto = new SimulatorDto();
-        simulatorDto.setId((long) 1);
+        simulatorDto.setId("2f0c3efc-fcde-4a24-997c-4c67bb74437a");
         simulatorDto.setName("SQL для аналитиков");
         ArrayList<SimulatorDto> simulatorDtos = new ArrayList<>();
         simulatorDtos.add(simulatorDto);
@@ -32,7 +32,7 @@ public class SimulatorsController implements SimulatorsAPI {
     }
 
     @Override
-    public RestResponse<SimulatorInfoResponse> getSimulatorInfo(Long simulatorId) {
+    public RestResponse<SimulatorInfoResponse> getSimulatorInfo(String simulatorId) {
         // TODO: временная заглушка
         SimulatorInfoResponse response = new SimulatorInfoResponse();
         response.setId(simulatorId);

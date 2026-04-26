@@ -88,5 +88,5 @@ public interface SimulatorsAPI {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<SimulatorInfoResponse> getSimulatorInfo(@PathParam("id") Long simulatorId);
+    RestResponse<SimulatorInfoResponse> getSimulatorInfo(@PathParam("id") String simulatorId);
 }
