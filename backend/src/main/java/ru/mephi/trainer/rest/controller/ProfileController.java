@@ -28,7 +28,7 @@ public class ProfileController implements ProfileApi {
     }
 
     @Override
-    public RestResponse<SimulatorProgressResponse> getSimulatorProgress(Long simulatorId) {
+    public RestResponse<SimulatorProgressResponse> getSimulatorProgress(String simulatorId) {
         // TODO: временная заглушка
         SimulatorProgressResponse response = new SimulatorProgressResponse();
         response.setSimulatorId(simulatorId);
