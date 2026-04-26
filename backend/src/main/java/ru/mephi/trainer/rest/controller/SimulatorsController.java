@@ -20,6 +20,13 @@ public class SimulatorsController implements SimulatorsAPI {
 
     @Override
     public RestResponse<SimulatorsResponse> getSimulators() {
+
+        /*
+        SELECT id, name, created_at
+        FROM trainers
+        ORDER BY id;
+        */
+        
         // TODO: временная заглушка
         SimulatorDto simulatorDto = new SimulatorDto();
         simulatorDto.setId("2f0c3efc-fcde-4a24-997c-4c67bb74437a");
@@ -33,6 +40,15 @@ public class SimulatorsController implements SimulatorsAPI {
 
     @Override
     public RestResponse<SimulatorInfoResponse> getSimulatorInfo(String simulatorId) {
+        /*
+        SELECT t.id, t.name, t.created_at, COUNT(tt.task_id)
+        FROM trainers t
+        LEFT JOIN tasks_trainers tt ON tt.trainer_id = t.id
+        WHERE t.id = simulatorId
+        GROUP BY t.id, t.name, t.created_at;
+        */
+        
+        
         // TODO: временная заглушка
         SimulatorInfoResponse response = new SimulatorInfoResponse();
         response.setId(simulatorId);
