@@ -6,5 +6,6 @@ import lombok.Data;
 public class SimulatorDto {
     private String id;
     private String name;
+    private String createdAt;
 }
 
