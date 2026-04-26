@@ -15,3 +15,4 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
 )
 public class OpenApiConfig extends Application {
 }
+

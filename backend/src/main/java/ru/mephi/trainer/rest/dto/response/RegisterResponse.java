@@ -5,12 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ErrorDetails {
+public class RegisterResponse {
 
-    private String error;
-    private String description;
+    @Builder.Default
+    private final Instant timestamp = Instant.now();
+    private String message;
 }
