@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class SimulatorProgressResponse {
-    private Long simulatorId;
+    private String simulatorId;
     private String simulatorName;
     private Integer earnedScore;      // заработал
     private Integer maxPossibleScore; // максимум можно
