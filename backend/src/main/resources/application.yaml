@@ -1,17 +1,38 @@
 quarkus:
   datasource:
-    username:
-    password:
+    username: quarkus
+    password: quarkus
 
     db-kind: postgresql
-    jdbc:
-      url:
 
   hibernate-orm:
     sql-load-script:
     database:
-      default-schema: trainer_app
+      default-schema: public
       schema-management:
         strategy: none
+      generation: update
     log:
-      sql: false
+      sql: true
+      format-sql: true
+
+  smallrye-openapi:
+    auto-add-security: false
+
+smallrye:
+  jwt:
+    sign:
+      key:
+        location: privateKey.pem
+    encrypt:
+      key:
+        location: publicKey.pem
+    verify:
+      key:
+        location: publicKey.pem
+mp:
+  jwt:
+    verify:
+      key:
+        location: publicKey.pem
+      issuer: trainer-app

@@ -11,9 +11,10 @@ import java.time.Instant;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class HelloResponse {
+public class RegistrationResponse {
 
+    private String token;
+    private String message;
     @Builder.Default
     private final Instant timestamp = Instant.now();
-    private String message;
 }
