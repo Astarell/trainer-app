@@ -16,7 +16,7 @@ import ru.mephi.trainer.rest.dto.response.ErrorResponse;
 import ru.mephi.trainer.rest.dto.response.test.MessageResponse;
 import ru.mephi.trainer.rest.dto.response.test.UserInfoResponse;
 
-@Path("/api/test")
+@Path("/test")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "RBAC", description = "Эндпоинты для проверки доступа по ролям")

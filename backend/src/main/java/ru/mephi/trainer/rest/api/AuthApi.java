@@ -19,7 +19,7 @@ import ru.mephi.trainer.rest.dto.response.ErrorResponse;
 import ru.mephi.trainer.rest.dto.response.LoginResponse;
 import ru.mephi.trainer.rest.dto.response.RegistrationResponse;
 
-@Path("/api/auth")
+@Path("/auth")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Аутентификация", description = "Эндпоинты для регистрации и входа в систему")

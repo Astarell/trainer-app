@@ -1,4 +1,4 @@
-swagger-ui http://localhost:8080/q/swagger-ui/
+swagger-ui http://localhost:8080/api/q/swagger-ui/
 
 команды для генерации закрытого и открытого ключа
 ```sh
