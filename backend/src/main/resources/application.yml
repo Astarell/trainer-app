@@ -1,0 +1,24 @@
+quarkus:
+  datasource:
+    username:
+    password:
+    db-kind: postgresql
+    jdbc:
+      url:
+
+  hibernate-orm:
+    database:
+      default-schema: public
+  liquibase:
+    default-schema-name: public
+    migrate-at-start: true
+    change-log: db/changelog/db.changelog-master.xml
+
+  log:
+    category:
+      "org.hibernate.SQL":
+        level: DEBUG
+      "org.hibernate.orm.jdbc.bind":
+        level: TRACE
+      "org.hibernate.tool.hbm2ddl":
+        level: DEBUG

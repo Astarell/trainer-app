@@ -1,12 +1,17 @@
 package ru.mephi.trainer.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import ru.mephi.trainer.entity.enums.TaskType;
 
 import java.time.OffsetDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -15,7 +20,9 @@ import static java.util.stream.Collectors.joining;
 @Data
 @Entity
 @Builder
-@Table(name = "tasks")
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "tasks", schema = "public")
 public class TaskEntity {
 
     @Id
@@ -24,20 +31,23 @@ public class TaskEntity {
 
     @Enumerated(EnumType.STRING)
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    @Column(name = "task_type", columnDefinition = "task_types")
+    @Column(name = "task_type", columnDefinition = "task_types", nullable = false)
     private TaskType taskType;
 
+    @Column(nullable = false)
     @JdbcTypeCode(SqlTypes.JSON)
     private String config;
 
-    @Column(name = "created_by")
+    @Column(name = "created_by", nullable = false)
     private UUID createdBy;
 
+    @CreationTimestamp
     @Column(name = "created_at")
     private OffsetDateTime createdAt;
 
-    @ManyToMany(mappedBy = "tasks", cascade = CascadeType.REMOVE)
-    private Set<TrainerEntity> trainers;
+    @Builder.Default
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TaskTrainerEntity> trainers = new HashSet<>();
 
     @Override
     public String toString() {
@@ -52,10 +62,6 @@ public class TaskEntity {
     }
 
     private String getTrainerIds() {
-        return trainers.stream().map(TrainerEntity::getId).map(String::valueOf).collect(joining(","));
-    }
-
-    public enum TaskType {
-        SINGLE_CHOICE, MULTIPLE_CHOICE, ERROR_FINDING, OPEN_ANSWER, SQL_QUERY
+        return trainers.stream().map(TaskTrainerEntity::getTrainer).map(TrainerEntity::getId).map(String::valueOf).collect(joining(","));
     }
 }

@@ -1,11 +1,11 @@
 package ru.mephi.trainer.repository;
 
-import jakarta.data.repository.CrudRepository;
-import jakarta.data.repository.Repository;
+import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
+import jakarta.enterprise.context.ApplicationScoped;
 import ru.mephi.trainer.entity.TrainerEntity;
 
 import java.util.UUID;
 
-@Repository
-public interface TrainerRepository extends CrudRepository<TrainerEntity, UUID> {
+@ApplicationScoped
+public class TrainerRepository implements PanacheRepositoryBase<TrainerEntity, UUID> {
 }
