@@ -63,7 +63,7 @@ public interface ProfileApi {
     @Path("/simulators/{id}")
     @Operation(
             operationId = "getProfileSimulator",
-            summary = "Профиль пользователя",
+            summary = "Информация о прохождении тренажера",
             description = "Получить информацию о статусе прохождения тренажера"
     )
     @APIResponses(value = {
