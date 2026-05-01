@@ -12,5 +12,5 @@ public class SimulatorProgressResponse {
     private Integer maxPossibleScore; // максимум можно
     private Integer tasksCompleted;   // решено задач
     private Integer totalTasks;       // всего задач в тренажёре
-    private List<CompletedTaskSimulatorPointDto> tasksInSimulator;  // баллы за тренажер
+    private List<CompletedTaskSimulatorPointResponse> tasksInSimulator;  // баллы за тренажер
 }
