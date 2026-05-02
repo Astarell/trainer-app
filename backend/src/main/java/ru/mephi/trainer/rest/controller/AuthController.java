@@ -1,30 +1,53 @@
 package ru.mephi.trainer.rest.controller;
 
+import jakarta.annotation.security.PermitAll;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jboss.resteasy.reactive.RestResponse;
+import ru.mephi.trainer.entity.User;
 import ru.mephi.trainer.rest.api.AuthApi;
-import ru.mephi.trainer.rest.dto.request.RegisterRequest;
-import ru.mephi.trainer.rest.dto.response.HelloResponse;
-import ru.mephi.trainer.rest.dto.response.RegisterResponse;
+import ru.mephi.trainer.rest.dto.request.LoginRequest;
+import ru.mephi.trainer.rest.dto.request.RegistrationRequest;
+import ru.mephi.trainer.rest.dto.response.LoginResponse;
+import ru.mephi.trainer.rest.dto.response.RegistrationResponse;
+import ru.mephi.trainer.service.AuthService;
 
+@Slf4j
+@RequiredArgsConstructor
 public class AuthController implements AuthApi {
 
-    @Override
-    public RestResponse<HelloResponse> sayHello() {
-        return RestResponse.ok(HelloResponse.builder()
-                .message("Привет!")
-                .build()
-        );
-    }
+    private final AuthService authService;
 
     @Override
-    public RestResponse<HelloResponse> showError() {
-        throw new IllegalStateException("Какая-то неожиданная ошибка");
-    }
+    @PermitAll
+    public RestResponse<RegistrationResponse> registerUser(RegistrationRequest registrationRequest) {
+        log.info("Registering user with email: {}", registrationRequest.getEmail());
 
-    @Override
-    public RestResponse<RegisterResponse> registerUser(RegisterRequest registerRequest) {
-        return RestResponse.status(RestResponse.Status.CREATED, RegisterResponse.builder()
+        User registeredUser = authService.register(registrationRequest);
+        String token = authService.generateToken(registeredUser);
+
+        log.info("User registered successfully: {}", registeredUser.getEmail());
+
+        return RestResponse.status(RestResponse.Status.CREATED, RegistrationResponse.builder()
                 .message("Вы успешно зарегистрированы")
+                .token(token)
+                .build());
+    }
+
+    @Override
+    @PermitAll
+    public RestResponse<LoginResponse> loginUser(LoginRequest loginRequest) {
+        log.info("Login attempt for email: {}", loginRequest.getEmail());
+
+        User authenticatedUser = authService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
+        String token = authService.generateToken(authenticatedUser);
+
+        log.info("User logged in successfully: {}", authenticatedUser.getEmail());
+
+        return RestResponse.ok(LoginResponse.builder()
+                .token(token)
+                .email(authenticatedUser.getEmail())
+                .role(authenticatedUser.getAppRole().getSecurityRole())
                 .build());
     }
 }

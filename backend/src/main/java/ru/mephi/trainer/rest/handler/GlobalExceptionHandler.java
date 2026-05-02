@@ -5,6 +5,8 @@ import jakarta.ws.rs.ext.Provider;
 import lombok.extern.slf4j.Slf4j;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
+import ru.mephi.trainer.exception.EmailAlreadyExistsException;
+import ru.mephi.trainer.exception.FailedLoginException;
 import ru.mephi.trainer.rest.dto.response.ErrorResponse;
 
 @Slf4j
@@ -20,5 +22,23 @@ public class GlobalExceptionHandler {
                 .build();
 
         return RestResponse.status(Response.Status.INTERNAL_SERVER_ERROR, response);
+    }
+
+    @ServerExceptionMapper
+    public RestResponse<ErrorResponse> handleException(FailedLoginException e) {
+        ErrorResponse response = ErrorResponse.builder()
+                .message("Неверный email или пароль")
+                .build();
+
+        return RestResponse.status(Response.Status.UNAUTHORIZED, response);
+    }
+
+    @ServerExceptionMapper
+    public RestResponse<ErrorResponse> handleException(EmailAlreadyExistsException e) {
+        ErrorResponse response = ErrorResponse.builder()
+                .message("Этот email уже занят")
+                .build();
+
+        return RestResponse.status(Response.Status.BAD_REQUEST, response);
     }
 }
