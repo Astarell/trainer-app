@@ -15,7 +15,7 @@ public class UserRepository implements PanacheRepositoryBase<UserEntity, UUID> {
     }
 
     public boolean existsByEmail(String email) {
-        return find("SELECT EXISTS(SELECT 1 FROM User WHERE email = ?1)", email)
+        return find("SELECT EXISTS(SELECT 1 FROM UserEntity WHERE email = ?1)", email)
                 .project(Boolean.class)
                 .firstResultOptional()
                 .orElse(false);

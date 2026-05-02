@@ -4,7 +4,7 @@ import jakarta.annotation.security.PermitAll;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jboss.resteasy.reactive.RestResponse;
-import ru.mephi.trainer.entity.User;
+import ru.mephi.trainer.entity.UserEntity;
 import ru.mephi.trainer.rest.api.AuthApi;
 import ru.mephi.trainer.rest.dto.request.LoginRequest;
 import ru.mephi.trainer.rest.dto.request.RegistrationRequest;
@@ -23,7 +23,7 @@ public class AuthController implements AuthApi {
     public RestResponse<RegistrationResponse> registerUser(RegistrationRequest registrationRequest) {
         log.info("Registering user with email: {}", registrationRequest.getEmail());
 
-        User registeredUser = authService.register(registrationRequest);
+        UserEntity registeredUser = authService.register(registrationRequest);
         String token = authService.generateToken(registeredUser);
 
         log.info("User registered successfully: {}", registeredUser.getEmail());
@@ -39,7 +39,7 @@ public class AuthController implements AuthApi {
     public RestResponse<LoginResponse> loginUser(LoginRequest loginRequest) {
         log.info("Login attempt for email: {}", loginRequest.getEmail());
 
-        User authenticatedUser = authService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
+        UserEntity authenticatedUser = authService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
         String token = authService.generateToken(authenticatedUser);
 
         log.info("User logged in successfully: {}", authenticatedUser.getEmail());
@@ -47,7 +47,7 @@ public class AuthController implements AuthApi {
         return RestResponse.ok(LoginResponse.builder()
                 .token(token)
                 .email(authenticatedUser.getEmail())
-                .role(authenticatedUser.getAppRole().getSecurityRole())
+                .role(authenticatedUser.getUserRole().getSecurityRole())
                 .build());
     }
 }
