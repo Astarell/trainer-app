@@ -57,8 +57,8 @@ public class TaskAttemptEntity {
                 ", points=" + points +
                 ", status=" + status +
                 ", createdAt=" + createdAt +
-                ", taskId=" + task.getId() +
-                ", userId=" + user.getId() +
+                ", taskId=" + (task == null ? "null" : task.getId()) +
+                ", userId=" + (user == null ? "null" : user.getId()) +
                 '}';
     }
 }

@@ -32,8 +32,8 @@ public class TaskTrainerEntity {
     public String toString() {
         return "TaskTrainerEntity{" +
                 "id=" + id +
-                ", taskId=" + task.getId() +
-                ", trainerId=" + trainer.getId() +
+                ", taskId=" + (task == null ? "null" : task.getId()) +
+                ", trainerId=" + (trainer == null ? "null" : trainer.getId()) +
                 '}';
     }
 }
