@@ -25,6 +25,9 @@ quarkus:
   smallrye-openapi:
     auto-add-security: false
 
+  swagger-ui:
+    always-include: true  
+
 smallrye:
   jwt:
     sign:
