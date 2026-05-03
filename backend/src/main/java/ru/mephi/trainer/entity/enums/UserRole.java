@@ -1,4 +1,4 @@
-package ru.mephi.trainer.enums;
+package ru.mephi.trainer.entity.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

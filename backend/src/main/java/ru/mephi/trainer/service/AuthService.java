@@ -6,8 +6,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ru.mephi.trainer.entity.User;
-import ru.mephi.trainer.enums.UserRole;
+import ru.mephi.trainer.entity.UserEntity;
+import ru.mephi.trainer.entity.enums.UserRole;
 import ru.mephi.trainer.exception.EmailAlreadyExistsException;
 import ru.mephi.trainer.exception.FailedLoginException;
 import ru.mephi.trainer.repository.UserRepository;
@@ -25,7 +25,7 @@ public class AuthService {
     private final UserRepository userRepository;
 
     @Transactional
-    public User register(RegistrationRequest request) {
+    public UserEntity register(RegistrationRequest request) {
         log.info("Registering new user with email: {}", request.getEmail());
 
         if (userRepository.existsByEmail(request.getEmail())) {
@@ -35,11 +35,11 @@ public class AuthService {
 
         String passwordHash = BcryptUtil.bcryptHash(request.getPassword());
 
-        User user = User.builder()
+        UserEntity user = UserEntity.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
-                .appRole(UserRole.APP_USER)
+                .userRole(UserRole.APP_USER)
                 .passwordHash(passwordHash)
                 .build();
 
@@ -49,8 +49,8 @@ public class AuthService {
         return user;
     }
 
-    public User authenticate(String email, String password) {
-        Optional<User> user = userRepository.findByEmail(email);
+    public UserEntity authenticate(String email, String password) {
+        Optional<UserEntity> user = userRepository.findByEmail(email);
 
         if (user.isEmpty() || !BcryptUtil.matches(password, user.get().getPasswordHash())) {
             log.warn("Failed login attempt for email: {}", email);
@@ -59,10 +59,10 @@ public class AuthService {
         return user.get();
     }
 
-    public String generateToken(User user) {
+    public String generateToken(UserEntity user) {
         return Jwt.issuer("trainer-app")
                 .upn(user.getEmail())
-                .groups(Set.of(user.getAppRole().getSecurityRole()))
+                .groups(Set.of(user.getUserRole().getSecurityRole()))
                 .claim("userId", user.getId())
                 .expiresAt(Instant.now().plusSeconds(3600).getEpochSecond()) // 1 час
                 .sign();

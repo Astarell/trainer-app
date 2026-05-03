@@ -17,6 +17,10 @@ quarkus:
     log:
       sql: true
       format-sql: true
+  liquibase:
+    default-schema-name: public
+    migrate-at-start: true
+    change-log: db/changelog/db.changelog-master.xml
 
   smallrye-openapi:
     auto-add-security: false
