@@ -68,7 +68,7 @@
                 task_id UUID NOT NULL,
                 user_id UUID NOT NULL,
                 user_answer JSONB NOT NULL,
-                points DECIMAL NOT NULL,
+                points DECIMAL,
                 status task_attempts_status NOT NULL,
                 created_at TIMESTAMPTZ DEFAULT NOW(),
                 FOREIGN KEY (task_id) REFERENCES tasks_trainers (id) ON DELETE CASCADE,

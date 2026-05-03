@@ -1,19 +1,22 @@
 package ru.mephi.trainer.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "tasks_trainers", schema = "public")
+@Table(
+        name = "tasks_trainers",
+        schema = "public",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"task_id", "trainer_id"})
+)
 public class TaskTrainerEntity {
 
     @Id
@@ -27,13 +30,4 @@ public class TaskTrainerEntity {
     @ManyToOne
     @JoinColumn(name = "trainer_id", nullable = false)
     private TrainerEntity trainer;
-
-    @Override
-    public String toString() {
-        return "TaskTrainerEntity{" +
-                "id=" + id +
-                ", taskId=" + (task == null ? "null" : task.getId()) +
-                ", trainerId=" + (trainer == null ? "null" : trainer.getId()) +
-                '}';
-    }
 }

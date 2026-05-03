@@ -1,10 +1,7 @@
 package ru.mephi.trainer.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -15,11 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "taskAttemptEntities")
 @Table(name = "users", schema = "public")
 public class UserEntity {
 
@@ -45,23 +44,10 @@ public class UserEntity {
     private String passwordHash;
 
     @CreationTimestamp
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
 
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<TaskAttemptEntity> taskAttemptEntities = new ArrayList<>();
-
-    @Override
-    public String toString() {
-        return "UserEntity{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", userRole=" + userRole +
-                ", createdAt=" + createdAt +
-                ", taskAttempts=" + taskAttemptEntities +
-                '}';
-    }
 }

@@ -3,6 +3,6 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
-    <include file="create-main-tables-25042026.xml" relativeToChangelogFile="true"/>
+    <include file="2026-04-25-create-main-tables.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

@@ -1,10 +1,7 @@
 package ru.mephi.trainer.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -15,13 +12,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import static java.util.stream.Collectors.joining;
-
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "trainers")
 @Table(name = "tasks", schema = "public")
 public class TaskEntity {
 
@@ -38,30 +35,14 @@ public class TaskEntity {
     @JdbcTypeCode(SqlTypes.JSON)
     private String config;
 
-    @Column(name = "created_by", nullable = false)
+    @Column(name = "created_by", nullable = false, updatable = false)
     private UUID createdBy;
 
     @CreationTimestamp
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
 
     @Builder.Default
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TaskTrainerEntity> trainers = new HashSet<>();
-
-    @Override
-    public String toString() {
-        return "TaskEntity{" +
-                "id=" + id +
-                ", taskType=" + taskType +
-                ", config='" + config + '\'' +
-                ", createdBy=" + createdBy +
-                ", createdAt=" + createdAt +
-                ", trainerIds=" + getTrainerIds() +
-                '}';
-    }
-
-    private String getTrainerIds() {
-        return trainers.stream().map(TaskTrainerEntity::getTrainer).map(TrainerEntity::getId).map(String::valueOf).collect(joining(","));
-    }
 }
