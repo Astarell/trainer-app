@@ -2,16 +2,16 @@ package ru.mephi.trainer.repository;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
-import ru.mephi.trainer.entity.User;
+import ru.mephi.trainer.entity.UserEntity;
 import ru.mephi.trainer.rest.dto.response.SimulatorProgressPercentResponse;
 
 import java.util.List;
 import java.util.UUID;
 
 @ApplicationScoped
-public class ProfileRepository implements PanacheRepositoryBase<User, UUID> {
+public class ProfileRepository implements PanacheRepositoryBase<UserEntity, UUID> {
 
-    public User getUserData(UUID userId) {
+    public UserEntity getUserData(UUID userId) {
         return find("id", userId).firstResult();
     }
 

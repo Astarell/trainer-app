@@ -2,7 +2,7 @@ package ru.mephi.trainer.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
-import ru.mephi.trainer.entity.User;
+import ru.mephi.trainer.entity.UserEntity;
 import ru.mephi.trainer.repository.ProfileRepository;
 import ru.mephi.trainer.rest.dto.response.ProfileResponse;
 import ru.mephi.trainer.rest.dto.response.SimulatorProgressPercentResponse;
@@ -17,7 +17,7 @@ public class ProfileService {
     private final ProfileRepository profileRepository;
 
     public ProfileResponse getProfile(UUID userId) {
-        User user = profileRepository.getUserData(userId);
+        UserEntity user = profileRepository.getUserData(userId);
         List<SimulatorProgressPercentResponse> progress = profileRepository.getUserSimulatorsProgress(userId);
         Integer score = profileRepository.getUserTotalScore(userId);
 
