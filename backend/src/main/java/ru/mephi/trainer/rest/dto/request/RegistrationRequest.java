@@ -12,7 +12,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "Запрос на регистрацию пользователя")
-public class RegisterRequest {
+public class RegistrationRequest {
 
     @Schema(
             description = "Email пользователя",
