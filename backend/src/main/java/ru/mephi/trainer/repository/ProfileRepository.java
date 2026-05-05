@@ -3,7 +3,7 @@ package ru.mephi.trainer.repository;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 import ru.mephi.trainer.entity.UserEntity;
-import ru.mephi.trainer.rest.dto.response.SimulatorProgressPercentResponse;
+import ru.mephi.trainer.rest.dto.response.TrainerProgressPercentResponse;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,7 +29,7 @@ public class ProfileRepository implements PanacheRepositoryBase<UserEntity, UUID
         return ((Number) result).intValue();
     }
 
-    public List<SimulatorProgressPercentResponse> getUserSimulatorsProgress(UUID userId) {
+    public List<TrainerProgressPercentResponse> getUserTrainersProgress(UUID userId) {
         String sql = """
             SELECT 
                 t.id,
@@ -46,7 +46,7 @@ public class ProfileRepository implements PanacheRepositoryBase<UserEntity, UUID
         """;
 
         return getEntityManager()
-                .createNativeQuery(sql, "SimulatorProgressMapping")
+                .createNativeQuery(sql, "TrainerProgressMapping")
                 .setParameter(1, userId.toString())
                 .getResultList();
     }

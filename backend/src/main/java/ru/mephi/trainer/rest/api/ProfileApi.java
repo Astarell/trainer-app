@@ -14,7 +14,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
 import ru.mephi.trainer.rest.dto.response.ProfileResponse;
-import ru.mephi.trainer.rest.dto.response.SimulatorProgressResponse;
+import ru.mephi.trainer.rest.dto.response.TrainerProgressResponse;
 import ru.mephi.trainer.rest.dto.response.ErrorResponse;
 
 @Path("/profile")
@@ -60,9 +60,9 @@ public interface ProfileApi {
     RestResponse<ProfileResponse> getProfile();
 
     @GET
-    @Path("/simulators/{id}")
+    @Path("/trainers/{id}")
     @Operation(
-            operationId = "getProfileSimulator",
+            operationId = "getProfileTrainer",
             summary = "Информация о прохождении тренажера",
             description = "Получить информацию о статусе прохождения тренажера"
     )
@@ -70,7 +70,7 @@ public interface ProfileApi {
             @APIResponse(
                     responseCode = "200",
                     description = "Данные о прохождении тренажера успешно получены",
-                    content = @Content(schema = @Schema(implementation = SimulatorProgressResponse.class))
+                    content = @Content(schema = @Schema(implementation = TrainerProgressResponse.class))
             ),
             @APIResponse(
                     responseCode = "400",
@@ -98,5 +98,5 @@ public interface ProfileApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<SimulatorProgressResponse> getSimulatorProgress(@PathParam("id") String simulatorId);
+    RestResponse<TrainerProgressResponse> getTrainerProgress(@PathParam("id") String trainerId);
 }

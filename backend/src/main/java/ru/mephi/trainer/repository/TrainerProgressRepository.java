@@ -3,24 +3,24 @@ package ru.mephi.trainer.repository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import ru.mephi.trainer.rest.dto.response.CompletedTaskSimulatorPointResponse;
-import ru.mephi.trainer.rest.dto.response.SimulatorProgressResponse;
+import ru.mephi.trainer.rest.dto.response.CompletedTaskTrainerPointResponse;
+import ru.mephi.trainer.rest.dto.response.TrainerProgressResponse;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
-public class SimulatorProgressRepository {
+public class TrainerProgressRepository {
 
     @PersistenceContext
     EntityManager em;
 
-    public SimulatorProgressResponse getSimulatorProgress(UUID userId, UUID simulatorId) {
+    public TrainerProgressResponse getTrainerProgress(UUID userId, UUID trainerId) {
         String sql = """
             SELECT 
-                t.id as simulator_id,
-                t.name as simulator_name,
+                t.id as trainer_id,
+                t.name as trainer_name,
                 COALESCE(SUM(ta.points), 0) as earned_score,
                 COALESCE(SUM(task.max_score), 0) as max_possible_score,
                 COUNT(DISTINCT ta.id) as tasks_completed,
@@ -35,12 +35,12 @@ public class SimulatorProgressRepository {
 
         Object[] result = (Object[]) em.createNativeQuery(sql)
                 .setParameter(1, userId)
-                .setParameter(2, simulatorId)
+                .setParameter(2, trainerId)
                 .getSingleResult();
 
-        SimulatorProgressResponse response = new SimulatorProgressResponse();
-        response.setSimulatorId(((UUID) result[0]).toString());
-        response.setSimulatorName((String) result[1]);
+        TrainerProgressResponse response = new TrainerProgressResponse();
+        response.setTrainerId(((UUID) result[0]).toString());
+        response.setTrainerName((String) result[1]);
         response.setEarnedScore(((Number) result[2]).intValue());
         response.setMaxPossibleScore(((Number) result[3]).intValue());
         response.setTasksCompleted(((Number) result[4]).intValue());
@@ -50,7 +50,7 @@ public class SimulatorProgressRepository {
     }
 
 
-    public List<CompletedTaskSimulatorPointResponse> getCompletedTaskSimulator(UUID userId, UUID simulatorId) {
+    public List<CompletedTaskTrainerPointResponse> getCompletedTaskTrainer(UUID userId, UUID trainerId) {
         String sql = """
             SELECT
                 t.id,
@@ -65,12 +65,12 @@ public class SimulatorProgressRepository {
 
         List<Object[]> rows = em.createNativeQuery(sql)
                 .setParameter(1, userId.toString())
-                .setParameter(2, simulatorId)
+                .setParameter(2, trainerId)
                 .getResultList();
 
         return rows.stream()
                 .map(row -> {
-                    CompletedTaskSimulatorPointResponse dto = new CompletedTaskSimulatorPointResponse();
+                    CompletedTaskTrainerPointResponse dto = new CompletedTaskTrainerPointResponse();
                     dto.setId(((UUID) row[0]).toString());
                     dto.setName((String) row[1]);
                     dto.setPoint(((Number) row[2]).intValue());

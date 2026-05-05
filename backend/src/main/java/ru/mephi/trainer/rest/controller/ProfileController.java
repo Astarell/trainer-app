@@ -6,10 +6,10 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.resteasy.reactive.RestResponse;
 import ru.mephi.trainer.rest.api.ProfileApi;
 import ru.mephi.trainer.rest.dto.response.ProfileResponse;
-import ru.mephi.trainer.rest.dto.response.SimulatorProgressResponse;
+import ru.mephi.trainer.rest.dto.response.TrainerProgressResponse;
 import ru.mephi.trainer.service.CurrentUserService;
 import ru.mephi.trainer.service.ProfileService;
-import ru.mephi.trainer.service.SimulatorProgressService;
+import ru.mephi.trainer.service.TrainerProgressService;
 
 import java.util.UUID;
 
@@ -18,7 +18,7 @@ import java.util.UUID;
 public class ProfileController implements ProfileApi {
     private final JsonWebToken jwt;
     private final CurrentUserService currentUserService;
-    private final SimulatorProgressService simulatorProgressService;
+    private final TrainerProgressService trainerProgressService;
     private final ProfileService profileService;
 
     @Override
@@ -33,13 +33,13 @@ public class ProfileController implements ProfileApi {
     }
 
     @Override
-    public RestResponse<SimulatorProgressResponse> getSimulatorProgress(String simulatorId) {
-        log.info("Simulator progress endpoint accessed by: {}", jwt.getName());
+    public RestResponse<TrainerProgressResponse> getTrainerProgress(String trainerId) {
+        log.info("Trainer progress endpoint accessed by: {}", jwt.getName());
         UUID userId = currentUserService.getCurrentUserIdOrThrow();
-        UUID simulatorUuid = UUID.fromString(simulatorId);
+        UUID trainerUuid = UUID.fromString(trainerId);
 
-        SimulatorProgressResponse response = simulatorProgressService.getSimulatorProgress(userId, simulatorUuid);
-        log.info("Simulator progress in successfully:  {}", jwt.getName());
+        TrainerProgressResponse response = trainerProgressService.getTrainerProgress(userId, trainerUuid);
+        log.info("Trainer progress in successfully:  {}", jwt.getName());
 
         return RestResponse.ok(response);
     }
