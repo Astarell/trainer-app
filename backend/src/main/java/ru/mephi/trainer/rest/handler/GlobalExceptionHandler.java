@@ -1,5 +1,6 @@
 package ru.mephi.trainer.rest.handler;
 
+import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Provider;
 import lombok.extern.slf4j.Slf4j;
@@ -40,5 +41,14 @@ public class GlobalExceptionHandler {
                 .build();
 
         return RestResponse.status(Response.Status.BAD_REQUEST, response);
+    }
+
+    @ServerExceptionMapper
+    public RestResponse<ErrorResponse> handleNotFoundException(NotFoundException e) {
+        ErrorResponse response = ErrorResponse.builder()
+                .message(e.getMessage())
+                .build();
+
+        return RestResponse.status(Response.Status.NOT_FOUND, response);
     }
 }

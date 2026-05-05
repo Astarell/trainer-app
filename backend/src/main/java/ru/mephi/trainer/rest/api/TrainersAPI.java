@@ -13,20 +13,23 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
-import ru.mephi.trainer.rest.dto.response.SimulatorsResponse;
-import ru.mephi.trainer.rest.dto.response.SimulatorInfoResponse;
+import ru.mephi.trainer.entity.TrainerEntity;
+import ru.mephi.trainer.rest.dto.response.TrainerInfoResponse;
 import ru.mephi.trainer.rest.dto.response.ErrorResponse;
+import ru.mephi.trainer.rest.dto.response.TrainerListResponse;
 
-@Path("/simulators")
+import java.util.List;
+
+@Path("/trainers")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Тренажеры", description = "Эндпоинты для тренажера")
-public interface SimulatorsAPI {
+public interface TrainersAPI {
 
     @GET
     @Path("/")
     @Operation(
-            operationId = "getSimulators",
+            operationId = "getTrainers",
             summary = "Список тренажеров",
             description = "Получить информацию о тренажерах"
     )
@@ -34,17 +37,7 @@ public interface SimulatorsAPI {
             @APIResponse(
                     responseCode = "200",
                     description = "Данные о списке тренажеров успешно получены",
-                    content = @Content(schema = @Schema(implementation = SimulatorsResponse.class))
-            ),
-            @APIResponse(
-                    responseCode = "400",
-                    description = "Неверный запрос",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-            ),
-            @APIResponse(
-                    responseCode = "401",
-                    description = "Пользователь не авторизован",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+                    content = @Content(schema = @Schema(implementation = TrainerListResponse[].class))
             ),
             @APIResponse(
                     responseCode = "500",
@@ -52,12 +45,12 @@ public interface SimulatorsAPI {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<SimulatorsResponse> getSimulators();
+    RestResponse< List<TrainerListResponse>> getTrainers();
 
     @GET
     @Path("/{id}")
     @Operation(
-            operationId = "getSimulatorInfo",
+            operationId = "getTrainerInfo",
             summary = "Информация о тренажере",
             description = "Получить информацию о тренажере"
     )
@@ -65,17 +58,7 @@ public interface SimulatorsAPI {
             @APIResponse(
                     responseCode = "200",
                     description = "Данные о прохождении тренажера успешно получены",
-                    content = @Content(schema = @Schema(implementation = SimulatorInfoResponse.class))
-            ),
-            @APIResponse(
-                    responseCode = "400",
-                    description = "Неверные данные запроса",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-            ),
-            @APIResponse(
-                responseCode = "401",
-                description = "Пользователь не авторизован",
-                content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+                    content = @Content(schema = @Schema(implementation = TrainerInfoResponse.class))
             ),
             @APIResponse(
                     responseCode = "404",
@@ -88,5 +71,5 @@ public interface SimulatorsAPI {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<SimulatorInfoResponse> getSimulatorInfo(@PathParam("id") String simulatorId);
+    RestResponse<TrainerInfoResponse> getTrainerInfo(@PathParam("id") String TrainerId);
 }
