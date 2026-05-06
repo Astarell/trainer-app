@@ -1,5 +1,7 @@
 package ru.mephi.trainer.rest.controller;
 
+import io.quarkus.security.Authenticated;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.jwt.JsonWebToken;
@@ -15,6 +17,7 @@ import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
+@ApplicationScoped
 public class ProfileController implements ProfileApi {
     private final JsonWebToken jwt;
     private final CurrentUserService currentUserService;
@@ -22,24 +25,23 @@ public class ProfileController implements ProfileApi {
     private final ProfileService profileService;
 
     @Override
+    @Authenticated
     public RestResponse<ProfileResponse> getProfile() {
-        log.info("Profile endpoint accessed by: {}", jwt.getName());
-
         UUID userId = currentUserService.getCurrentUserIdOrThrow();
+        log.info("Profile endpoint accessed by: {}", userId);
         ProfileResponse response = profileService.getProfile(userId);
-        log.info("Profile endpoint in successfully: {}", jwt.getName());
+        log.info("Profile endpoint in successfully: {}", userId);
 
         return RestResponse.ok(response);
     }
 
     @Override
-    public RestResponse<TrainerProgressResponse> getTrainerProgress(String trainerId) {
-        log.info("Trainer progress endpoint accessed by: {}", jwt.getName());
+    @Authenticated
+    public RestResponse<TrainerProgressResponse> getTrainerProgress(UUID trainerId) {
         UUID userId = currentUserService.getCurrentUserIdOrThrow();
-        UUID trainerUuid = UUID.fromString(trainerId);
-
-        TrainerProgressResponse response = trainerProgressService.getTrainerProgress(userId, trainerUuid);
-        log.info("Trainer progress in successfully:  {}", jwt.getName());
+        log.info("Trainer progress endpoint accessed by: {}", userId);
+        TrainerProgressResponse response = trainerProgressService.getTrainerProgress(userId, trainerId);
+        log.info("Trainer progress in successfully:  {}", userId);
 
         return RestResponse.ok(response);
     }

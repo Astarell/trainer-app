@@ -17,6 +17,8 @@ import ru.mephi.trainer.rest.dto.response.ProfileResponse;
 import ru.mephi.trainer.rest.dto.response.TrainerProgressResponse;
 import ru.mephi.trainer.rest.dto.response.ErrorResponse;
 
+import java.util.UUID;
+
 @Path("/profile")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -98,5 +100,5 @@ public interface ProfileApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<TrainerProgressResponse> getTrainerProgress(@PathParam("id") String trainerId);
+    RestResponse<TrainerProgressResponse> getTrainerProgress(@PathParam("id") UUID trainerId);
 }
