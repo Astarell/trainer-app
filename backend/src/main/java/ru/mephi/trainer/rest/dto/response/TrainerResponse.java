@@ -5,14 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TrainerListResponse {
-    private String id;
+public class TrainerResponse {
+    private UUID id;
     private String name;
-    private String createdAt;
-    private String createdBy;
+    private OffsetDateTime createdAt;
+    private UUID createdBy;
 }

@@ -4,10 +4,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 import lombok.RequiredArgsConstructor;
 import org.jboss.resteasy.reactive.RestResponse;
-import ru.mephi.trainer.entity.TrainerEntity;
 import ru.mephi.trainer.rest.api.TrainersAPI;
 import ru.mephi.trainer.rest.dto.response.TrainerInfoResponse;
-import ru.mephi.trainer.rest.dto.response.TrainerListResponse;
+import ru.mephi.trainer.rest.dto.response.TrainerResponse;
 import ru.mephi.trainer.service.TrainerService;
 
 import java.util.List;
@@ -20,14 +19,21 @@ public class TrainersController implements TrainersAPI {
     private final TrainerService trainerService;
 
     @Override
-    public RestResponse<List<TrainerListResponse>> getTrainers() {
-        List<TrainerListResponse> response = trainerService.getAllTrainers();
+    public RestResponse<List<TrainerResponse>> getTrainers() {
+        List<TrainerResponse> response = trainerService.getAllTrainers().stream()
+                .map(t -> TrainerResponse.builder()
+                        .id(t.getId())
+                        .name(t.getName())
+                        .createdAt(t.getCreatedAt())
+                        .createdBy(t.getCreatedBy())
+                        .build())
+                .toList();
         return RestResponse.ok(response);
     }
 
     @Override
-    public RestResponse<TrainerInfoResponse> getTrainerInfo(String trainerId) {
-        TrainerInfoResponse response = trainerService.getTrainerInfo(UUID.fromString(trainerId));
-        return RestResponse.ok(response);
+    public RestResponse<TrainerInfoResponse> getTrainerInfo(UUID trainerId) {
+        TrainerInfoResponse trainerInfoResponse = trainerService.getTrainerInfo(trainerId);
+        return RestResponse.ok(trainerInfoResponse);
     }
 }
