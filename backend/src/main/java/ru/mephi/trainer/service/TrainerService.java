@@ -19,12 +19,18 @@ public class TrainerService {
     private final TrainerRepository trainerRepository;
 
     public List<TrainerEntity> getAllTrainers() {
+        log.info("Get all trainers");
         return trainerRepository.getAllTrainers();
     }
 
     public TrainerInfoResponse getTrainerInfo(UUID id) {
+        log.info("Get trainer info: id={}", id);
+
         TrainerEntity entity = trainerRepository.getTrainerInfo(id)
-                .orElseThrow(() -> new TrainerNotFoundException("Тренажёр с id " + id + " не найден"));
+                .orElseThrow(() -> {
+                    log.warn("Get trainer info failed - id not found: id={}", id);
+                    throw new TrainerNotFoundException("Тренажёр с id " + id + " не найден");
+                });
 
         Integer totalTasks = trainerRepository.getTotalTasks(id);
 
