@@ -62,7 +62,7 @@ public class TrainerProgressRepository {
         String sql = """
                     SELECT
                         t.id,
-                        t.config->>'title' as name,
+                        t.config->>'question' as name,
                         COALESCE(ta.points, 0) as point
                     FROM tasks t
                     JOIN tasks_trainers tt ON tt.task_id = t.id
