@@ -29,7 +29,7 @@ public class TrainerService {
         TrainerEntity entity = trainerRepository.getTrainerInfo(id)
                 .orElseThrow(() -> {
                     log.warn("Get trainer info failed - id not found: id={}", id);
-                    throw new TrainerNotFoundException("Тренажёр с id " + id + " не найден");
+                    return new TrainerNotFoundException("Тренажёр с id " + id + " не найден");
                 });
 
         Integer totalTasks = trainerRepository.getTotalTasks(id);
