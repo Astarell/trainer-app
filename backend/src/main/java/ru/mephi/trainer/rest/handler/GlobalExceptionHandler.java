@@ -7,6 +7,7 @@ import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 import ru.mephi.trainer.exception.EmailAlreadyExistsException;
 import ru.mephi.trainer.exception.FailedLoginException;
+import ru.mephi.trainer.exception.TrainerNotFoundException;
 import ru.mephi.trainer.rest.dto.response.ErrorResponse;
 
 @Slf4j
@@ -41,4 +42,14 @@ public class GlobalExceptionHandler {
 
         return RestResponse.status(Response.Status.BAD_REQUEST, response);
     }
+
+    @ServerExceptionMapper
+    public RestResponse<ErrorResponse> handleTrainerNotFoundException(TrainerNotFoundException e) {
+        ErrorResponse response = ErrorResponse.builder()
+                .message(e.getMessage())
+                .build();
+
+        return RestResponse.status(Response.Status.NOT_FOUND, response);
+    }
+
 }
