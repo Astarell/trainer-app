@@ -20,13 +20,13 @@ public class TrainerService {
 
     public List<TrainerEntity> getAllTrainers() {
         log.info("Get all trainers");
-        return trainerRepository.getAllTrainers();
+        return trainerRepository.listAll();
     }
 
     public TrainerInfoResponse getTrainerInfo(UUID id) {
         log.info("Get trainer info: id={}", id);
 
-        TrainerEntity entity = trainerRepository.getTrainerInfo(id)
+        TrainerEntity entity = trainerRepository.findByIdOptional(id)
                 .orElseThrow(() -> {
                     log.warn("Get trainer info failed - id not found: id={}", id);
                     return new TrainerNotFoundException("Тренажёр с id " + id + " не найден");

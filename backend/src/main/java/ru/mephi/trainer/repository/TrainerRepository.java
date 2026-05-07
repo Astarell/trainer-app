@@ -11,15 +11,6 @@ import java.util.UUID;
 @ApplicationScoped
 public class TrainerRepository implements PanacheRepositoryBase<TrainerEntity, UUID> {
 
-    public List<TrainerEntity> getAllTrainers() {
-        return listAll();
-    }
-
-    public Optional<TrainerEntity> getTrainerInfo(UUID trainerId) {
-        TrainerEntity entity = findById(trainerId);
-        return Optional.ofNullable(entity);
-    }
-
     public Integer getTotalTasks(UUID trainerId) {
         String sql = """
                     SELECT COUNT(tt.task_id)
