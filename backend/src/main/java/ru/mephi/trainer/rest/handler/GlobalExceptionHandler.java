@@ -51,5 +51,4 @@ public class GlobalExceptionHandler {
 
         return RestResponse.status(Response.Status.NOT_FOUND, response);
     }
-
 }

@@ -5,12 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ErrorDetails {
-
-    private String error;
-    private String description;
+public class TrainerProgressPercentResponse {
+    private UUID id;
+    private String name;
+    private Integer progressPercent;
 }
