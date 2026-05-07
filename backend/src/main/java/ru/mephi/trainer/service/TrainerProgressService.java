@@ -9,7 +9,6 @@ import ru.mephi.trainer.rest.dto.response.CompletedTaskTrainerPointResponse;
 import ru.mephi.trainer.rest.dto.response.TrainerProgressResponse;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -23,7 +22,7 @@ public class TrainerProgressService {
         TrainerProgressResponse response = trainerProgressRepository.getTrainerProgress(userId, trainerId)
                 .orElseThrow(() -> {
                     log.warn("Get trainer progress failed - id not found: id={}", trainerId);
-                    throw new TrainerNotFoundException("Тренажёр с id " + trainerId + " не найден");
+                    return new TrainerNotFoundException("Тренажёр с id " + trainerId + " не найден");
                 });
         List<CompletedTaskTrainerPointResponse> tasks = trainerProgressRepository.getCompletedTaskTrainer(userId, trainerId);
         response.setTasksInTrainer(tasks);
