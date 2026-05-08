@@ -36,7 +36,7 @@ public class ProfileRepository implements PanacheRepositoryBase<UserEntity, UUID
                         t.id,
                         t.name,
                         COALESCE(
-                            (SUM(ta.points) * 100) / NULLIF(SUM(task.max_score), 0), 
+                            (SUM(ta.points) * 100) / NULLIF(SUM((task.config->>'points')::INTEGER), 0), 
                             0
                         ) as progressPercent
                     FROM trainers t
