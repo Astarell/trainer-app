@@ -19,6 +19,6 @@ public class AnswerTaskResponse {
     private String studentEmail;
     private String answer;
     private Double points;
-    private Double max_points;
+    private Double maxPoints;
     private OffsetDateTime createdAt;
 }

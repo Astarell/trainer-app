@@ -10,7 +10,7 @@ public class ProfileResponse {
     private String firstName;
     private String lastName;
     private Double totalScore;
-    private List<TrainerProgressPercentResponse> trainerProgressPercent; // процент пройденных тренажеров
+    private List<TrainerProgressPercentResponse> trainerProgressPercent;
     private String createdAt;
 }
 

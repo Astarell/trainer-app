@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SetPointRequest {
+public class SubmitReviewRequest {
     @NotNull(message = "Баллы обязательны")
     @Min(value = 0, message = "Баллы не могут быть отрицательными")
     private Double points;

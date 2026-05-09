@@ -87,7 +87,7 @@ public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptE
                     .studentEmail((String) result[4])
                     .answer((String) result[5])
                     .points((Double) result[6])
-                    .max_points((Double) result[7])
+                    .maxPoints((Double) result[7])
                     .createdAt((OffsetDateTime) result[8])
                     .build());
         }

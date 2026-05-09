@@ -8,12 +8,12 @@ import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
-import ru.mephi.trainer.rest.dto.request.SetPointRequest;
+import ru.mephi.trainer.rest.dto.request.SubmitReviewRequest;
 import ru.mephi.trainer.rest.dto.response.AnswerTaskResponse;
 import ru.mephi.trainer.rest.dto.response.ReviewTaskResponse;
-import ru.mephi.trainer.rest.dto.response.TrainerProgressResponse;
 import ru.mephi.trainer.rest.dto.response.ErrorResponse;
 import ru.mephi.trainer.rest.dto.response.test.MessageResponse;
 
@@ -33,6 +33,7 @@ public interface ExpertApi {
             summary = "Список проверяемых задач",
             description = "Получить информацию о задачах, которые необходимо провери"
     )
+    @SecurityRequirement(name = "bearerAuth")
     @APIResponses(value = {
             @APIResponse(
                     responseCode = "200",
@@ -69,6 +70,7 @@ public interface ExpertApi {
             summary = "Информация о решении задачи",
             description = "Получить ответ пользователя к задаче, которую необходимо проверить"
     )
+    @SecurityRequirement(name = "bearerAuth")
     @APIResponses(value = {
             @APIResponse(
                     responseCode = "200",
@@ -110,6 +112,7 @@ public interface ExpertApi {
             summary = "Выставить балл",
             description = "Выставить балл за проверяемое задание"
     )
+    @SecurityRequirement(name = "bearerAuth")
     @APIResponses(value = {
             @APIResponse(
                     responseCode = "200",
@@ -144,5 +147,5 @@ public interface ExpertApi {
     })
     RestResponse<MessageResponse> setPointForTask(
             @PathParam("id") UUID taskAttemptId,
-            @Valid SetPointRequest request);
+            @Valid SubmitReviewRequest request);
 }
