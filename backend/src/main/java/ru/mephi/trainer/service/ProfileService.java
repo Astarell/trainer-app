@@ -22,7 +22,7 @@ public class ProfileService {
 
         UserEntity user = profileRepository.getUserData(userId);
         List<TrainerProgressPercentResponse> progress = profileRepository.getUserTrainersProgress(userId);
-        Integer score = profileRepository.getUserTotalScore(userId);
+        Double score = profileRepository.getUserTotalScore(userId);
 
         var response = new ProfileResponse();
         response.setId(user.getId().toString());

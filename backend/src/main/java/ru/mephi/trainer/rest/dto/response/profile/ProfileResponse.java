@@ -9,8 +9,8 @@ public class ProfileResponse {
     private String email;
     private String firstName;
     private String lastName;
-    private Integer totalScore; // общее количество баллов
-    private List<TrainerProgressPercentResponse> trainerProgressPercent; // процент пройденных тренажеров
+    private Double totalScore;
+    private List<TrainerProgressPercentResponse> trainerProgressPercent;
     private String createdAt;
 }
 

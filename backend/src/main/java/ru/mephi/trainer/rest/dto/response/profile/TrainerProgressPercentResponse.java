@@ -14,5 +14,5 @@ import java.util.UUID;
 public class TrainerProgressPercentResponse {
     private UUID id;
     private String name;
-    private Integer progressPercent;
+    private Double progressPercent;
 }

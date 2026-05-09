@@ -7,6 +7,7 @@ import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 import ru.mephi.trainer.exception.EmailAlreadyExistsException;
 import ru.mephi.trainer.exception.FailedLoginException;
+import ru.mephi.trainer.exception.TaskAttemptNotFoundException;
 import ru.mephi.trainer.exception.TrainerNotFoundException;
 import ru.mephi.trainer.rest.dto.response.ErrorResponse;
 
@@ -45,6 +46,15 @@ public class GlobalExceptionHandler {
 
     @ServerExceptionMapper
     public RestResponse<ErrorResponse> handleTrainerNotFoundException(TrainerNotFoundException e) {
+        ErrorResponse response = ErrorResponse.builder()
+                .message(e.getMessage())
+                .build();
+
+        return RestResponse.status(Response.Status.NOT_FOUND, response);
+    }
+
+    @ServerExceptionMapper
+    public RestResponse<ErrorResponse> handleTaskAttemptNotFoundException(TaskAttemptNotFoundException e) {
         ErrorResponse response = ErrorResponse.builder()
                 .message(e.getMessage())
                 .build();

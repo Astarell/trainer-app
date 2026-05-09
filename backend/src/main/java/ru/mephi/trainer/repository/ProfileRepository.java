@@ -16,7 +16,7 @@ public class ProfileRepository implements PanacheRepositoryBase<UserEntity, UUID
         return find("id", userId).firstResult();
     }
 
-    public Integer getUserTotalScore(UUID userId) {
+    public Double getUserTotalScore(UUID userId) {
         String sql = """
                     SELECT COALESCE(SUM(ta.points), 0)
                     FROM task_attempts ta
@@ -27,7 +27,7 @@ public class ProfileRepository implements PanacheRepositoryBase<UserEntity, UUID
                 .setParameter(1, userId)
                 .getSingleResult();
 
-        return ((Number) result).intValue();
+        return ((Number) result).doubleValue();
     }
 
     public List<TrainerProgressPercentResponse> getUserTrainersProgress(UUID userId) {
@@ -36,13 +36,13 @@ public class ProfileRepository implements PanacheRepositoryBase<UserEntity, UUID
                         t.id,
                         t.name,
                         COALESCE(
-                            (SUM(ta.points) * 100) / NULLIF(SUM((task.config->>'points')::INTEGER), 0), 
+                            (SUM(ta.points) * 100) / NULLIF(SUM(CAST(task.config->>'points' AS  DOUBLE PRECISION)), 0), 
                             0
                         ) as progressPercent
                     FROM trainers t
                     LEFT JOIN tasks_trainers tt ON tt.trainer_id = t.id
                     LEFT JOIN tasks task ON task.id = tt.task_id
-                    LEFT JOIN task_attempts ta ON ta.task_id = task.id AND ta.user_id = ?1 AND ta.status = 'COMPLETED'
+                    LEFT JOIN task_attempts ta ON ta.task_id = tt.id AND ta.user_id = ?1 AND ta.status = 'COMPLETED'
                     GROUP BY t.id, t.name
                 """;
 
@@ -55,7 +55,7 @@ public class ProfileRepository implements PanacheRepositoryBase<UserEntity, UUID
                 .map(row -> TrainerProgressPercentResponse.builder()
                         .id((UUID) row[0])
                         .name((String) row[1])
-                        .progressPercent(((Number) row[2]).intValue())
+                        .progressPercent(((Number) row[2]).doubleValue())
                         .build())
                 .collect(Collectors.toList());
     }
