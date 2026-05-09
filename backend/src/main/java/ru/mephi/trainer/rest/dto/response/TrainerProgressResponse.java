@@ -15,9 +15,9 @@ import java.util.UUID;
 public class TrainerProgressResponse {
     private UUID trainerId;
     private String trainerName;
-    private Integer earnedScore;      // заработал
-    private Integer maxPossibleScore; // максимум можно
-    private Integer tasksCompleted;   // решено задач
-    private Integer totalTasks;       // всего задач в тренажёре
-    private List<CompletedTaskTrainerPointResponse> tasksInTrainer;  // баллы за тренажер
+    private Double earnedScore;
+    private Double maxPossibleScore;
+    private Integer tasksCompleted;
+    private Integer totalTasks;
+    private List<CompletedTaskTrainerPointResponse> tasksInTrainer;
 }
