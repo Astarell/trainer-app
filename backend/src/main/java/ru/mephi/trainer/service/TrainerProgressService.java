@@ -28,4 +28,5 @@ public class TrainerProgressService {
         response.setTasksInTrainer(tasks);
         return response;
     }
+
 }

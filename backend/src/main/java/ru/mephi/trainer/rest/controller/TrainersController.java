@@ -8,11 +8,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.jboss.resteasy.reactive.RestResponse;
 import ru.mephi.trainer.rest.api.TrainersAPI;
 import ru.mephi.trainer.rest.dto.request.AnswerRequest;
+import ru.mephi.trainer.rest.dto.response.TaskResponse;
 import ru.mephi.trainer.rest.dto.response.TrainerInfoResponse;
 import ru.mephi.trainer.rest.dto.response.TrainerResponse;
 import ru.mephi.trainer.rest.dto.response.test.MessageResponse;
 import ru.mephi.trainer.service.CurrentUserService;
 import ru.mephi.trainer.service.TaskAttemptService;
+import ru.mephi.trainer.service.TaskService;
 import ru.mephi.trainer.service.TrainerService;
 
 import java.util.List;
@@ -26,6 +28,7 @@ public class TrainersController implements TrainersAPI {
     private final TrainerService trainerService;
     private final TaskAttemptService taskAttemptService;
     private final CurrentUserService currentUserService;
+    private final TaskService taskService;
 
     @Override
     public RestResponse<List<TrainerResponse>> getTrainers() {
@@ -46,6 +49,15 @@ public class TrainersController implements TrainersAPI {
         log.info("Get trainer: id={}", trainerId);
         TrainerInfoResponse trainerInfoResponse = trainerService.getTrainerInfo(trainerId);
         return RestResponse.ok(trainerInfoResponse);
+    }
+
+    @Override
+    @Authenticated
+    public RestResponse<TaskResponse> getTaskWithAttempt(UUID trainerId, UUID taskId) {
+        UUID userId = currentUserService.getCurrentUserIdOrThrow();
+        log.info("Get task: userId={}, trainerId={}, taskId={}", userId, trainerId, taskId);
+        TaskResponse taskResponse = taskService.getTaskWithAttempt(userId, trainerId, taskId);
+        return RestResponse.ok(taskResponse);
     }
 
     @Override
