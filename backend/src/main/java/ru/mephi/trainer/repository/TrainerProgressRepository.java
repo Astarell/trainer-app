@@ -25,13 +25,13 @@ public class TrainerProgressRepository {
                         t.id as trainer_id,
                         t.name as trainer_name,
                         COALESCE(SUM(ta.points), 0) as earned_score,
-                        COALESCE(SUM(task.max_score), 0) as max_possible_score,
+                        COALESCE(SUM(CAST(task.config->>'points' AS DOUBLE PRECISION)), 0) as max_possible_score,                        
                         COUNT(DISTINCT ta.id) as tasks_completed,
                         COUNT(DISTINCT task.id) as total_tasks
                     FROM trainers t
                     LEFT JOIN tasks_trainers tt ON tt.trainer_id = t.id
                     LEFT JOIN tasks task ON task.id = tt.task_id
-                    LEFT JOIN task_attempts ta ON ta.task_id = task.id AND ta.user_id = ?1 AND ta.status = 'COMPLETED'
+                    LEFT JOIN task_attempts ta ON ta.task_id = tt.id AND ta.user_id = ?1 AND ta.status = 'COMPLETED'
                     WHERE t.id = ?2
                     GROUP BY t.id, t.name
                 """;
@@ -66,7 +66,7 @@ public class TrainerProgressRepository {
                         COALESCE(ta.points, 0) as point
                     FROM tasks t
                     JOIN tasks_trainers tt ON tt.task_id = t.id
-                    LEFT JOIN task_attempts ta ON ta.task_id = t.id AND ta.user_id = ?1 AND ta.status = 'COMPLETED'
+                    LEFT JOIN task_attempts ta ON ta.task_id = tt.id AND ta.user_id = ?1 AND ta.status = 'COMPLETED'
                     WHERE tt.trainer_id = ?2
                     ORDER BY t.created_at
                 """;
