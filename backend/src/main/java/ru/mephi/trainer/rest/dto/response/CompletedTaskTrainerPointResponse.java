@@ -14,5 +14,5 @@ import java.util.UUID;
 public class CompletedTaskTrainerPointResponse {
     private UUID id;
     private String name;
-    private Integer point;
+    private Double point;
 }

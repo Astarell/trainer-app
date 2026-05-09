@@ -45,8 +45,8 @@ public class TrainerProgressRepository {
             return Optional.of(TrainerProgressResponse.builder()
                     .trainerId((UUID) result[0])
                     .trainerName((String) result[1])
-                    .earnedScore(((Number) result[2]).intValue())
-                    .maxPossibleScore(((Number) result[3]).intValue())
+                    .earnedScore(((Number) result[2]).doubleValue())
+                    .maxPossibleScore(((Number) result[3]).doubleValue())
                     .tasksCompleted(((Number) result[4]).intValue())
                     .totalTasks(((Number) result[5]).intValue())
                     .build());
@@ -81,7 +81,7 @@ public class TrainerProgressRepository {
                     CompletedTaskTrainerPointResponse dto = new CompletedTaskTrainerPointResponse();
                     dto.setId((UUID) row[0]);
                     dto.setName((String) row[1]);
-                    dto.setPoint(((Number) row[2]).intValue());
+                    dto.setPoint(((Number) row[2]).doubleValue());
                     return dto;
                 })
                 .collect(Collectors.toList());
