@@ -22,7 +22,7 @@ import ru.mephi.trainer.rest.dto.request.task.MultipleChoiceTaskRequest;
 import ru.mephi.trainer.rest.dto.request.task.OpenAnswerTaskRequest;
 import ru.mephi.trainer.rest.dto.request.task.SingleChoiceTaskRequest;
 import ru.mephi.trainer.rest.dto.response.ErrorResponse;
-import ru.mephi.trainer.rest.dto.response.task.TaskResponse;
+import ru.mephi.trainer.rest.dto.response.task.admin.TaskAdminResponse;
 
 import java.util.UUID;
 
@@ -44,7 +44,7 @@ public interface TaskApi {
             @APIResponse(
                     responseCode = "201",
                     description = "Задание успешно создано",
-                    content = @Content(schema = @Schema(implementation = TaskResponse.class))
+                    content = @Content(schema = @Schema(implementation = TaskAdminResponse.class))
             ),
             @APIResponse(
                     responseCode = "400",
@@ -72,7 +72,7 @@ public interface TaskApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<TaskResponse> createSingleChoiceTask(@RequestBody @Valid SingleChoiceTaskRequest createRequest);
+    RestResponse<TaskAdminResponse> createSingleChoiceTask(@RequestBody @Valid SingleChoiceTaskRequest createRequest);
 
     @POST
     @Path("/multiple-choice")
@@ -86,7 +86,7 @@ public interface TaskApi {
             @APIResponse(
                     responseCode = "201",
                     description = "Задание успешно создано",
-                    content = @Content(schema = @Schema(implementation = TaskResponse.class))
+                    content = @Content(schema = @Schema(implementation = TaskAdminResponse.class))
             ),
             @APIResponse(
                     responseCode = "400",
@@ -114,7 +114,7 @@ public interface TaskApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<TaskResponse> createMultipleChoiceTask(@RequestBody @Valid MultipleChoiceTaskRequest createRequest);  // ✅ исправлен тип
+    RestResponse<TaskAdminResponse> createMultipleChoiceTask(@RequestBody @Valid MultipleChoiceTaskRequest createRequest);  // ✅ исправлен тип
 
     @POST
     @Path("/error-finding")
@@ -128,7 +128,7 @@ public interface TaskApi {
             @APIResponse(
                     responseCode = "201",
                     description = "Задание успешно создано",
-                    content = @Content(schema = @Schema(implementation = TaskResponse.class))
+                    content = @Content(schema = @Schema(implementation = TaskAdminResponse.class))
             ),
             @APIResponse(
                     responseCode = "400",
@@ -156,7 +156,7 @@ public interface TaskApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<TaskResponse> createErrorFindingTask(@RequestBody @Valid ErrorFindingTaskRequest createRequest);
+    RestResponse<TaskAdminResponse> createErrorFindingTask(@RequestBody @Valid ErrorFindingTaskRequest createRequest);
 
     @POST
     @Path("/open-answer")
@@ -170,7 +170,7 @@ public interface TaskApi {
             @APIResponse(
                     responseCode = "201",
                     description = "Задание успешно создано",
-                    content = @Content(schema = @Schema(implementation = TaskResponse.class))
+                    content = @Content(schema = @Schema(implementation = TaskAdminResponse.class))
             ),
             @APIResponse(
                     responseCode = "400",
@@ -198,7 +198,7 @@ public interface TaskApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<TaskResponse> createOpenAnswerTask(@RequestBody @Valid OpenAnswerTaskRequest createRequest);
+    RestResponse<TaskAdminResponse> createOpenAnswerTask(@RequestBody @Valid OpenAnswerTaskRequest createRequest);
 
     @PUT
     @Path("/single-choice/{id}")
@@ -212,7 +212,7 @@ public interface TaskApi {
             @APIResponse(
                     responseCode = "200",
                     description = "Задание успешно обновлено",
-                    content = @Content(schema = @Schema(implementation = TaskResponse.class))
+                    content = @Content(schema = @Schema(implementation = TaskAdminResponse.class))
             ),
             @APIResponse(
                     responseCode = "400",
@@ -240,7 +240,7 @@ public interface TaskApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<TaskResponse> updateSingleChoiceTask(
+    RestResponse<TaskAdminResponse> updateSingleChoiceTask(
             @PathParam("id") UUID id,
             @RequestBody @Valid SingleChoiceTaskRequest updateRequest
     );
@@ -257,7 +257,7 @@ public interface TaskApi {
             @APIResponse(
                     responseCode = "200",
                     description = "Задание успешно обновлено",
-                    content = @Content(schema = @Schema(implementation = TaskResponse.class))
+                    content = @Content(schema = @Schema(implementation = TaskAdminResponse.class))
             ),
             @APIResponse(
                     responseCode = "400",
@@ -285,7 +285,7 @@ public interface TaskApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<TaskResponse> updateMultipleChoiceTask(
+    RestResponse<TaskAdminResponse> updateMultipleChoiceTask(
             @PathParam("id") UUID id,
             @RequestBody @Valid MultipleChoiceTaskRequest updateRequest
     );
@@ -302,7 +302,7 @@ public interface TaskApi {
             @APIResponse(
                     responseCode = "200",
                     description = "Задание успешно обновлено",
-                    content = @Content(schema = @Schema(implementation = TaskResponse.class))
+                    content = @Content(schema = @Schema(implementation = TaskAdminResponse.class))
             ),
             @APIResponse(
                     responseCode = "400",
@@ -330,7 +330,7 @@ public interface TaskApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<TaskResponse> updateErrorFindingTask(
+    RestResponse<TaskAdminResponse> updateErrorFindingTask(
             @PathParam("id") UUID id,
             @RequestBody @Valid ErrorFindingTaskRequest updateRequest
     );
@@ -347,7 +347,7 @@ public interface TaskApi {
             @APIResponse(
                     responseCode = "200",
                     description = "Задание успешно обновлено",
-                    content = @Content(schema = @Schema(implementation = TaskResponse.class))
+                    content = @Content(schema = @Schema(implementation = TaskAdminResponse.class))
             ),
             @APIResponse(
                     responseCode = "400",
@@ -375,7 +375,7 @@ public interface TaskApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<TaskResponse> updateOpenAnswerTask(
+    RestResponse<TaskAdminResponse> updateOpenAnswerTask(
             @PathParam("id") UUID id,
             @RequestBody @Valid OpenAnswerTaskRequest updateRequest
     );

@@ -9,7 +9,7 @@ import ru.mephi.trainer.rest.dto.request.task.ErrorFindingTaskRequest;
 import ru.mephi.trainer.rest.dto.request.task.MultipleChoiceTaskRequest;
 import ru.mephi.trainer.rest.dto.request.task.OpenAnswerTaskRequest;
 import ru.mephi.trainer.rest.dto.request.task.SingleChoiceTaskRequest;
-import ru.mephi.trainer.rest.dto.response.task.TaskResponse;
+import ru.mephi.trainer.rest.dto.response.task.admin.TaskAdminResponse;
 
 import java.util.UUID;
 
@@ -19,42 +19,42 @@ import java.util.UUID;
 public class TaskController implements TaskApi {
 
     @Override
-    public RestResponse<TaskResponse> createSingleChoiceTask(SingleChoiceTaskRequest createRequest) {
+    public RestResponse<TaskAdminResponse> createSingleChoiceTask(SingleChoiceTaskRequest createRequest) {
         return null;
     }
 
     @Override
-    public RestResponse<TaskResponse> createMultipleChoiceTask(MultipleChoiceTaskRequest createRequest) {
+    public RestResponse<TaskAdminResponse> createMultipleChoiceTask(MultipleChoiceTaskRequest createRequest) {
         return null;
     }
 
     @Override
-    public RestResponse<TaskResponse> createErrorFindingTask(ErrorFindingTaskRequest createRequest) {
+    public RestResponse<TaskAdminResponse> createErrorFindingTask(ErrorFindingTaskRequest createRequest) {
         return null;
     }
 
     @Override
-    public RestResponse<TaskResponse> createOpenAnswerTask(OpenAnswerTaskRequest createRequest) {
+    public RestResponse<TaskAdminResponse> createOpenAnswerTask(OpenAnswerTaskRequest createRequest) {
         return null;
     }
 
     @Override
-    public RestResponse<TaskResponse> updateSingleChoiceTask(UUID id, SingleChoiceTaskRequest updateRequest) {
+    public RestResponse<TaskAdminResponse> updateSingleChoiceTask(UUID id, SingleChoiceTaskRequest updateRequest) {
         return null;
     }
 
     @Override
-    public RestResponse<TaskResponse> updateMultipleChoiceTask(UUID id, MultipleChoiceTaskRequest updateRequest) {
+    public RestResponse<TaskAdminResponse> updateMultipleChoiceTask(UUID id, MultipleChoiceTaskRequest updateRequest) {
         return null;
     }
 
     @Override
-    public RestResponse<TaskResponse> updateErrorFindingTask(UUID id, ErrorFindingTaskRequest updateRequest) {
+    public RestResponse<TaskAdminResponse> updateErrorFindingTask(UUID id, ErrorFindingTaskRequest updateRequest) {
         return null;
     }
 
     @Override
-    public RestResponse<TaskResponse> updateOpenAnswerTask(UUID id, OpenAnswerTaskRequest updateRequest) {
+    public RestResponse<TaskAdminResponse> updateOpenAnswerTask(UUID id, OpenAnswerTaskRequest updateRequest) {
         return null;
     }
 }
