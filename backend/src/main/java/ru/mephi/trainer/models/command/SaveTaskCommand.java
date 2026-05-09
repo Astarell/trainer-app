@@ -13,7 +13,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateTaskCommand {
+public class SaveTaskCommand {
     private TaskConfig config;
     private UUID createdBy;
     private Set<UUID> trainerIds;

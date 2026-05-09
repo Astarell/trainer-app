@@ -72,7 +72,7 @@ public interface TaskApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<TaskAdminResponse> createSingleChoiceTask(@RequestBody @Valid SingleChoiceTaskRequest createRequest);
+    RestResponse<TaskAdminResponse> createSingleChoiceTask(@RequestBody @Valid SingleChoiceTaskRequest request);
 
     @POST
     @Path("/multiple-choice")
@@ -114,7 +114,7 @@ public interface TaskApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<TaskAdminResponse> createMultipleChoiceTask(@RequestBody @Valid MultipleChoiceTaskRequest createRequest);  // ✅ исправлен тип
+    RestResponse<TaskAdminResponse> createMultipleChoiceTask(@RequestBody @Valid MultipleChoiceTaskRequest request);  // ✅ исправлен тип
 
     @POST
     @Path("/error-finding")
@@ -156,7 +156,7 @@ public interface TaskApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<TaskAdminResponse> createErrorFindingTask(@RequestBody @Valid ErrorFindingTaskRequest createRequest);
+    RestResponse<TaskAdminResponse> createErrorFindingTask(@RequestBody @Valid ErrorFindingTaskRequest request);
 
     @POST
     @Path("/open-answer")
@@ -198,7 +198,7 @@ public interface TaskApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<TaskAdminResponse> createOpenAnswerTask(@RequestBody @Valid OpenAnswerTaskRequest createRequest);
+    RestResponse<TaskAdminResponse> createOpenAnswerTask(@RequestBody @Valid OpenAnswerTaskRequest request);
 
     @PUT
     @Path("/single-choice/{id}")
@@ -242,7 +242,7 @@ public interface TaskApi {
     })
     RestResponse<TaskAdminResponse> updateSingleChoiceTask(
             @PathParam("id") UUID id,
-            @RequestBody @Valid SingleChoiceTaskRequest updateRequest
+            @RequestBody @Valid SingleChoiceTaskRequest request
     );
 
     @PUT
@@ -287,7 +287,7 @@ public interface TaskApi {
     })
     RestResponse<TaskAdminResponse> updateMultipleChoiceTask(
             @PathParam("id") UUID id,
-            @RequestBody @Valid MultipleChoiceTaskRequest updateRequest
+            @RequestBody @Valid MultipleChoiceTaskRequest request
     );
 
     @PUT
@@ -332,7 +332,7 @@ public interface TaskApi {
     })
     RestResponse<TaskAdminResponse> updateErrorFindingTask(
             @PathParam("id") UUID id,
-            @RequestBody @Valid ErrorFindingTaskRequest updateRequest
+            @RequestBody @Valid ErrorFindingTaskRequest request
     );
 
     @PUT
@@ -377,6 +377,6 @@ public interface TaskApi {
     })
     RestResponse<TaskAdminResponse> updateOpenAnswerTask(
             @PathParam("id") UUID id,
-            @RequestBody @Valid OpenAnswerTaskRequest updateRequest
+            @RequestBody @Valid OpenAnswerTaskRequest request
     );
 }
