@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
-import ru.mephi.trainer.rest.dto.request.task.AnswerChoice;
+import ru.mephi.trainer.rest.dto.request.task.AnswerChoiceDto;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class MultipleChoiceConfigDto {
     private String question;
 
     @Schema(description = "Список вариантов ответов")
-    private List<AnswerChoice> answerChoices;
+    private List<AnswerChoiceDto> answerChoices;
 
     @Schema(description = "Список порядковых номеров правильных ответов (начиная с 1)",
             examples = "[2, 4]")

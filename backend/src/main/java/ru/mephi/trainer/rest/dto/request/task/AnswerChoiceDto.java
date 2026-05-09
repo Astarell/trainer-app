@@ -12,7 +12,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "Вариант ответа")
-public class AnswerChoice {
+public class AnswerChoiceDto {
 
     @Schema(description = "Порядковый номер варианта (начиная с 1)",
             examples = "1",

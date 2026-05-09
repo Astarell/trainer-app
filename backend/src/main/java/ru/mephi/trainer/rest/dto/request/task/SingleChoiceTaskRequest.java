@@ -33,7 +33,7 @@ public class SingleChoiceTaskRequest extends TaskRequest {
     @NotEmpty(message = "Должен быть хотя бы один вариант ответа")
     @Size(min = 2, max = 10, message = "Количество вариантов ответа должно быть от 2 до 10")
     @Valid
-    private List<AnswerChoice> answerChoices;
+    private List<AnswerChoiceDto> answerChoices;
 
     @Schema(description = "Порядковый номер правильного ответа (начиная с 1)",
             examples = "3",

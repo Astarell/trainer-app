@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import ru.mephi.trainer.entity.enums.TaskType;
-import ru.mephi.trainer.rest.dto.request.task.AnswerChoice;
+import ru.mephi.trainer.rest.dto.request.task.AnswerChoiceDto;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import java.util.List;
 public class UserTaskConfigDto {
     private TaskType type;
     private String question;
-    private List<AnswerChoice> answerChoices;
+    private List<AnswerChoiceDto> answerChoices;
     private String context;
     private Integer points;
     private Integer maxAttempts;

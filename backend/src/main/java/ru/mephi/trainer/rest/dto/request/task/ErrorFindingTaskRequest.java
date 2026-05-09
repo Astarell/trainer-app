@@ -40,7 +40,7 @@ public class ErrorFindingTaskRequest extends TaskRequest {
     @NotEmpty(message = "Должен быть хотя бы один вариант ответа")
     @Size(min = 2, max = 20, message = "Количество вариантов должно быть от 2 до 20")
     @Valid
-    private List<AnswerChoice> answerChoices;
+    private List<AnswerChoiceDto> answerChoices;
 
     @Schema(description = "Список порядковых номеров правильных ответов",
             examples = "[1, 2, 4]",
