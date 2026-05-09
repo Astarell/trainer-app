@@ -20,6 +20,7 @@ import ru.mephi.trainer.rest.dto.request.SubmitReviewRequest;
 import ru.mephi.trainer.rest.dto.response.TrainerInfoResponse;
 import ru.mephi.trainer.rest.dto.response.ErrorResponse;
 import ru.mephi.trainer.rest.dto.response.TrainerResponse;
+import ru.mephi.trainer.rest.dto.response.test.MessageResponse;
 
 import java.util.List;
 import java.util.UUID;
@@ -80,15 +81,15 @@ public interface TrainersAPI {
     @GET
     @Path("/{id}/tasks/{task_id}/submit")
     @Operation(
-            operationId = "getTrainerInfo",
-            summary = "Информация о тренажере",
+            operationId = "insertTaskAttempt",
+            summary = "Отправить ответ на задание",
             description = "Получить информацию о тренажере"
     )
     @APIResponses(value = {
             @APIResponse(
                     responseCode = "200",
-                    description = "Данные о прохождении тренажера успешно получены",
-                    content = @Content(schema = @Schema(implementation = TrainerInfoResponse.class))
+                    description = "Ответ отправлен",
+                    content = @Content(schema = @Schema(implementation = MessageResponse.class))
             ),
             @APIResponse(
                     responseCode = "404",
@@ -101,6 +102,6 @@ public interface TrainersAPI {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<TrainerInfoResponse> insertTaskAttempt(@PathParam("id") UUID trainerId, @PathParam("task_id") UUID taskId, @Valid AnswerRequest request);
+    RestResponse<MessageResponse> insertTaskAttempt(@PathParam("id") UUID trainerId, @PathParam("task_id") UUID taskId, @Valid AnswerRequest request);
 
 }

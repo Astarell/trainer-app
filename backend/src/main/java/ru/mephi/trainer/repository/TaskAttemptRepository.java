@@ -86,8 +86,8 @@ public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptE
                     .studentName((String) result[3])
                     .studentEmail((String) result[4])
                     .answer((String) result[5])
-                    .points((Double) result[6])
-                    .maxPoints((Double) result[7])
+                    .points((Integer) result[6])
+                    .maxPoints((Integer) result[7])
                     .createdAt((OffsetDateTime) result[8])
                     .build());
         }
@@ -96,7 +96,7 @@ public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptE
         }
     }
 
-    public Double getMaxPointsForAttempt(UUID id) {
+    public Integer getMaxPointsForAttempt(UUID id) {
         String sql = """
                     SELECT CAST(t.config->>'points' AS DOUBLE PRECISION)
                     FROM task_attempts ta
@@ -110,7 +110,7 @@ public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptE
                 .setParameter(1, id)
                 .getSingleResult();
 
-        return ((Number) result).doubleValue();
+        return ((Number) result).intValue();
     }
 
     public Integer getMistakeCost(UUID id) {
@@ -146,7 +146,10 @@ public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptE
         return ((Number) result).intValue();
     }
 
-
+    public Optional<TaskAttemptEntity> findLastAttempt(UUID userId, UUID taskTrainerId) {
+        return find("user.id = ?1 and task.id = ?2 order by createdAt desc", userId, taskTrainerId)
+                .firstResultOptional();
+    }
 
 }
 

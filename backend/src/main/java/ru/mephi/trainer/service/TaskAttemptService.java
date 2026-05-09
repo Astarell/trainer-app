@@ -1,21 +1,23 @@
 package ru.mephi.trainer.service;
 
-
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.mephi.trainer.entity.*;
 import ru.mephi.trainer.entity.enums.AttemptStatus;
 import ru.mephi.trainer.entity.enums.TaskType;
-import ru.mephi.trainer.entity.enums.UserRole;
 import ru.mephi.trainer.repository.ProfileRepository;
 import ru.mephi.trainer.repository.TaskAttemptRepository;
 import ru.mephi.trainer.repository.TaskRepository;
 import ru.mephi.trainer.repository.TaskTrainerRepository;
 import ru.mephi.trainer.rest.dto.response.test.MessageResponse;
 
+import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -27,41 +29,152 @@ public class TaskAttemptService {
     private final ProfileRepository profileRepository;
     private final TaskRepository taskRepository;
 
-    public MessageResponse insertTaskAttempt(UUID userId, UUID trainerId, UUID taskId, TaskType type, String answer) {
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
-        TaskTrainerEntity taskTrainer = taskTrainerRepository
+    @Transactional
+    public MessageResponse insertTaskAttempt(UUID userId, UUID trainerId, UUID taskId, String answer) {
+        try {
+            TaskTrainerEntity taskTrainer = validateAndGetTaskTrainer(trainerId, taskId);
+            UserEntity user = getUserOrThrow(userId);
+            TaskEntity task = getTaskOrThrow(taskId);
+            JsonNode config = MAPPER.readTree(task.getConfig());
+
+            int count = getAndCheckAttemptsLimit(taskTrainer.getId(), userId, config);
+            checkLastAttemptStatus(userId, taskTrainer.getId());
+
+            boolean isCorrect;
+            int points = 0;
+            AttemptStatus status;
+            int mistakeCost = config.get("mistake_cost").asInt();
+
+            switch (task.getTaskType()) {
+                case OPEN_ANSWER:
+                    status = AttemptStatus.REVIEW;
+                    saveAttempt(taskTrainer, user, answer, points, status);
+                    return MessageResponse.builder()
+                            .message("Ответ отправлен на проверку эксперту")
+                            .timestamp(Instant.now().toString())
+                            .build();
+
+                case SINGLE_CHOICE:
+                    isCorrect = checkSingleChoice(answer, config);
+                    points = isCorrect ? config.get("points").asInt() - mistakeCost * count : 0;
+                    status = isCorrect ? AttemptStatus.COMPLETED : AttemptStatus.FAILED;
+                    saveAttempt(taskTrainer, user, answer, points, status);
+                    break;
+
+                case MULTIPLE_CHOICE, ERROR_FINDING:
+                    isCorrect = checkMultipleChoice(answer, config);
+                    points = isCorrect ? config.get("points").asInt() - mistakeCost * count : 0;
+                    status = isCorrect ? AttemptStatus.COMPLETED : AttemptStatus.FAILED;
+                    saveAttempt(taskTrainer, user, answer, points, status);
+                    break;
+
+                default:
+                    throw new RuntimeException("Неподдерживаемый тип задачи: " + task.getTaskType());
+            }
+
+            String message = isCorrect
+                    ? "Правильно! Вы получили " + points + " баллов"
+                    : "Введен неверный ответ";
+
+            return MessageResponse.builder()
+                    .message(message)
+                    .timestamp(Instant.now().toString())
+                    .build();
+        }
+        catch (JsonProcessingException e) {
+            log.error("Ошибка парсинга JSON: {}", e.getMessage());
+            throw new RuntimeException("Неверный формат ответа", e);
+        }
+    }
+
+    private TaskTrainerEntity validateAndGetTaskTrainer(UUID trainerId, UUID taskId) {
+        return taskTrainerRepository
                 .findByTrainerIdAndTaskId(trainerId, taskId)
                 .orElseThrow(() -> new RuntimeException("Задача не найдена в этом тренажёре"));
+    }
+
+    private UserEntity getUserOrThrow(UUID userId) {
         UserEntity user = profileRepository.getUserData(userId);
+        if (user == null) {
+            throw new RuntimeException("Пользователь не найден");
+        }
+        return user;
+    }
 
-        TaskEntity task = taskRepository.findByIdOptional(taskId)
+    private TaskEntity getTaskOrThrow(UUID taskId) {
+        return taskRepository.findByIdOptional(taskId)
                 .orElseThrow(() -> new RuntimeException("Задача не найдена"));
+    }
 
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode config = mapper.readTree(task.getConfig());
-        double attemptsCount = taskAttemptRepository.getAttemptsCount(taskId, userId);
+    private int getAndCheckAttemptsLimit(UUID taskTrainerId, UUID userId, JsonNode config) {
+        int attemptsCount = taskAttemptRepository.getAttemptsCount(taskTrainerId, userId);
+        int maxAttempts = config.get("max_attempts").asInt();
 
-        if (attemptsCount >= task.getConfig().)
+        if (attemptsCount >= maxAttempts) {
+            throw new RuntimeException("Использованы все попытки (максимум: " + maxAttempts + ")");
+        }
+        return attemptsCount;
+    }
 
-        AttemptStatus status = AttemptStatus.REVIEW;;
-        switch (task.getTaskType()) {
-            case TaskType.OPEN_ANSWER -> {
-            }
-            case TaskType.SINGLE_CHOICE -> {
+    private void checkLastAttemptStatus(UUID userId, UUID taskTrainerId) {
+        Optional<TaskAttemptEntity> lastAttempt = taskAttemptRepository
+                .findLastAttempt(userId, taskTrainerId);
 
-            }
+        if (lastAttempt.isEmpty()) {
+            return;
         }
 
+        TaskAttemptEntity attempt = lastAttempt.get();
+        if (attempt.getStatus() == AttemptStatus.COMPLETED) {
+            throw new RuntimeException("Задача уже решена правильно");
+        }
+        if (attempt.getStatus() == AttemptStatus.REVIEW) {
+            throw new RuntimeException("Предыдущий ответ уже на проверке");
+        }
+    }
+
+    private void saveAttempt(TaskTrainerEntity taskTrainer, UserEntity user,
+                             String answer, int points, AttemptStatus status) {
         TaskAttemptEntity attempt = TaskAttemptEntity.builder()
                 .task(taskTrainer)
                 .user(user)
                 .userAnswer(answer)
-                .points(0.0)
+                .points(points)
                 .status(status)
                 .build();
+        taskAttemptRepository.persist(attempt);
     }
 
+    private boolean checkSingleChoice(String answer, JsonNode config) throws JsonProcessingException {
+        JsonNode answerNode = MAPPER.readTree(answer);
+        int userChoice = answerNode.asInt();
+        int correctChoice = config.get("expected_ordinal").asInt();
+        return userChoice == correctChoice;
+    }
 
+    private boolean checkMultipleChoice(String answer, JsonNode config) throws JsonProcessingException {
+        JsonNode answerNode = MAPPER.readTree(answer);
+        if (!answerNode.isArray()) {
+            return false;
+        }
+        JsonNode correctAnswers = config.get("correct_options");
 
+        if (answerNode.size() != correctAnswers.size()) {
+            return false;
+        }
 
+        for (JsonNode node : answerNode) {
+            boolean found = false;
+            for (JsonNode correct : correctAnswers) {
+                if (node.asInt() == correct.asInt()) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) return false;
+        }
+        return true;
+    }
 }

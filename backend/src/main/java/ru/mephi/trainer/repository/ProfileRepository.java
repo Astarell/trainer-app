@@ -16,7 +16,7 @@ public class ProfileRepository implements PanacheRepositoryBase<UserEntity, UUID
         return find("id", userId).firstResult();
     }
 
-    public Double getUserTotalScore(UUID userId) {
+    public Integer getUserTotalScore(UUID userId) {
         String sql = """
                     SELECT COALESCE(SUM(ta.points), 0)
                     FROM task_attempts ta
@@ -27,7 +27,7 @@ public class ProfileRepository implements PanacheRepositoryBase<UserEntity, UUID
                 .setParameter(1, userId)
                 .getSingleResult();
 
-        return ((Number) result).doubleValue();
+        return ((Number) result).intValue();
     }
 
     public List<TrainerProgressPercentResponse> getUserTrainersProgress(UUID userId) {
@@ -55,7 +55,7 @@ public class ProfileRepository implements PanacheRepositoryBase<UserEntity, UUID
                 .map(row -> TrainerProgressPercentResponse.builder()
                         .id((UUID) row[0])
                         .name((String) row[1])
-                        .progressPercent(((Number) row[2]).doubleValue())
+                        .progressPercent(((Number) row[2]).intValue())
                         .build())
                 .collect(Collectors.toList());
     }
