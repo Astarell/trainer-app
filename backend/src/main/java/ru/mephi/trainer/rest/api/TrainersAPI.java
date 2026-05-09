@@ -1,5 +1,6 @@
 package ru.mephi.trainer.rest.api;
 
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -14,6 +15,8 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
 import ru.mephi.trainer.entity.TrainerEntity;
+import ru.mephi.trainer.rest.dto.request.AnswerRequest;
+import ru.mephi.trainer.rest.dto.request.SubmitReviewRequest;
 import ru.mephi.trainer.rest.dto.response.TrainerInfoResponse;
 import ru.mephi.trainer.rest.dto.response.ErrorResponse;
 import ru.mephi.trainer.rest.dto.response.TrainerResponse;
@@ -73,5 +76,31 @@ public interface TrainersAPI {
             )
     })
     RestResponse<TrainerInfoResponse> getTrainerInfo(@PathParam("id") UUID trainerId);
+
+    @GET
+    @Path("/{id}/tasks/{task_id}/submit")
+    @Operation(
+            operationId = "getTrainerInfo",
+            summary = "Информация о тренажере",
+            description = "Получить информацию о тренажере"
+    )
+    @APIResponses(value = {
+            @APIResponse(
+                    responseCode = "200",
+                    description = "Данные о прохождении тренажера успешно получены",
+                    content = @Content(schema = @Schema(implementation = TrainerInfoResponse.class))
+            ),
+            @APIResponse(
+                    responseCode = "404",
+                    description = "Тренажёр не найден",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @APIResponse(
+                    responseCode = "500",
+                    description = "Неожиданная ошибка",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            )
+    })
+    RestResponse<TrainerInfoResponse> insertTaskAttempt(@PathParam("id") UUID trainerId, @PathParam("task_id") UUID taskId, @Valid AnswerRequest request);
 
 }
