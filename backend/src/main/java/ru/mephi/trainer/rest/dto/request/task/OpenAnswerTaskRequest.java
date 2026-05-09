@@ -15,7 +15,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "Запрос на создание задания с открытым ответом")
-public class CreateOpenAnswerTaskRequest extends CreateTaskRequest {
+public class OpenAnswerTaskRequest extends TaskRequest {
 
     @Schema(description = "Текст вопроса",
             examples = "Как вы поступите и какие аргументы приведёте заказчику?",

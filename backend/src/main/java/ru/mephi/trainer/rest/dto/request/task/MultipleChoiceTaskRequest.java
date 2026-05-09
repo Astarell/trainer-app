@@ -18,11 +18,11 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Schema(description = "Запрос на создание задания с одиночным выбором")
-public class CreateSingleChoiceTaskRequest extends CreateTaskRequest {
+@Schema(description = "Задание с множественным выбором")
+public class MultipleChoiceTaskRequest extends TaskRequest {
 
     @Schema(description = "Текст вопроса",
-            examples = "Какой тип требования описывает, что система должна делать?",
+            examples = "Какие утверждения верны для оператора WHERE в SQL?",
             required = true)
     @NotBlank(message = "Текст вопроса не может быть пустым")
     @Size(min = 5, max = 1000, message = "Текст вопроса должен быть от 5 до 1000 символов")
@@ -35,15 +35,15 @@ public class CreateSingleChoiceTaskRequest extends CreateTaskRequest {
     @Valid
     private List<AnswerChoice> answerChoices;
 
-    @Schema(description = "Порядковый номер правильного ответа (начиная с 1)",
-            examples = "3",
+    @Schema(description = "Список порядковых номеров правильных ответов (начиная с 1)",
+            examples = "[2, 4]",
             required = true)
-    @NotNull(message = "Необходимо указать правильный ответ")
-    @Min(value = 1, message = "Номер правильного ответа должен быть не меньше 1")
-    private Integer expectedOrdinal;
+    @NotEmpty(message = "Необходимо указать хотя бы один правильный ответ")
+    @Size(max = 10, message = "Количество правильных ответов не может превышать 10")
+    private List<@Min(1) Integer> expectedOrdinals;
 
     @Schema(description = "Максимальное количество баллов за задание",
-            examples = "5",
+            examples = "10",
             required = true)
     @NotNull(message = "Количество баллов не может быть пустым")
     @Positive(message = "Количество баллов должно быть положительным числом")

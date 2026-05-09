@@ -10,7 +10,6 @@ import ru.mephi.trainer.rest.dto.response.profile.TrainerProgressResponse;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class TrainerProgressRepository {
@@ -20,11 +19,11 @@ public class TrainerProgressRepository {
 
     public Optional<TrainerProgressResponse> getTrainerProgress(UUID userId, UUID trainerId) {
         String sql = """
-                    SELECT 
+                    SELECT
                         t.id as trainer_id,
                         t.name as trainer_name,
                         COALESCE(SUM(ta.points), 0) as earned_score,
-                        COALESCE(SUM(CAST(task.config->>'points' AS DOUBLE PRECISION)), 0) as max_possible_score,                        
+                        COALESCE(SUM(CAST(task.config->>'points' AS INTEGER)), 0) as max_possible_score,
                         COUNT(DISTINCT ta.id) as tasks_completed,
                         COUNT(DISTINCT task.id) as total_tasks
                     FROM trainers t
@@ -44,8 +43,8 @@ public class TrainerProgressRepository {
             return Optional.of(TrainerProgressResponse.builder()
                     .trainerId((UUID) result[0])
                     .trainerName((String) result[1])
-                    .earnedScore(((Number) result[2]).doubleValue())
-                    .maxPossibleScore(((Number) result[3]).doubleValue())
+                    .earnedScore(((Number) result[2]).intValue())
+                    .maxPossibleScore(((Number) result[3]).intValue())
                     .tasksCompleted(((Number) result[4]).intValue())
                     .totalTasks(((Number) result[5]).intValue())
                     .build());
@@ -80,9 +79,9 @@ public class TrainerProgressRepository {
                     CompletedTaskTrainerPointResponse dto = new CompletedTaskTrainerPointResponse();
                     dto.setId((UUID) row[0]);
                     dto.setName((String) row[1]);
-                    dto.setPoint(((Number) row[2]).doubleValue());
+                    dto.setPoint(((Number) row[2]).intValue());
                     return dto;
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 }

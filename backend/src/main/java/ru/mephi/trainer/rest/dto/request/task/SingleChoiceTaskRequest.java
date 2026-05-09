@@ -18,38 +18,32 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Schema(description = "Запрос на создание задания на поиск ошибок")
-public class CreateErrorFindingTaskRequest extends CreateTaskRequest {
+@Schema(description = "Запрос на создание задания с одиночным выбором")
+public class SingleChoiceTaskRequest extends TaskRequest {
 
     @Schema(description = "Текст вопроса",
-            examples = "Найдите недостатки или риски валидации.",
+            examples = "Какой тип требования описывает, что система должна делать?",
             required = true)
     @NotBlank(message = "Текст вопроса не может быть пустым")
     @Size(min = 5, max = 1000, message = "Текст вопроса должен быть от 5 до 1000 символов")
     private String question;
 
-    @Schema(description = "Контекст задания (описание ситуации)",
-            examples = "Для поля ИНН организации в форме партнёрства заданы правила: только цифры, не может начинаться с 0...",
-            required = true)
-    @NotBlank(message = "Контекст задания не может быть пустым")
-    @Size(min = 10, max = 5000, message = "Контекст должен быть от 10 до 5000 символов")
-    private String context;
-
-    @Schema(description = "Варианты ответов (возможные ошибки)",
+    @Schema(description = "Варианты ответов",
             required = true)
     @NotEmpty(message = "Должен быть хотя бы один вариант ответа")
-    @Size(min = 2, max = 20, message = "Количество вариантов должно быть от 2 до 20")
+    @Size(min = 2, max = 10, message = "Количество вариантов ответа должно быть от 2 до 10")
     @Valid
     private List<AnswerChoice> answerChoices;
 
-    @Schema(description = "Список порядковых номеров правильных ответов",
-            examples = "[1, 2, 4]",
+    @Schema(description = "Порядковый номер правильного ответа (начиная с 1)",
+            examples = "3",
             required = true)
-    @NotEmpty(message = "Необходимо указать хотя бы один правильный ответ")
-    private List<@Min(1) Integer> expectedOrdinals;
+    @NotNull(message = "Необходимо указать правильный ответ")
+    @Min(value = 1, message = "Номер правильного ответа должен быть не меньше 1")
+    private Integer expectedOrdinal;
 
     @Schema(description = "Максимальное количество баллов за задание",
-            examples = "15",
+            examples = "5",
             required = true)
     @NotNull(message = "Количество баллов не может быть пустым")
     @Positive(message = "Количество баллов должно быть положительным числом")
@@ -57,7 +51,7 @@ public class CreateErrorFindingTaskRequest extends CreateTaskRequest {
     private Integer points;
 
     @Schema(description = "Штраф за неправильный ответ (в баллах)",
-            examples = "3",
+            examples = "2",
             required = true)
     @NotNull(message = "Штраф за ошибку не может быть пустым")
     @Min(value = 0, message = "Штраф не может быть отрицательным")
@@ -65,7 +59,8 @@ public class CreateErrorFindingTaskRequest extends CreateTaskRequest {
     private Integer mistakeCost;
 
     @Schema(description = "Максимальное количество попыток",
-            examples = "2",
+            examples = "3",
+            defaultValue = "1",
             required = true)
     @NotNull(message = "Количество попыток не может быть пустым")
     @Min(value = 1, message = "Количество попыток должно быть не меньше 1")

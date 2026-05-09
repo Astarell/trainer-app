@@ -12,7 +12,7 @@ import ru.mephi.trainer.exception.TaskAttemptNotFoundException;
 import ru.mephi.trainer.repository.TaskAttemptRepository;
 import ru.mephi.trainer.rest.dto.response.AnswerTaskResponse;
 import ru.mephi.trainer.rest.dto.response.ReviewTaskResponse;
-import ru.mephi.trainer.rest.dto.response.test.MessageResponse;
+import ru.mephi.trainer.rest.dto.response.MessageResponse;
 
 import java.time.Instant;
 import java.util.List;
@@ -51,16 +51,16 @@ public class ExpertService {
             throw new BadRequestException("Работа не на проверке");
         }
 
-        double points = 0;
+        int points = 0;
         if (!isCorrect) {
             taskAttempt.setPoints(points);
             taskAttempt.setStatus(AttemptStatus.FAILED);
         }
         else {
-            double attemptsCount = taskAttemptRepository.getAttemptsCount(taskAttempt.getTask().getId(),
+            int attemptsCount = taskAttemptRepository.getAttemptsCount(taskAttempt.getTask().getId(),
                     taskAttempt.getUser().getId());
-            double maxPointsForAttempt = taskAttemptRepository.getMaxPointsForAttempt(taskAttemptId);
-            double mistakeCost = taskAttemptRepository.getMistakeCost(taskAttemptId);
+            int maxPointsForAttempt = taskAttemptRepository.getMaxPointsForAttempt(taskAttemptId);
+            int mistakeCost = taskAttemptRepository.getMistakeCost(taskAttemptId);
 
             points = maxPointsForAttempt;
             if (attemptsCount > 1) {

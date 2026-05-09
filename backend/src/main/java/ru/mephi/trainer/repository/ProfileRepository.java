@@ -16,7 +16,7 @@ public class ProfileRepository implements PanacheRepositoryBase<UserEntity, UUID
         return find("id", userId).firstResult();
     }
 
-    public Double getUserTotalScore(UUID userId) {
+    public Integer getUserTotalScore(UUID userId) {
         String sql = """
                     SELECT COALESCE(SUM(ta.points), 0)
                     FROM task_attempts ta
@@ -27,23 +27,25 @@ public class ProfileRepository implements PanacheRepositoryBase<UserEntity, UUID
                 .setParameter(1, userId)
                 .getSingleResult();
 
-        return ((Number) result).doubleValue();
+        return ((Number) result).intValue();
     }
 
     public List<TrainerProgressPercentResponse> getUserTrainersProgress(UUID userId) {
         String sql = """
-                    SELECT 
-                        t.id,
-                        t.name,
-                        COALESCE(
-                            (SUM(ta.points) * 100) / NULLIF(SUM(CAST(task.config->>'points' AS  DOUBLE PRECISION)), 0), 
-                            0
-                        ) as progressPercent
-                    FROM trainers t
-                    LEFT JOIN tasks_trainers tt ON tt.trainer_id = t.id
-                    LEFT JOIN tasks task ON task.id = tt.task_id
-                    LEFT JOIN task_attempts ta ON ta.task_id = tt.id AND ta.user_id = ?1 AND ta.status = 'COMPLETED'
-                    GROUP BY t.id, t.name
+                SELECT
+                    t.id,
+                    t.name,
+                    COALESCE(
+                        (SUM(ta.points) * 100.0) / NULLIF(SUM(CAST(task.config->>'points' AS INTEGER)), 0),
+                        0
+                    ) as progressPercent
+                FROM trainers t
+                LEFT JOIN tasks_trainers tt ON tt.trainer_id = t.id
+                LEFT JOIN tasks task ON task.id = tt.task_id
+                LEFT JOIN task_attempts ta ON ta.task_id = tt.id
+                    AND ta.user_id = ?1
+                    AND ta.status = 'COMPLETED'
+                GROUP BY t.id, t.name
                 """;
 
         List<Object[]> results = getEntityManager()
@@ -52,11 +54,18 @@ public class ProfileRepository implements PanacheRepositoryBase<UserEntity, UUID
                 .getResultList();
 
         return results.stream()
-                .map(row -> TrainerProgressPercentResponse.builder()
-                        .id((UUID) row[0])
-                        .name((String) row[1])
-                        .progressPercent(((Number) row[2]).doubleValue())
-                        .build())
-                .collect(Collectors.toList());
+                .map(row -> {
+                    double rawProgress = ((Number) row[2]).doubleValue();
+                    double roundedProgress = Math.round(rawProgress * 100.0) / 100.0;
+
+                    roundedProgress = Math.min(roundedProgress, 100.0);
+
+                    return TrainerProgressPercentResponse.builder()
+                            .id((UUID) row[0])
+                            .name((String) row[1])
+                            .progressPercent(roundedProgress)
+                            .build();
+                })
+                .toList();
     }
 }

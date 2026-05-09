@@ -15,7 +15,7 @@ import ru.mephi.trainer.rest.dto.request.SubmitReviewRequest;
 import ru.mephi.trainer.rest.dto.response.AnswerTaskResponse;
 import ru.mephi.trainer.rest.dto.response.ReviewTaskResponse;
 import ru.mephi.trainer.rest.dto.response.ErrorResponse;
-import ru.mephi.trainer.rest.dto.response.test.MessageResponse;
+import ru.mephi.trainer.rest.dto.response.MessageResponse;
 
 import java.util.List;
 import java.util.UUID;

@@ -9,7 +9,7 @@ import ru.mephi.trainer.rest.api.ExpertApi;
 import ru.mephi.trainer.rest.dto.request.SubmitReviewRequest;
 import ru.mephi.trainer.rest.dto.response.AnswerTaskResponse;
 import ru.mephi.trainer.rest.dto.response.ReviewTaskResponse;
-import ru.mephi.trainer.rest.dto.response.test.MessageResponse;
+import ru.mephi.trainer.rest.dto.response.MessageResponse;
 import ru.mephi.trainer.service.ExpertService;
 
 import java.util.List;
@@ -44,6 +44,4 @@ public class ExpertController implements ExpertApi {
         MessageResponse response = expertService.setPointsForTask(taskAttemptId, request.getIsCorrect());
         return RestResponse.ok(response);
     }
-
-
 }

@@ -1,8 +1,8 @@
 package ru.mephi.trainer.rest.controller;
 
+import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jboss.resteasy.reactive.RestResponse;
@@ -23,6 +23,7 @@ public class TrainersController implements TrainersAPI {
     private final TrainerService trainerService;
 
     @Override
+    @PermitAll
     public RestResponse<List<TrainerResponse>> getTrainers() {
         log.info("Get all trainer");
         List<TrainerResponse> response = trainerService.getAllTrainers().stream()
@@ -37,6 +38,7 @@ public class TrainersController implements TrainersAPI {
     }
 
     @Override
+    @PermitAll
     public RestResponse<TrainerInfoResponse> getTrainerInfo(UUID trainerId) {
         log.info("Get trainer: id={}", trainerId);
         TrainerInfoResponse trainerInfoResponse = trainerService.getTrainerInfo(trainerId);
@@ -46,7 +48,6 @@ public class TrainersController implements TrainersAPI {
     @Override
     @RolesAllowed({"expert", "admin"})
     public RestResponse<TrainerInfoResponse> createTrainer(CreateTrainerRequest createTrainerRequest) {
-
         return null;
     }
 }
