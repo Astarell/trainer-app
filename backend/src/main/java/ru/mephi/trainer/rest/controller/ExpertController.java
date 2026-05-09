@@ -40,8 +40,8 @@ public class ExpertController implements ExpertApi {
     @Override
     @RolesAllowed({"expert"})
     public RestResponse<MessageResponse> setPointForTask(UUID taskAttemptId, SubmitReviewRequest request) {
-        log.info("Expert endpoint set task point accessed: id={}, point={}", taskAttemptId, request.getPoints());
-        MessageResponse response = expertService.setPointsForTask(taskAttemptId, request.getPoints());
+        log.info("Expert endpoint set task point accessed: id={}, correct={}", taskAttemptId, request.getIsCorrect());
+        MessageResponse response = expertService.setPointsForTask(taskAttemptId, request.getIsCorrect());
         return RestResponse.ok(response);
     }
 

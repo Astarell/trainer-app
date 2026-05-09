@@ -112,6 +112,42 @@ public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptE
 
         return ((Number) result).doubleValue();
     }
+
+    public Integer getMistakeCost(UUID id) {
+        String sql = """
+                    SELECT CAST(t.config->>'mistake_cost' AS INTEGER)
+                    FROM task_attempts ta
+                    JOIN tasks_trainers tt ON tt.id = ta.task_id
+                    JOIN tasks t ON t.id = tt.task_id
+                    WHERE ta.id = ?1
+                """;
+
+        Object result = getEntityManager()
+                .createNativeQuery(sql)
+                .setParameter(1, id)
+                .getSingleResult();
+
+        return ((Number) result).intValue();
+    }
+
+    public Integer getAttemptsCount(UUID taskId, UUID userId) {
+        String sql = """
+                    SELECT COUNT(ta.id)
+                    FROM task_attempts ta
+                    WHERE ta.task_id = ?1 AND ta.user_id = ?2
+                """;
+
+        Object result = getEntityManager()
+                .createNativeQuery(sql)
+                .setParameter(1, taskId)
+                .setParameter(2, userId)
+                .getSingleResult();
+
+        return ((Number) result).intValue();
+    }
+
+
+
 }
 
 

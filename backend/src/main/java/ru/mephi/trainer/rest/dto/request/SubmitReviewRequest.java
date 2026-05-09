@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SubmitReviewRequest {
-    @NotNull(message = "Баллы обязательны")
-    @Min(value = 0, message = "Баллы не могут быть отрицательными")
-    private Double points;
+    @NotNull(message = "Правильность ответа обязательно")
+    private Boolean isCorrect;
 }

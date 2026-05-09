@@ -39,23 +39,37 @@ public class ExpertService {
     }
 
     @Transactional
-    public MessageResponse setPointsForTask(UUID taskAttemptId, Double points) {
-        log.info("Setting points for attempt: {} with points: {}", taskAttemptId, points);
+    public MessageResponse setPointsForTask(UUID taskAttemptId, Boolean isCorrect) {
+        log.info("Setting points for attempt: {} with points: {}", taskAttemptId, isCorrect);
         TaskAttemptEntity taskAttempt = taskAttemptRepository.findByIdOptional(taskAttemptId)
                 .orElseThrow(() -> {
                     log.warn("Get task for review info failed - id not found: id={}", taskAttemptId);
                     return new TaskAttemptNotFoundException("Ответ для проверки с id " + taskAttemptId + " не найден");
                 });
         if (taskAttempt.getStatus() != AttemptStatus.REVIEW) {
+            log.warn("Get task for review info failed - task not in review: id={}", taskAttemptId);
             throw new BadRequestException("Работа не на проверке");
         }
-        Double maxPoints = taskAttemptRepository.getMaxPointsForAttempt(taskAttemptId);
-        if (points > maxPoints) {
-            log.warn("Point is over max: id={}, point={}", taskAttemptId, points);
-            throw new BadRequestException("Баллы не могут превышать максимум: " + maxPoints);
+
+        double points = 0;
+        if (!isCorrect) {
+            taskAttempt.setPoints(points);
+            taskAttempt.setStatus(AttemptStatus.FAILED);
         }
-        taskAttempt.setPoints(points);
-        taskAttempt.setStatus(AttemptStatus.COMPLETED);
+        else {
+            double attemptsCount = taskAttemptRepository.getAttemptsCount(taskAttempt.getTask().getId(),
+                    taskAttempt.getUser().getId());
+            double maxPointsForAttempt = taskAttemptRepository.getMaxPointsForAttempt(taskAttemptId);
+            double mistakeCost = taskAttemptRepository.getMistakeCost(taskAttemptId);
+
+            points = maxPointsForAttempt;
+            if (attemptsCount > 1) {
+                points -= mistakeCost * (attemptsCount - 1);
+            }
+            taskAttempt.setPoints(points);
+            taskAttempt.setStatus(AttemptStatus.COMPLETED);
+        }
+
         taskAttemptRepository.persist(taskAttempt);
         return MessageResponse.builder()
                 .message("Работа оценена. Поставлено баллов: " + points)
