@@ -3,13 +3,17 @@ package ru.mephi.trainer.rest.controller;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jboss.resteasy.reactive.RestResponse;
+import ru.mephi.trainer.entity.TrainerEntity;
+import ru.mephi.trainer.models.command.CreateTrainerCommand;
 import ru.mephi.trainer.rest.api.TrainersAPI;
 import ru.mephi.trainer.rest.dto.request.trainer.CreateTrainerRequest;
 import ru.mephi.trainer.rest.dto.response.trainer.TrainerInfoResponse;
 import ru.mephi.trainer.rest.dto.response.trainer.TrainerResponse;
+import ru.mephi.trainer.service.CurrentUserService;
 import ru.mephi.trainer.service.TrainerService;
 
 import java.util.List;
@@ -21,6 +25,7 @@ import java.util.UUID;
 public class TrainersController implements TrainersAPI {
 
     private final TrainerService trainerService;
+    private final CurrentUserService currentUserService;
 
     @Override
     @PermitAll
@@ -47,7 +52,20 @@ public class TrainersController implements TrainersAPI {
 
     @Override
     @RolesAllowed({"expert", "admin"})
-    public RestResponse<TrainerInfoResponse> createTrainer(CreateTrainerRequest createTrainerRequest) {
-        return null;
+    public RestResponse<TrainerResponse> createTrainer(CreateTrainerRequest createTrainerRequest) {
+
+        UUID userId = currentUserService.getCurrentUserIdOrThrow();
+        TrainerEntity trainer = trainerService.createTrainer(new CreateTrainerCommand(createTrainerRequest.getName(), userId));
+
+        return RestResponse.status(Response.Status.CREATED, toTrainerResponse(trainer));
+    }
+
+    private TrainerResponse toTrainerResponse(TrainerEntity trainer) {
+        return TrainerResponse.builder()
+                .id(trainer.getId())
+                .name(trainer.getName())
+                .createdAt(trainer.getCreatedAt())
+                .createdBy(trainer.getCreatedBy())
+                .build();
     }
 }

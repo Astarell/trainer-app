@@ -7,7 +7,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.mephi.trainer.entity.UserEntity;
-import ru.mephi.trainer.entity.enums.UserRole;
 import ru.mephi.trainer.exception.EmailAlreadyExistsException;
 import ru.mephi.trainer.exception.FailedLoginException;
 import ru.mephi.trainer.repository.UserRepository;
@@ -39,7 +38,7 @@ public class AuthService {
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
-                .userRole(UserRole.APP_USER)
+                .userRole(request.getUserRole())
                 .passwordHash(passwordHash)
                 .build();
 

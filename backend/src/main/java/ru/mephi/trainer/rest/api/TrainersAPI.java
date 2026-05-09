@@ -103,5 +103,5 @@ public interface TrainersAPI {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<TrainerInfoResponse> createTrainer(@RequestBody @Valid CreateTrainerRequest createTrainerRequest);
+    RestResponse<TrainerResponse> createTrainer(@RequestBody @Valid CreateTrainerRequest createTrainerRequest);
 }

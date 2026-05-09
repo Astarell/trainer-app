@@ -5,6 +5,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jboss.resteasy.reactive.RestResponse;
+import ru.mephi.trainer.entity.TaskEntity;
 import ru.mephi.trainer.mapper.TaskMapper;
 import ru.mephi.trainer.models.command.SaveTaskCommand;
 import ru.mephi.trainer.rest.api.TaskApi;
@@ -35,9 +36,12 @@ public class TaskController implements TaskApi {
         SaveTaskCommand command = taskMapper.toCommand(request);
         UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
 
-        taskService.createTask(command, currentUserId);
+        TaskEntity task = taskService.createTask(command, currentUserId);
 
-        return null;
+        TaskAdminResponse response = new TaskAdminResponse();
+        response.setId(task.getId());
+
+        return RestResponse.status(RestResponse.Status.CREATED, response);
     }
 
     @Override
@@ -48,9 +52,12 @@ public class TaskController implements TaskApi {
         SaveTaskCommand command = taskMapper.toCommand(request);
         UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
 
-        taskService.createTask(command, currentUserId);
+        TaskEntity task = taskService.createTask(command, currentUserId);
 
-        return null;
+        TaskAdminResponse response = new TaskAdminResponse();
+        response.setId(task.getId());
+
+        return RestResponse.status(RestResponse.Status.CREATED, response);
     }
 
     @Override
@@ -61,9 +68,12 @@ public class TaskController implements TaskApi {
         SaveTaskCommand command = taskMapper.toCommand(request);
         UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
 
-        taskService.createTask(command, currentUserId);
+        TaskEntity task = taskService.createTask(command, currentUserId);
 
-        return null;
+        TaskAdminResponse response = new TaskAdminResponse();
+        response.setId(task.getId());
+
+        return RestResponse.status(RestResponse.Status.CREATED, response);
     }
 
     @Override
@@ -74,9 +84,12 @@ public class TaskController implements TaskApi {
         SaveTaskCommand command = taskMapper.toCommand(request);
         UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
 
-        taskService.createTask(command, currentUserId);
+        TaskEntity task = taskService.createTask(command, currentUserId);
 
-        return null;
+        TaskAdminResponse response = new TaskAdminResponse();
+        response.setId(task.getId());
+
+        return RestResponse.status(RestResponse.Status.CREATED, response);
     }
 
     @Override
@@ -85,9 +98,12 @@ public class TaskController implements TaskApi {
         log.info("Updating SINGLE_CHOICE task: id={}", id);
 
         SaveTaskCommand command = taskMapper.toCommand(request);
-        taskService.updateTask(id, command);
+        TaskEntity task = taskService.updateTask(id, command);
 
-        return null;
+        TaskAdminResponse response = new TaskAdminResponse();
+        response.setId(task.getId());
+
+        return RestResponse.ok(response);
     }
 
     @Override
@@ -96,9 +112,12 @@ public class TaskController implements TaskApi {
         log.info("Updating MULTIPLE_CHOICE task: id={}", id);
 
         SaveTaskCommand command = taskMapper.toCommand(request);
-        taskService.updateTask(id, command);
+        TaskEntity task = taskService.updateTask(id, command);
 
-        return null;
+        TaskAdminResponse response = new TaskAdminResponse();
+        response.setId(task.getId());
+
+        return RestResponse.ok(response);
     }
 
     @Override
@@ -107,9 +126,12 @@ public class TaskController implements TaskApi {
         log.info("Updating ERROR_FINDING task: id={}", id);
 
         SaveTaskCommand command = taskMapper.toCommand(request);
-        taskService.updateTask(id, command);
+        TaskEntity task = taskService.updateTask(id, command);
 
-        return null;
+        TaskAdminResponse response = new TaskAdminResponse();
+        response.setId(task.getId());
+
+        return RestResponse.ok(response);
     }
 
     @Override
@@ -118,8 +140,11 @@ public class TaskController implements TaskApi {
         log.info("Updating OPEN_ANSWER task: id={}", id);
 
         SaveTaskCommand command = taskMapper.toCommand(request);
-        taskService.updateTask(id, command);
+        TaskEntity task = taskService.updateTask(id, command);
 
-        return null;
+        TaskAdminResponse response = new TaskAdminResponse();
+        response.setId(task.getId());
+
+        return RestResponse.ok(response);
     }
 }

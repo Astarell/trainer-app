@@ -21,12 +21,10 @@ public class AuthController implements AuthApi {
     @Override
     @PermitAll
     public RestResponse<RegistrationResponse> registerUser(RegistrationRequest registrationRequest) {
-        log.info("Registering user with email: {}", registrationRequest.getEmail());
+        log.info("Registering user");
 
         UserEntity registeredUser = authService.register(registrationRequest);
         String token = authService.generateToken(registeredUser);
-
-        log.info("User registered successfully: {}", registeredUser.getEmail());
 
         return RestResponse.status(RestResponse.Status.CREATED, RegistrationResponse.builder()
                 .message("Вы успешно зарегистрированы")
@@ -37,12 +35,10 @@ public class AuthController implements AuthApi {
     @Override
     @PermitAll
     public RestResponse<LoginResponse> loginUser(LoginRequest loginRequest) {
-        log.info("Login attempt for email: {}", loginRequest.getEmail());
+        log.info("Login attempt");
 
         UserEntity authenticatedUser = authService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
         String token = authService.generateToken(authenticatedUser);
-
-        log.info("User logged in successfully: {}", authenticatedUser.getEmail());
 
         return RestResponse.ok(LoginResponse.builder()
                 .token(token)

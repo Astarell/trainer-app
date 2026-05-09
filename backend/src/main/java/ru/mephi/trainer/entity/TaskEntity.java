@@ -18,7 +18,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "trainers")
+@ToString(exclude = "trainerLinks")
 @Table(name = "tasks", schema = "public")
 public class TaskEntity {
 

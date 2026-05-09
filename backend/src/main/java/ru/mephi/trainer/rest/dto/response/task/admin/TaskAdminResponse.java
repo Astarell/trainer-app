@@ -1,8 +1,10 @@
 package ru.mephi.trainer.rest.dto.response.task.admin;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import ru.mephi.trainer.entity.enums.TaskType;
 import ru.mephi.trainer.rest.dto.response.task.admin.config.ErrorFindingConfigDto;
@@ -16,6 +18,8 @@ import java.util.UUID;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Schema(description = "Ответ с информацией о задании для администратора/эксперта (с правильными ответами)")
 public class TaskAdminResponse {
 
