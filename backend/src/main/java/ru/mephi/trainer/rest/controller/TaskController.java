@@ -31,7 +31,7 @@ public class TaskController implements TaskApi {
         log.info("Creating SINGLE_CHOICE task");
 
         UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
-        SaveTaskCommand command = taskMapper.toCommand(request, currentUserId);
+        SaveTaskCommand command = taskMapper.toCommand(request);
 
         return null;
     }
@@ -41,7 +41,7 @@ public class TaskController implements TaskApi {
         log.info("Creating MULTIPLE_CHOICE task");
 
         UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
-        SaveTaskCommand command = taskMapper.toCommand(request, currentUserId);
+        SaveTaskCommand command = taskMapper.toCommand(request);
 
         return null;
     }
@@ -51,7 +51,7 @@ public class TaskController implements TaskApi {
         log.info("Creating ERROR_FINDING task");
 
         UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
-        SaveTaskCommand command = taskMapper.toCommand(request, currentUserId);
+        SaveTaskCommand command = taskMapper.toCommand(request);
 
         return null;
     }
@@ -61,7 +61,7 @@ public class TaskController implements TaskApi {
         log.info("Creating OPEN_ANSWER task");
 
         UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
-        SaveTaskCommand command = taskMapper.toCommand(request, currentUserId);
+        SaveTaskCommand command = taskMapper.toCommand(request);
 
         return null;
     }
@@ -71,7 +71,7 @@ public class TaskController implements TaskApi {
         log.info("Updating SINGLE_CHOICE task: id={}", id);
 
         UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
-        SaveTaskCommand command = taskMapper.toCommand(request, currentUserId);
+        SaveTaskCommand command = taskMapper.toCommand(request);
 
         return null;
     }
@@ -81,7 +81,7 @@ public class TaskController implements TaskApi {
         log.info("Updating MULTIPLE_CHOICE task: id={}", id);
 
         UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
-        SaveTaskCommand command = taskMapper.toCommand(request, currentUserId);
+        SaveTaskCommand command = taskMapper.toCommand(request);
 
         return null;
     }
@@ -91,7 +91,7 @@ public class TaskController implements TaskApi {
         log.info("Updating ERROR_FINDING task: id={}", id);
 
         UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
-        SaveTaskCommand command = taskMapper.toCommand(request, currentUserId);
+        SaveTaskCommand command = taskMapper.toCommand(request);
 
         return null;
     }
@@ -101,7 +101,7 @@ public class TaskController implements TaskApi {
         log.info("Updating OPEN_ANSWER task: id={}", id);
 
         UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
-        SaveTaskCommand command = taskMapper.toCommand(request, currentUserId);
+        SaveTaskCommand command = taskMapper.toCommand(request);
 
         return null;
     }

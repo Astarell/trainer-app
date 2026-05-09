@@ -44,5 +44,20 @@ public class TaskEntity {
 
     @Builder.Default
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<TaskTrainerEntity> trainers = new HashSet<>();
+    private Set<TaskTrainerEntity> trainerLinks = new HashSet<>();
+
+    public void addTrainerLink(TaskTrainerEntity link) {
+        trainerLinks.add(link);
+        link.setTask(this);
+    }
+
+    public void removeTrainerLink(TaskTrainerEntity link) {
+        trainerLinks.remove(link);
+        link.setTask(null);
+    }
+
+    public void clearTrainerLinks() {
+        trainerLinks.forEach(link -> link.setTask(null));
+        trainerLinks.clear();
+    }
 }

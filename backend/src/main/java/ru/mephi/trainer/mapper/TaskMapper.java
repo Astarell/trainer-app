@@ -14,12 +14,13 @@ import ru.mephi.trainer.rest.dto.request.task.OpenAnswerTaskRequest;
 import ru.mephi.trainer.rest.dto.request.task.SingleChoiceTaskRequest;
 
 import java.util.List;
-import java.util.UUID;
 
 @ApplicationScoped
 public class TaskMapper {
 
-    public SaveTaskCommand toCommand(SingleChoiceTaskRequest request, UUID userId) {
+    // TODO MapStruct?
+
+    public SaveTaskCommand toCommand(SingleChoiceTaskRequest request) {
         SingleChoiceConfig config = SingleChoiceConfig.builder()
                 .question(request.getQuestion())
                 .answerChoices(toAnswerChoices(request.getAnswerChoices()))
@@ -30,13 +31,12 @@ public class TaskMapper {
                 .build();
 
         return SaveTaskCommand.builder()
-                .createdBy(userId)
                 .trainerIds(request.getTrainerIds())
                 .config(config)
                 .build();
     }
 
-    public SaveTaskCommand toCommand(MultipleChoiceTaskRequest request, UUID userId) {
+    public SaveTaskCommand toCommand(MultipleChoiceTaskRequest request) {
         MultipleChoiceConfig config = MultipleChoiceConfig.builder()
                 .question(request.getQuestion())
                 .answerChoices(toAnswerChoices(request.getAnswerChoices()))
@@ -47,13 +47,12 @@ public class TaskMapper {
                 .build();
 
         return SaveTaskCommand.builder()
-                .createdBy(userId)
                 .trainerIds(request.getTrainerIds())
                 .config(config)
                 .build();
     }
 
-    public SaveTaskCommand toCommand(ErrorFindingTaskRequest request, UUID userId) {
+    public SaveTaskCommand toCommand(ErrorFindingTaskRequest request) {
         ErrorFindingConfig config = ErrorFindingConfig.builder()
                 .question(request.getQuestion())
                 .context(request.getContext())
@@ -65,13 +64,12 @@ public class TaskMapper {
                 .build();
 
         return SaveTaskCommand.builder()
-                .createdBy(userId)
                 .trainerIds(request.getTrainerIds())
                 .config(config)
                 .build();
     }
 
-    public SaveTaskCommand toCommand(OpenAnswerTaskRequest request, UUID userId) {
+    public SaveTaskCommand toCommand(OpenAnswerTaskRequest request) {
         OpenAnswerConfig config = OpenAnswerConfig.builder()
                 .question(request.getQuestion())
                 .context(request.getContext())
@@ -82,7 +80,6 @@ public class TaskMapper {
                 .build();
 
         return SaveTaskCommand.builder()
-                .createdBy(userId)
                 .trainerIds(request.getTrainerIds())
                 .config(config)
                 .build();

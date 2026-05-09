@@ -15,6 +15,5 @@ import java.util.UUID;
 @AllArgsConstructor
 public class SaveTaskCommand {
     private TaskConfig config;
-    private UUID createdBy;
     private Set<UUID> trainerIds;
 }
