@@ -4,9 +4,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
-import ru.mephi.trainer.exception.TrainerNotFoundException;
-import ru.mephi.trainer.rest.dto.response.CompletedTaskTrainerPointResponse;
-import ru.mephi.trainer.rest.dto.response.TrainerProgressResponse;
+import ru.mephi.trainer.rest.dto.response.profile.CompletedTaskTrainerPointResponse;
+import ru.mephi.trainer.rest.dto.response.profile.TrainerProgressResponse;
 
 import java.util.List;
 import java.util.Optional;

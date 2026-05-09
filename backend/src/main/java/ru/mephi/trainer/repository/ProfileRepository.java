@@ -3,7 +3,7 @@ package ru.mephi.trainer.repository;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 import ru.mephi.trainer.entity.UserEntity;
-import ru.mephi.trainer.rest.dto.response.TrainerProgressPercentResponse;
+import ru.mephi.trainer.rest.dto.response.profile.TrainerProgressPercentResponse;
 
 import java.util.List;
 import java.util.UUID;

@@ -11,7 +11,7 @@ import ru.mephi.trainer.entity.enums.UserRole;
 import ru.mephi.trainer.exception.EmailAlreadyExistsException;
 import ru.mephi.trainer.exception.FailedLoginException;
 import ru.mephi.trainer.repository.UserRepository;
-import ru.mephi.trainer.rest.dto.request.RegistrationRequest;
+import ru.mephi.trainer.rest.dto.request.auth.RegistrationRequest;
 
 import java.time.Instant;
 import java.util.Optional;

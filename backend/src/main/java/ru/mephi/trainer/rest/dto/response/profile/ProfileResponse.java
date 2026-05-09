@@ -1,4 +1,4 @@
-package ru.mephi.trainer.rest.dto.response;
+package ru.mephi.trainer.rest.dto.response.profile;
 
 import lombok.Data;
 import java.util.List;

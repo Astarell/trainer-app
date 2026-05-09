@@ -6,10 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.jboss.resteasy.reactive.RestResponse;
 import ru.mephi.trainer.entity.UserEntity;
 import ru.mephi.trainer.rest.api.AuthApi;
-import ru.mephi.trainer.rest.dto.request.LoginRequest;
-import ru.mephi.trainer.rest.dto.request.RegistrationRequest;
-import ru.mephi.trainer.rest.dto.response.LoginResponse;
-import ru.mephi.trainer.rest.dto.response.RegistrationResponse;
+import ru.mephi.trainer.rest.dto.request.auth.LoginRequest;
+import ru.mephi.trainer.rest.dto.request.auth.RegistrationRequest;
+import ru.mephi.trainer.rest.dto.response.auth.LoginResponse;
+import ru.mephi.trainer.rest.dto.response.auth.RegistrationResponse;
 import ru.mephi.trainer.service.AuthService;
 
 @Slf4j

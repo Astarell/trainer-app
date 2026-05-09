@@ -11,10 +11,11 @@ import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
-import ru.mephi.trainer.rest.dto.response.ProfileResponse;
-import ru.mephi.trainer.rest.dto.response.TrainerProgressResponse;
+import ru.mephi.trainer.rest.dto.response.profile.ProfileResponse;
+import ru.mephi.trainer.rest.dto.response.profile.TrainerProgressResponse;
 import ru.mephi.trainer.rest.dto.response.ErrorResponse;
 
 import java.util.UUID;
@@ -32,6 +33,7 @@ public interface ProfileApi {
             summary = "Профиль пользователя",
             description = "Получить информацию о пользователе"
     )
+    @SecurityRequirement(name = "bearerAuth")
     @APIResponses(value = {
             @APIResponse(
                     responseCode = "200",
@@ -68,6 +70,7 @@ public interface ProfileApi {
             summary = "Информация о прохождении тренажера",
             description = "Получить информацию о статусе прохождения тренажера"
     )
+    @SecurityRequirement(name = "bearerAuth")
     @APIResponses(value = {
             @APIResponse(
                     responseCode = "200",
