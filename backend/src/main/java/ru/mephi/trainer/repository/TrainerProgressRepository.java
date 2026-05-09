@@ -25,7 +25,7 @@ public class TrainerProgressRepository {
                         t.id as trainer_id,
                         t.name as trainer_name,
                         COALESCE(SUM(ta.points), 0) as earned_score,
-                        COALESCE(SUM(task.max_score), 0) as max_possible_score,
+                        COALESCE(SUM((task.config->>'points')::INTEGER), 0) as max_possible_score,
                         COUNT(DISTINCT ta.id) as tasks_completed,
                         COUNT(DISTINCT task.id) as total_tasks
                     FROM trainers t
