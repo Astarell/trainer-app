@@ -1,5 +1,6 @@
 package ru.mephi.trainer.rest.controller;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,81 +28,97 @@ public class TaskController implements TaskApi {
     private final TaskMapper taskMapper;
 
     @Override
+    @RolesAllowed({"expert", "admin"})
     public RestResponse<TaskAdminResponse> createSingleChoiceTask(SingleChoiceTaskRequest request) {
         log.info("Creating SINGLE_CHOICE task");
 
-        UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
         SaveTaskCommand command = taskMapper.toCommand(request);
+        UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
+
+        taskService.createTask(command, currentUserId);
 
         return null;
     }
 
     @Override
+    @RolesAllowed({"expert", "admin"})
     public RestResponse<TaskAdminResponse> createMultipleChoiceTask(MultipleChoiceTaskRequest request) {
         log.info("Creating MULTIPLE_CHOICE task");
 
-        UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
         SaveTaskCommand command = taskMapper.toCommand(request);
+        UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
+
+        taskService.createTask(command, currentUserId);
 
         return null;
     }
 
     @Override
+    @RolesAllowed({"expert", "admin"})
     public RestResponse<TaskAdminResponse> createErrorFindingTask(ErrorFindingTaskRequest request) {
         log.info("Creating ERROR_FINDING task");
 
-        UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
         SaveTaskCommand command = taskMapper.toCommand(request);
+        UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
+
+        taskService.createTask(command, currentUserId);
 
         return null;
     }
 
     @Override
+    @RolesAllowed({"expert", "admin"})
     public RestResponse<TaskAdminResponse> createOpenAnswerTask(OpenAnswerTaskRequest request) {
         log.info("Creating OPEN_ANSWER task");
 
-        UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
         SaveTaskCommand command = taskMapper.toCommand(request);
+        UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
+
+        taskService.createTask(command, currentUserId);
 
         return null;
     }
 
     @Override
+    @RolesAllowed({"expert", "admin"})
     public RestResponse<TaskAdminResponse> updateSingleChoiceTask(UUID id, SingleChoiceTaskRequest request) {
         log.info("Updating SINGLE_CHOICE task: id={}", id);
 
-        UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
         SaveTaskCommand command = taskMapper.toCommand(request);
+        taskService.updateTask(id, command);
 
         return null;
     }
 
     @Override
+    @RolesAllowed({"expert", "admin"})
     public RestResponse<TaskAdminResponse> updateMultipleChoiceTask(UUID id, MultipleChoiceTaskRequest request) {
         log.info("Updating MULTIPLE_CHOICE task: id={}", id);
 
-        UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
         SaveTaskCommand command = taskMapper.toCommand(request);
+        taskService.updateTask(id, command);
 
         return null;
     }
 
     @Override
+    @RolesAllowed({"expert", "admin"})
     public RestResponse<TaskAdminResponse> updateErrorFindingTask(UUID id, ErrorFindingTaskRequest request) {
         log.info("Updating ERROR_FINDING task: id={}", id);
 
-        UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
         SaveTaskCommand command = taskMapper.toCommand(request);
+        taskService.updateTask(id, command);
 
         return null;
     }
 
     @Override
+    @RolesAllowed({"expert", "admin"})
     public RestResponse<TaskAdminResponse> updateOpenAnswerTask(UUID id, OpenAnswerTaskRequest request) {
         log.info("Updating OPEN_ANSWER task: id={}", id);
 
-        UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
         SaveTaskCommand command = taskMapper.toCommand(request);
+        taskService.updateTask(id, command);
 
         return null;
     }
