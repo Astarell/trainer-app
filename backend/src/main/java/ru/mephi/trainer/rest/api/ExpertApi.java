@@ -31,7 +31,7 @@ public interface ExpertApi {
     @Operation(
             operationId = "getListExamination",
             summary = "Список проверяемых задач",
-            description = "Получить информацию о задачах, которые необходимо провери"
+            description = "Получить информацию о задачах, которые необходимо проверить"
     )
     @SecurityRequirement(name = "bearerAuth")
     @APIResponses(value = {
