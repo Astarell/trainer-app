@@ -45,7 +45,7 @@ public class TaskAttemptService {
             boolean isCorrect;
             int points = 0;
             AttemptStatus status;
-            int mistakeCost = config.get("mistake_cost").asInt();
+            int mistakeCost = config.get("mistakeCost").asInt();
 
             switch (task.getTaskType()) {
                 case OPEN_ANSWER:
@@ -117,7 +117,7 @@ public class TaskAttemptService {
 
     private int getAndCheckAttemptsLimit(UUID taskTrainerId, UUID userId, JsonNode config) {
         int attemptsCount = taskAttemptRepository.getAttemptsCount(taskTrainerId, userId);
-        int maxAttempts = config.get("max_attempts").asInt();
+        int maxAttempts = config.get("maxAttempts").asInt();
 
         if (attemptsCount >= maxAttempts) {
             throw new UserUseMaxAttemptsLimitException("Использованы все попытки (максимум: " + maxAttempts + ")");
@@ -159,7 +159,7 @@ public class TaskAttemptService {
     private boolean checkSingleChoice(String answer, JsonNode config) throws JsonProcessingException {
         JsonNode answerNode = MAPPER.readTree(answer);
         int userChoice = answerNode.asInt();
-        int correctChoice = config.get("expected_ordinal").asInt();
+        int correctChoice = config.get("expectedOrdinal").asInt();
         return userChoice == correctChoice;
     }
 
@@ -168,7 +168,7 @@ public class TaskAttemptService {
         if (!answerNode.isArray()) {
             return false;
         }
-        JsonNode correctAnswers = config.get("correct_options");
+        JsonNode correctAnswers = config.get("expectedOrdinals");
 
         if (answerNode.size() != correctAnswers.size()) {
             return false;

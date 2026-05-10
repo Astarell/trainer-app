@@ -20,12 +20,13 @@ public class TaskRepository implements PanacheRepositoryBase<TaskEntity, UUID> {
                     t.id,
                     t.task_type,
                     t.config->>'question' as question,
-                    t.config->>'answer_choices' as answer_choices,
+                    t.config->>'answerChoices' as answer_choices,
                     CAST(t.config->>'points' AS INTEGER) as points,
-                    CAST(t.config->>'mistake_cost' AS INTEGER) as mistake_cost,
-                    CAST(t.config->>'max_attempts' AS INTEGER) as max_attempts,
+                    CAST(t.config->>'mistakeCost' AS INTEGER) as mistake_cost,
+                    CAST(t.config->>'maxAttempts' AS INTEGER) as max_attempts,
                     ta.points as user_points,
-                    ta.status as attempt_status
+                    ta.status as attempt_status,
+                    t.config->>'context' as context
                 FROM tasks t
                 JOIN tasks_trainers tt ON tt.task_id = t.id
                 LEFT JOIN task_attempts ta ON ta.task_id = tt.id AND ta.user_id = ?1
@@ -49,6 +50,7 @@ public class TaskRepository implements PanacheRepositoryBase<TaskEntity, UUID> {
             response.setPoints(((Number) result[4]).intValue());
             response.setMistakeCost(((Number) result[5]).intValue());
             response.setMaxAttempts(((Number) result[6]).intValue());
+            response.setContext((String) result[9]);
 
             if (result[7] != null) {
                 response.setUserPoints(((Number) result[7]).intValue());

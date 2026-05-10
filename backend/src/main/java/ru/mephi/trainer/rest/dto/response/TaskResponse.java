@@ -18,6 +18,7 @@ public class TaskResponse {
     private TaskType taskType;
     private String question;
     private String answerChoices;
+    private String context;
     private Integer points;
     private Integer mistakeCost;
     private Integer maxAttempts;
