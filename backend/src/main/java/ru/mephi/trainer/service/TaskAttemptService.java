@@ -68,7 +68,7 @@ public class TaskAttemptService {
                     break;
 
                 default:
-                    throw new TypeForTaskIsNotFoundException("Неподдерживаемый тип задачи: " + task.getTaskType());
+                    throw new EntityNotFoundException("Неподдерживаемый тип задачи: " + task.getTaskType());
             }
             points = isCorrect ? config.get("points").asInt() - mistakeCost * count : 0;
             status = isCorrect ? AttemptStatus.COMPLETED : AttemptStatus.FAILED;
@@ -94,7 +94,7 @@ public class TaskAttemptService {
                 .findByTrainerIdAndTaskId(trainerId, taskId)
                 .orElseThrow(() -> {
                     log.warn("Get task in trainer failed - id not found: trainerId={}, taskId={}", trainerId, taskId);
-                    return new TaskForAnswerNotFoundException("Задача для отправки ответа не найдена");
+                    return new EntityNotFoundException("Задача для отправки ответа не найдена");
                 });
     }
 
@@ -111,7 +111,7 @@ public class TaskAttemptService {
         return taskRepository.findByIdOptional(taskId)
                 .orElseThrow(() -> {
                     log.warn("Task not found: taskId={}", taskId);
-                    return new TaskNotFoundException("Задача не найдена");
+                    return new EntityNotFoundException("Задача не найдена");
                 });
     }
 

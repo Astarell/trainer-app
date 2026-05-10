@@ -42,16 +42,7 @@ public class GlobalExceptionHandler {
     }
 
     @ServerExceptionMapper
-    public RestResponse<ErrorResponse> handleTrainerNotFoundException(TrainerNotFoundException e) {
-        ErrorResponse response = ErrorResponse.builder()
-                .message(e.getMessage())
-                .build();
-
-        return RestResponse.status(Response.Status.NOT_FOUND, response);
-    }
-
-    @ServerExceptionMapper
-    public RestResponse<ErrorResponse> handleTaskAttemptNotFoundException(TaskAttemptNotFoundException e) {
+    public RestResponse<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException e) {
         ErrorResponse response = ErrorResponse.builder()
                 .message(e.getMessage())
                 .build();
@@ -68,32 +59,6 @@ public class GlobalExceptionHandler {
         return RestResponse.status(Response.Status.CONFLICT, response);
     }
 
-    @ServerExceptionMapper
-    public RestResponse<ErrorResponse> handleTaskForAnswerNotFound(TaskForAnswerNotFoundException e) {
-        ErrorResponse response = ErrorResponse.builder()
-                .message(e.getMessage())
-                .build();
-
-        return RestResponse.status(Response.Status.NOT_FOUND, response);
-    }
-
-    @ServerExceptionMapper
-    public RestResponse<ErrorResponse> handleTaskNotFound(TaskNotFoundException e) {
-        ErrorResponse response = ErrorResponse.builder()
-                .message(e.getMessage())
-                .build();
-
-        return RestResponse.status(Response.Status.NOT_FOUND, response);
-    }
-
-    @ServerExceptionMapper
-    public RestResponse<ErrorResponse> handleTypeForTaskIsNotFound(TypeForTaskIsNotFoundException e) {
-        ErrorResponse response = ErrorResponse.builder()
-                .message(e.getMessage())
-                .build();
-
-        return RestResponse.status(Response.Status.CONFLICT, response);
-    }
 
     @ServerExceptionMapper
     public RestResponse<ErrorResponse> handleUserUseMaxAttemptsLimitException(UserUseMaxAttemptsLimitException e) {

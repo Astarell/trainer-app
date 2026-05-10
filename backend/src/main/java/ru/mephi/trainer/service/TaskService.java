@@ -8,8 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import ru.mephi.trainer.entity.TaskEntity;
 import ru.mephi.trainer.entity.TaskTrainerEntity;
 import ru.mephi.trainer.entity.TrainerEntity;
-import ru.mephi.trainer.exception.TaskNotFoundException;
-import ru.mephi.trainer.exception.TrainerNotFoundException;
+import ru.mephi.trainer.exception.EntityNotFoundException;
 import ru.mephi.trainer.models.command.SaveTaskCommand;
 import ru.mephi.trainer.models.taskconfig.TaskConfig;
 import ru.mephi.trainer.repository.TaskAttemptRepository;
@@ -61,7 +60,7 @@ public class TaskService {
         validateConfig(command.getConfig());
 
         TaskEntity task = taskRepository.findByIdWithTrainersLinks(taskId)
-                .orElseThrow(() -> new TaskNotFoundException("Task not found: " + taskId));
+                .orElseThrow(() -> new EntityNotFoundException("Task not found: " + taskId));
 
         String configJson = serializeConfig(command.getConfig());
         task.setConfig(configJson);
@@ -84,7 +83,7 @@ public class TaskService {
         Set<UUID> notFound = new HashSet<>(trainerIds);
         notFound.removeAll(trainerMap.keySet());
         if (!notFound.isEmpty()) {
-            throw new TrainerNotFoundException("Тренажёры не найдены: " + notFound);
+            throw new EntityNotFoundException("Тренажёры не найдены: " + notFound);
         }
 
         for (TrainerEntity trainer : trainerMap.values()) {
@@ -123,7 +122,7 @@ public class TaskService {
             Set<UUID> notFound = new HashSet<>(trainersToAdd);
             notFound.removeAll(trainerMap.keySet());
             if (!notFound.isEmpty()) {
-                throw new TrainerNotFoundException("Тренажёры не найдены: " + notFound);
+                throw new EntityNotFoundException("Тренажёры не найдены: " + notFound);
             }
 
             for (TrainerEntity trainer : trainerMap.values()) {
@@ -155,7 +154,7 @@ public class TaskService {
         log.info("Get task with user attempt: userId={}, trainerId={}, taskId={}", userId, trainerId, taskId);
         TaskResponse taskResponse = taskRepository.getTaskWithUserAttempt(userId, trainerId, taskId).orElseThrow(() -> {
             log.warn("Task not found: taskId={}, trainerId={}", taskId, trainerId);
-            return new TaskNotFoundException("Задача не найдена в этом тренажёре");
+            return new EntityNotFoundException("Задача не найдена в этом тренажёре");
         });
         int countAttempts = taskAttemptRepository.getAttemptsCountByTaskAndTrainer(taskId, trainerId, userId);
         taskResponse.setUserAttempts(countAttempts);
