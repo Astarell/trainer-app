@@ -152,6 +152,8 @@ src/main
 │               ├── entity                 # Сущности
 │               │   └── enums              # Перечисления 
 │               ├── exception              # Кастомные исключения 
+│               ├── mapper                 # Мапперы
+│               ├── models                 # Модели
 │               ├── repository             # Panache репозитории для работы с БД
 │               ├── rest
 │               │   ├── api                # OpenAPI интерфейсы
