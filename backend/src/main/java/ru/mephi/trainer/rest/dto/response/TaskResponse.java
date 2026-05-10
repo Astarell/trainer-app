@@ -22,5 +22,6 @@ public class TaskResponse {
     private Integer mistakeCost;
     private Integer maxAttempts;
     private Integer userPoints;
+    private Integer userAttempts;
     private AttemptStatus attemptStatus;
 }

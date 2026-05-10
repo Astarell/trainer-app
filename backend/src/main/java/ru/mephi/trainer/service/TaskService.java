@@ -12,6 +12,7 @@ import ru.mephi.trainer.exception.TaskNotFoundException;
 import ru.mephi.trainer.exception.TrainerNotFoundException;
 import ru.mephi.trainer.models.command.SaveTaskCommand;
 import ru.mephi.trainer.models.taskconfig.TaskConfig;
+import ru.mephi.trainer.repository.TaskAttemptRepository;
 import ru.mephi.trainer.repository.TaskRepository;
 import ru.mephi.trainer.repository.TrainerRepository;
 import ru.mephi.trainer.rest.dto.response.TaskResponse;
@@ -30,6 +31,7 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final TrainerRepository trainerRepository;
+    private final TaskAttemptRepository taskAttemptRepository;
     private final ObjectMapper objectMapper;
 
     @Transactional
@@ -153,8 +155,10 @@ public class TaskService {
         log.info("Get task with user attempt: userId={}, trainerId={}, taskId={}", userId, trainerId, taskId);
         TaskResponse taskResponse = taskRepository.getTaskWithUserAttempt(userId, trainerId, taskId).orElseThrow(() -> {
             log.warn("Task not found: taskId={}, trainerId={}", taskId, trainerId);
-            return new RuntimeException("Задача не найдена в этом тренажёре");
+            return new TaskNotFoundException("Задача не найдена в этом тренажёре");
         });
+        int countAttempts = taskAttemptRepository.getAttemptsCountByTaskAndTrainer(taskId, trainerId, userId);
+        taskResponse.setUserAttempts(countAttempts);
 
         log.info("Task retrieved successfully: {}", taskResponse.getId());
         return taskResponse;
