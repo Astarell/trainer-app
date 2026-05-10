@@ -21,9 +21,9 @@ public class TaskRepository implements PanacheRepositoryBase<TaskEntity, UUID> {
                     t.task_type,
                     t.config->>'question' as question,
                     t.config->>'answerChoices' as answer_choices,
-                    CAST(t.config->>'points' AS INTEGER) as points,
-                    CAST(t.config->>'mistakeCost' AS INTEGER) as mistake_cost,
-                    CAST(t.config->>'maxAttempts' AS INTEGER) as max_attempts,
+                    COALESCE(CAST(t.config->>'points' AS INTEGER), 0) as points,
+                    COALESCE(CAST(t.config->>'mistakeCost' AS INTEGER), 0) as mistake_cost,
+                    COALESCE(CAST(t.config->>'maxAttempts' AS INTEGER), 0) as max_attempts,
                     ta.points as user_points,
                     ta.status as attempt_status,
                     t.config->>'context' as context
