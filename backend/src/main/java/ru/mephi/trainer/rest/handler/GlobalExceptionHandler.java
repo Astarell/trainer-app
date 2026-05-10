@@ -69,7 +69,7 @@ public class GlobalExceptionHandler {
     }
 
     @ServerExceptionMapper
-    public RestResponse<ErrorResponse> handleTaskForAnswerNotFound(TaskForAnswerNotFound e) {
+    public RestResponse<ErrorResponse> handleTaskForAnswerNotFound(TaskForAnswerNotFoundException e) {
         ErrorResponse response = ErrorResponse.builder()
                 .message(e.getMessage())
                 .build();
@@ -78,7 +78,7 @@ public class GlobalExceptionHandler {
     }
 
     @ServerExceptionMapper
-    public RestResponse<ErrorResponse> handleTaskNotFound(TaskNotFound e) {
+    public RestResponse<ErrorResponse> handleTaskNotFound(TaskNotFoundException e) {
         ErrorResponse response = ErrorResponse.builder()
                 .message(e.getMessage())
                 .build();
@@ -87,7 +87,16 @@ public class GlobalExceptionHandler {
     }
 
     @ServerExceptionMapper
-    public RestResponse<ErrorResponse> handleTypeForTaskIsNotFound(TypeForTaskIsNotFound e) {
+    public RestResponse<ErrorResponse> handleTypeForTaskIsNotFound(TypeForTaskIsNotFoundException e) {
+        ErrorResponse response = ErrorResponse.builder()
+                .message(e.getMessage())
+                .build();
+
+        return RestResponse.status(Response.Status.NOT_FOUND, response);
+    }
+
+    @ServerExceptionMapper
+    public RestResponse<ErrorResponse> handleUserUseMaxAttemptsLimitException(UserUseMaxAttemptsLimitException e) {
         ErrorResponse response = ErrorResponse.builder()
                 .message(e.getMessage())
                 .build();

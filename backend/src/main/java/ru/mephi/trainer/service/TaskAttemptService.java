@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.mephi.trainer.entity.*;
 import ru.mephi.trainer.entity.enums.AttemptStatus;
-import ru.mephi.trainer.entity.enums.TaskType;
 import ru.mephi.trainer.exception.*;
 import ru.mephi.trainer.repository.ProfileRepository;
 import ru.mephi.trainer.repository.TaskAttemptRepository;
@@ -18,7 +17,6 @@ import ru.mephi.trainer.repository.TaskTrainerRepository;
 import ru.mephi.trainer.rest.dto.response.test.MessageResponse;
 
 import java.time.Instant;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -70,7 +68,7 @@ public class TaskAttemptService {
                     break;
 
                 default:
-                    throw new TypeForTaskIsNotFound("Неподдерживаемый тип задачи: " + task.getTaskType());
+                    throw new TypeForTaskIsNotFoundException("Неподдерживаемый тип задачи: " + task.getTaskType());
             }
             points = isCorrect ? config.get("points").asInt() - mistakeCost * count : 0;
             status = isCorrect ? AttemptStatus.COMPLETED : AttemptStatus.FAILED;
@@ -96,7 +94,7 @@ public class TaskAttemptService {
                 .findByTrainerIdAndTaskId(trainerId, taskId)
                 .orElseThrow(() -> {
                     log.warn("Get task in trainer failed - id not found: trainerId={}, taskId={}", trainerId, taskId);
-                    return new TaskForAnswerNotFound("Задача для отправки ответа не найдена");
+                    return new TaskForAnswerNotFoundException("Задача для отправки ответа не найдена");
                 });
     }
 
@@ -113,7 +111,7 @@ public class TaskAttemptService {
         return taskRepository.findByIdOptional(taskId)
                 .orElseThrow(() -> {
                     log.warn("Task not found: taskId={}", taskId);
-                    return new TaskNotFound("Задача не найдена");
+                    return new TaskNotFoundException("Задача не найдена");
                 });
     }
 
@@ -122,7 +120,7 @@ public class TaskAttemptService {
         int maxAttempts = config.get("max_attempts").asInt();
 
         if (attemptsCount >= maxAttempts) {
-            throw new RuntimeException("Использованы все попытки (максимум: " + maxAttempts + ")");
+            throw new UserUseMaxAttemptsLimitException("Использованы все попытки (максимум: " + maxAttempts + ")");
         }
         return attemptsCount;
     }
