@@ -2,10 +2,12 @@ package ru.mephi.trainer.rest.controller;
 
 import io.quarkus.security.Authenticated;
 import jakarta.enterprise.context.ApplicationScoped;
-
+import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jboss.resteasy.reactive.RestResponse;
+import ru.mephi.trainer.entity.TrainerEntity;
+import ru.mephi.trainer.models.command.SaveTrainerCommand;
 import ru.mephi.trainer.rest.api.TrainersAPI;
 import ru.mephi.trainer.rest.dto.request.AnswerRequest;
 import ru.mephi.trainer.rest.dto.response.TaskResponse;
@@ -29,8 +31,10 @@ public class TrainersController implements TrainersAPI {
     private final TaskAttemptService taskAttemptService;
     private final CurrentUserService currentUserService;
     private final TaskService taskService;
+    private final CurrentUserService currentUserService;
 
     @Override
+    @PermitAll
     public RestResponse<List<TrainerResponse>> getTrainers() {
         log.info("Get all trainer");
         List<TrainerResponse> response = trainerService.getAllTrainers().stream()
@@ -45,10 +49,32 @@ public class TrainersController implements TrainersAPI {
     }
 
     @Override
+    @PermitAll
     public RestResponse<TrainerInfoResponse> getTrainerInfo(UUID trainerId) {
         log.info("Get trainer: id={}", trainerId);
         TrainerInfoResponse trainerInfoResponse = trainerService.getTrainerInfo(trainerId);
         return RestResponse.ok(trainerInfoResponse);
+    }
+
+    @Override
+    @RolesAllowed({"expert", "admin"})
+    public RestResponse<TrainerResponse> createTrainer(CreateTrainerRequest createTrainerRequest) {
+        UUID userId = currentUserService.getCurrentUserIdOrThrow();
+        log.info("Creating trainer: {} userId: {}", createTrainerRequest.getName(), userId);
+
+        SaveTrainerCommand command = new SaveTrainerCommand(createTrainerRequest.getName());
+        TrainerEntity trainer = trainerService.createTrainer(command, userId);
+
+        return RestResponse.status(Response.Status.CREATED, toTrainerResponse(trainer));
+    }
+
+    private TrainerResponse toTrainerResponse(TrainerEntity trainer) {
+        return TrainerResponse.builder()
+                .id(trainer.getId())
+                .name(trainer.getName())
+                .createdAt(trainer.getCreatedAt())
+                .createdBy(trainer.getCreatedBy())
+                .build();
     }
 
     @Override

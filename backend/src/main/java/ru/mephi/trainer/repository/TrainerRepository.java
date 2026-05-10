@@ -5,7 +5,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import ru.mephi.trainer.entity.TrainerEntity;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @ApplicationScoped
@@ -26,7 +26,10 @@ public class TrainerRepository implements PanacheRepositoryBase<TrainerEntity, U
         return (result != null) ? ((Number) result).intValue() : 0;
     }
 
+    public List<TrainerEntity> findByIds(Set<UUID> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return List.of();
+        }
+        return list("id in ?1", ids);
+    }
 }
-
-
-

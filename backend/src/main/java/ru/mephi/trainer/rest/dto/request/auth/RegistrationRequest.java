@@ -1,4 +1,4 @@
-package ru.mephi.trainer.rest.dto.request;
+package ru.mephi.trainer.rest.dto.request.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import ru.mephi.trainer.entity.enums.UserRole;
 
 @Data
 @NoArgsConstructor
@@ -48,4 +49,11 @@ public class RegistrationRequest {
     )
     @NotBlank(message = "Фамилия обязательна")
     private String lastName;
+
+    @Schema(
+            description = "Роль пользователя",
+            examples = "APP_USER",
+            required = true
+    )
+    private UserRole userRole;
 }

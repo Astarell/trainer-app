@@ -13,17 +13,16 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptEntity, UUID> {
 
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
 
     public List<ReviewTaskResponse> getReviewTasksWithDetails() {
         String sql = """
-                    SELECT 
+                    SELECT
                         ta.id as attempt_id,
                         t.config->>'question' as task_name,
                         tr.name as trainer_name,
@@ -52,12 +51,12 @@ public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptE
                         .studentEmail((String) row[4])
                         .createdAt((OffsetDateTime) row[5])
                         .build())
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public Optional<AnswerTaskResponse> getAnswerTask(UUID id) {
         String sql = """
-                    SELECT 
+                    SELECT
                         ta.id as attempt_id,
                         t.config->>'question' as task_name,
                         tr.name as trainer_name,
@@ -65,7 +64,7 @@ public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptE
                         u.email as student_email,
                         ta.user_answer as answer,
                         ta.points as points,
-                        CAST(t.config->>'points' AS DOUBLE PRECISION) as max_points,
+                        CAST(t.config->>'points' AS INTEGER) as max_points,
                         ta.created_at
                     FROM task_attempts ta
                     JOIN tasks_trainers tt ON tt.id = ta.task_id
@@ -98,7 +97,7 @@ public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptE
 
     public Integer getMaxPointsForAttempt(UUID id) {
         String sql = """
-                    SELECT CAST(t.config->>'points' AS DOUBLE PRECISION)
+                    SELECT CAST(t.config->>'points' AS INTEGER)
                     FROM task_attempts ta
                     JOIN tasks_trainers tt ON tt.id = ta.task_id
                     JOIN tasks t ON t.id = tt.task_id
@@ -115,7 +114,7 @@ public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptE
 
     public Integer getMistakeCost(UUID id) {
         String sql = """
-                    SELECT CAST(t.config->>'mistake_cost' AS INTEGER)
+                    SELECT CAST(t.config->>'mistakeCost' AS INTEGER)
                     FROM task_attempts ta
                     JOIN tasks_trainers tt ON tt.id = ta.task_id
                     JOIN tasks t ON t.id = tt.task_id
@@ -152,5 +151,3 @@ public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptE
     }
 
 }
-
-

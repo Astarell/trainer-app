@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.mephi.trainer.exception.TrainerNotFoundException;
 import ru.mephi.trainer.repository.TrainerProgressRepository;
-import ru.mephi.trainer.rest.dto.response.CompletedTaskTrainerPointResponse;
-import ru.mephi.trainer.rest.dto.response.TrainerProgressResponse;
+import ru.mephi.trainer.rest.dto.response.profile.CompletedTaskTrainerPointResponse;
+import ru.mephi.trainer.rest.dto.response.profile.TrainerProgressResponse;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package ru.mephi.trainer.rest.dto.response;
+package ru.mephi.trainer.rest.dto.response.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

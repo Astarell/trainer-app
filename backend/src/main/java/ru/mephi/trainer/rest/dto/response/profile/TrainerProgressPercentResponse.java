@@ -1,4 +1,4 @@
-package ru.mephi.trainer.rest.dto.response;
+package ru.mephi.trainer.rest.dto.response.profile;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,8 +11,8 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompletedTaskTrainerPointResponse {
+public class TrainerProgressPercentResponse {
     private UUID id;
     private String name;
-    private Integer point;
+    private Integer progressPercent;
 }

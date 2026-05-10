@@ -7,11 +7,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.mephi.trainer.entity.UserEntity;
-import ru.mephi.trainer.entity.enums.UserRole;
 import ru.mephi.trainer.exception.EmailAlreadyExistsException;
 import ru.mephi.trainer.exception.FailedLoginException;
 import ru.mephi.trainer.repository.UserRepository;
-import ru.mephi.trainer.rest.dto.request.RegistrationRequest;
+import ru.mephi.trainer.rest.dto.request.auth.RegistrationRequest;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -26,10 +25,10 @@ public class AuthService {
 
     @Transactional
     public UserEntity register(RegistrationRequest request) {
-        log.info("Registering new user with email: {}", request.getEmail());
+        log.info("Registering new user");
 
         if (userRepository.existsByEmail(request.getEmail())) {
-            log.warn("Registration failed - email already exists: {}", request.getEmail());
+            log.warn("Registration failed - email already exists");
             throw new EmailAlreadyExistsException("User with this email already exists");
         }
 
@@ -39,12 +38,11 @@ public class AuthService {
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
-                .userRole(UserRole.APP_USER)
+                .userRole(request.getUserRole())
                 .passwordHash(passwordHash)
                 .build();
 
         userRepository.persist(user);
-        log.info("User registered successfully with id: {}", user.getId());
 
         return user;
     }
@@ -53,7 +51,7 @@ public class AuthService {
         Optional<UserEntity> user = userRepository.findByEmail(email);
 
         if (user.isEmpty() || !BcryptUtil.matches(password, user.get().getPasswordHash())) {
-            log.warn("Failed login attempt for email: {}", email);
+            log.warn("Failed login attempt");
             throw new FailedLoginException("Invalid email or password");
         }
         return user.get();
