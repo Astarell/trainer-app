@@ -192,7 +192,7 @@ curl -X 'POST' \
   -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer {token}' \
   -d '{
-  "userAnswer": "{\"answer\": 1}"
+  "userAnswer": "1"
 }'
 ```
 
@@ -203,7 +203,7 @@ curl -X 'POST' \
   -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer {token}' \
   -d '{
-  "userAnswer": "{\"answer\": [1, 2]}"
+  "userAnswer": "[1, 2]"
 }'
 ```
 
@@ -214,7 +214,7 @@ curl -X 'POST' \
   -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer {token}' \
   -d '{
-  "userAnswer": "{\"answer\": \"Текст ответа\"}"
+  "userAnswer": "Текст ответа"
 }'
 ```
 
