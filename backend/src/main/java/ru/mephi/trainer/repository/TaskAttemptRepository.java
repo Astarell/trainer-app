@@ -6,8 +6,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import ru.mephi.trainer.entity.TaskAttemptEntity;
-import ru.mephi.trainer.rest.dto.response.AnswerTaskResponse;
-import ru.mephi.trainer.rest.dto.response.ReviewTaskResponse;
+import ru.mephi.trainer.rest.dto.response.task.expert.AnswerTaskResponse;
+import ru.mephi.trainer.rest.dto.response.task.expert.ReviewTaskResponse;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -144,4 +144,28 @@ public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptE
 
         return ((Number) result).intValue();
     }
+
+    public Integer getAttemptsCountByTaskAndTrainer(UUID taskId, UUID trainerId, UUID userId) {
+        String sql = """
+                    SELECT COUNT(ta.id)
+                    FROM task_attempts ta
+                    JOIN tasks_trainers tt ON tt.id = ta.task_id
+                    WHERE tt.task_id = ?1 AND ta.user_id = ?2 AND tt.trainer_id = ?3
+                """;
+
+        Object result = getEntityManager()
+                .createNativeQuery(sql)
+                .setParameter(1, taskId)
+                .setParameter(2, userId)
+                .setParameter(3, trainerId)
+                .getSingleResult();
+
+        return ((Number) result).intValue();
+    }
+
+    public Optional<TaskAttemptEntity> findLastAttempt(UUID userId, UUID taskTrainerId) {
+        return find("user.id = ?1 and task.id = ?2 order by createdAt desc", userId, taskTrainerId)
+                .firstResultOptional();
+    }
+
 }

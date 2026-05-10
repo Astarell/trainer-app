@@ -5,8 +5,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.mephi.trainer.entity.TrainerEntity;
+import ru.mephi.trainer.exception.EntityNotFoundException;
 import ru.mephi.trainer.exception.InvalidCommandException;
-import ru.mephi.trainer.exception.TrainerNotFoundException;
 import ru.mephi.trainer.models.command.SaveTrainerCommand;
 import ru.mephi.trainer.repository.TrainerRepository;
 import ru.mephi.trainer.rest.dto.response.trainer.TrainerInfoResponse;
@@ -31,7 +31,7 @@ public class TrainerService {
         TrainerEntity entity = trainerRepository.findByIdOptional(id)
                 .orElseThrow(() -> {
                     log.warn("Get trainer info failed - id not found: id={}", id);
-                    return new TrainerNotFoundException("Тренажёр с id " + id + " не найден");
+                    return new EntityNotFoundException("Тренажёр с id " + id + " не найден");
                 });
 
         Integer totalTasks = trainerRepository.getTotalTasks(id);

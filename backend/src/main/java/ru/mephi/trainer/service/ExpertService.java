@@ -8,11 +8,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.mephi.trainer.entity.TaskAttemptEntity;
 import ru.mephi.trainer.entity.enums.AttemptStatus;
-import ru.mephi.trainer.exception.TaskAttemptNotFoundException;
+import ru.mephi.trainer.exception.EntityNotFoundException;
 import ru.mephi.trainer.repository.TaskAttemptRepository;
-import ru.mephi.trainer.rest.dto.response.AnswerTaskResponse;
+import ru.mephi.trainer.rest.dto.response.task.expert.AnswerTaskResponse;
 import ru.mephi.trainer.rest.dto.response.MessageResponse;
-import ru.mephi.trainer.rest.dto.response.ReviewTaskResponse;
+import ru.mephi.trainer.rest.dto.response.task.expert.ReviewTaskResponse;
 
 import java.time.Instant;
 import java.util.List;
@@ -34,7 +34,7 @@ public class ExpertService {
         return taskAttemptRepository.getAnswerTask(taskAttemptId)
                 .orElseThrow(() -> {
                     log.warn("Get task for review info failed - id not found: id={}", taskAttemptId);
-                    return new TaskAttemptNotFoundException("Ответ для проверки с id " + taskAttemptId + " не найден");
+                    return new EntityNotFoundException("Ответ для проверки с id " + taskAttemptId + " не найден");
                 });
     }
 
@@ -44,7 +44,7 @@ public class ExpertService {
         TaskAttemptEntity taskAttempt = taskAttemptRepository.findByIdOptional(taskAttemptId)
                 .orElseThrow(() -> {
                     log.warn("Get task for review info failed - id not found: id={}", taskAttemptId);
-                    return new TaskAttemptNotFoundException("Ответ для проверки с id " + taskAttemptId + " не найден");
+                    return new EntityNotFoundException("Ответ для проверки с id " + taskAttemptId + " не найден");
                 });
         if (taskAttempt.getStatus() != AttemptStatus.REVIEW) {
             log.warn("Get task for review info failed - task not in review: id={}", taskAttemptId);

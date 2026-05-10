@@ -17,10 +17,14 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
+import ru.mephi.trainer.rest.dto.request.AnswerRequest;
 import ru.mephi.trainer.rest.dto.request.trainer.CreateTrainerRequest;
 import ru.mephi.trainer.rest.dto.response.ErrorResponse;
+import ru.mephi.trainer.rest.dto.response.MessageResponse;
+import ru.mephi.trainer.rest.dto.response.task.user.TaskResponse;
 import ru.mephi.trainer.rest.dto.response.trainer.TrainerInfoResponse;
 import ru.mephi.trainer.rest.dto.response.trainer.TrainerResponse;
+
 
 import java.util.List;
 import java.util.UUID;
@@ -104,4 +108,79 @@ public interface TrainersAPI {
             )
     })
     RestResponse<TrainerResponse> createTrainer(@RequestBody @Valid CreateTrainerRequest createTrainerRequest);
+    @GET
+    @Path("/{trainerId}/tasks/{taskId}")
+    @Operation(
+            operationId = "getTaskWithAttempt",
+            summary = "Информация о задаче",
+            description = "Получить информацию о задаче с учётом последней попытки пользователя"
+    )
+    @APIResponses(value = {
+            @APIResponse(
+                    responseCode = "200",
+                    description = "Данные о задаче успешно получены",
+                    content = @Content(schema = @Schema(implementation = TaskResponse.class))
+            ),
+            @APIResponse(
+                    responseCode = "401",
+                    description = "Пользователь не авторизован",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @APIResponse(
+                    responseCode = "403",
+                    description = "Нет прав",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @APIResponse(
+                    responseCode = "404",
+                    description = "Задача не найдена",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @APIResponse(
+                    responseCode = "500",
+                    description = "Неожиданная ошибка",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            )
+    })
+    RestResponse<TaskResponse> getTaskWithAttempt(
+            @PathParam("trainerId") UUID trainerId,
+            @PathParam("taskId") UUID taskId
+    );
+
+    @POST
+    @Path("/{id}/tasks/{task_id}/submit")
+    @Operation(
+            operationId = "insertTaskAttempt",
+            summary = "Отправить ответ на задание",
+            description = "Получить информацию о тренажере"
+    )
+    @APIResponses(value = {
+            @APIResponse(
+                    responseCode = "200",
+                    description = "Ответ отправлен",
+                    content = @Content(schema = @Schema(implementation = MessageResponse.class))
+            ),
+            @APIResponse(
+                    responseCode = "401",
+                    description = "Пользователь не авторизован",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @APIResponse(
+                    responseCode = "404",
+                    description = "Ошибка при отправке ответа",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @APIResponse(
+                    responseCode = "409",
+                    description = "Неверный ответ",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @APIResponse(
+                    responseCode = "500",
+                    description = "Неожиданная ошибка",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            )
+    })
+    RestResponse<MessageResponse> insertTaskAttempt(@PathParam("id") UUID trainerId, @PathParam("task_id") UUID taskId, @Valid AnswerRequest request);
+
 }
