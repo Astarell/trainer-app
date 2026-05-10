@@ -1,11 +1,11 @@
-package ru.mephi.trainer.rest.dto.response.task.admin.config;
+package ru.mephi.trainer.rest.dto.request.task;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
-import ru.mephi.trainer.rest.dto.request.task.AnswerChoiceDto;
+import ru.mephi.trainer.entity.enums.TaskType;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Конфигурация задания на поиск ошибок")
-public class ErrorFindingConfigDto implements TaskConfigDto {
+@Schema(title = "ErrorFindingConfigRequestDto", description = "Конфигурация задания на поиск ошибок")
+public class ErrorFindingConfigRequestDto implements TaskConfigRequestDto {
 
     @Schema(description = "Текст вопроса",
             examples = "Найдите недостатки или риски валидации.")
@@ -48,4 +48,9 @@ public class ErrorFindingConfigDto implements TaskConfigDto {
             minimum = "1",
             maximum = "10")
     private Integer maxAttempts;
+
+    @Override
+    public TaskType getTaskType() {
+        return TaskType.ERROR_FINDING;
+    }
 }

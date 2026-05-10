@@ -1,17 +1,18 @@
-package ru.mephi.trainer.rest.dto.response.task.admin.config;
+package ru.mephi.trainer.rest.dto.request.task;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import ru.mephi.trainer.entity.enums.TaskType;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Конфигурация задания с открытым ответом")
-public class OpenAnswerConfigDto implements TaskConfigDto {
+@Schema(title = "OpenAnswerConfigRequestDto", description = "Конфигурация задания с открытым ответом")
+public class OpenAnswerConfigRequestDto implements TaskConfigRequestDto {
 
     @Schema(description = "Текст вопроса",
             examples = "Как вы поступите и какие аргументы приведёте заказчику?")
@@ -42,4 +43,9 @@ public class OpenAnswerConfigDto implements TaskConfigDto {
             minimum = "1",
             maximum = "10")
     private Integer maxAttempts;
+
+    @Override
+    public TaskType getTaskType() {
+        return TaskType.OPEN_ANSWER;
+    }
 }

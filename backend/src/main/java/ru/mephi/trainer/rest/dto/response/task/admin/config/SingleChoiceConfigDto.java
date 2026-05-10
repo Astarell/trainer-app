@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "Конфигурация задания с одиночным выбором")
-public class SingleChoiceConfigDto {
+public class SingleChoiceConfigDto implements TaskConfigDto {
 
     @Schema(description = "Текст вопроса",
             examples = "Какой тип требования описывает, что система должна делать?")

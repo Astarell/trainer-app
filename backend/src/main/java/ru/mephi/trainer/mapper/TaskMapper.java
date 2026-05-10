@@ -7,11 +7,14 @@ import ru.mephi.trainer.models.taskconfig.ErrorFindingConfig;
 import ru.mephi.trainer.models.taskconfig.MultipleChoiceConfig;
 import ru.mephi.trainer.models.taskconfig.OpenAnswerConfig;
 import ru.mephi.trainer.models.taskconfig.SingleChoiceConfig;
+import ru.mephi.trainer.models.taskconfig.TaskConfig;
 import ru.mephi.trainer.rest.dto.request.task.AnswerChoiceDto;
-import ru.mephi.trainer.rest.dto.request.task.ErrorFindingTaskRequest;
-import ru.mephi.trainer.rest.dto.request.task.MultipleChoiceTaskRequest;
-import ru.mephi.trainer.rest.dto.request.task.OpenAnswerTaskRequest;
-import ru.mephi.trainer.rest.dto.request.task.SingleChoiceTaskRequest;
+import ru.mephi.trainer.rest.dto.request.task.ErrorFindingConfigRequestDto;
+import ru.mephi.trainer.rest.dto.request.task.MultipleChoiceConfigRequestDto;
+import ru.mephi.trainer.rest.dto.request.task.OpenAnswerConfigRequestDto;
+import ru.mephi.trainer.rest.dto.request.task.SaveTaskRequest;
+import ru.mephi.trainer.rest.dto.request.task.SingleChoiceConfigRequestDto;
+import ru.mephi.trainer.rest.dto.request.task.TaskConfigRequestDto;
 
 import java.util.List;
 
@@ -20,68 +23,73 @@ public class TaskMapper {
 
     // TODO MapStruct?
 
-    public SaveTaskCommand toCommand(SingleChoiceTaskRequest request) {
-        SingleChoiceConfig config = SingleChoiceConfig.builder()
-                .question(request.getQuestion())
-                .answerChoices(toAnswerChoices(request.getAnswerChoices()))
-                .expectedOrdinal(request.getExpectedOrdinal())
-                .points(request.getPoints())
-                .mistakeCost(request.getMistakeCost())
-                .maxAttempts(request.getMaxAttempts())
-                .build();
+    public SaveTaskCommand toCommand(SaveTaskRequest request) {
+        if (request == null) {
+            return null;
+        }
 
         return SaveTaskCommand.builder()
                 .trainerIds(request.getTrainerIds())
-                .config(config)
+                .config(toTaskConfig(request.getConfig()))
                 .build();
     }
 
-    public SaveTaskCommand toCommand(MultipleChoiceTaskRequest request) {
-        MultipleChoiceConfig config = MultipleChoiceConfig.builder()
-                .question(request.getQuestion())
-                .answerChoices(toAnswerChoices(request.getAnswerChoices()))
-                .expectedOrdinals(request.getExpectedOrdinals())
-                .points(request.getPoints())
-                .mistakeCost(request.getMistakeCost())
-                .maxAttempts(request.getMaxAttempts())
-                .build();
+    private TaskConfig toTaskConfig(TaskConfigRequestDto dto) {
+        if (dto == null) {
+            return null;
+        }
 
-        return SaveTaskCommand.builder()
-                .trainerIds(request.getTrainerIds())
-                .config(config)
+        return switch (dto) {
+            case SingleChoiceConfigRequestDto sc -> mapSingleChoiceConfig(sc);
+            case MultipleChoiceConfigRequestDto mc -> mapMultipleChoiceConfig(mc);
+            case ErrorFindingConfigRequestDto ef -> mapErrorFindingConfig(ef);
+            case OpenAnswerConfigRequestDto oa -> mapOpenAnswerConfig(oa);
+            default -> throw new IllegalArgumentException("Unsupported config type: " + dto.getClass().getSimpleName());
+        };
+    }
+
+    private SingleChoiceConfig mapSingleChoiceConfig(SingleChoiceConfigRequestDto dto) {
+        return SingleChoiceConfig.builder()
+                .question(dto.getQuestion())
+                .answerChoices(toAnswerChoices(dto.getAnswerChoices()))
+                .expectedOrdinal(dto.getExpectedOrdinal())
+                .points(dto.getPoints())
+                .mistakeCost(dto.getMistakeCost())
+                .maxAttempts(dto.getMaxAttempts())
                 .build();
     }
 
-    public SaveTaskCommand toCommand(ErrorFindingTaskRequest request) {
-        ErrorFindingConfig config = ErrorFindingConfig.builder()
-                .question(request.getQuestion())
-                .context(request.getContext())
-                .answerChoices(toAnswerChoices(request.getAnswerChoices()))
-                .expectedOrdinals(request.getExpectedOrdinals())
-                .points(request.getPoints())
-                .mistakeCost(request.getMistakeCost())
-                .maxAttempts(request.getMaxAttempts())
-                .build();
-
-        return SaveTaskCommand.builder()
-                .trainerIds(request.getTrainerIds())
-                .config(config)
+    private MultipleChoiceConfig mapMultipleChoiceConfig(MultipleChoiceConfigRequestDto dto) {
+        return MultipleChoiceConfig.builder()
+                .question(dto.getQuestion())
+                .answerChoices(toAnswerChoices(dto.getAnswerChoices()))
+                .expectedOrdinals(dto.getExpectedOrdinals())
+                .points(dto.getPoints())
+                .mistakeCost(dto.getMistakeCost())
+                .maxAttempts(dto.getMaxAttempts())
                 .build();
     }
 
-    public SaveTaskCommand toCommand(OpenAnswerTaskRequest request) {
-        OpenAnswerConfig config = OpenAnswerConfig.builder()
-                .question(request.getQuestion())
-                .context(request.getContext())
-                .expectedAnswer(request.getExpectedAnswer())
-                .points(request.getPoints())
-                .mistakeCost(request.getMistakeCost())
-                .maxAttempts(request.getMaxAttempts())
+    private ErrorFindingConfig mapErrorFindingConfig(ErrorFindingConfigRequestDto dto) {
+        return ErrorFindingConfig.builder()
+                .question(dto.getQuestion())
+                .context(dto.getContext())
+                .answerChoices(toAnswerChoices(dto.getAnswerChoices()))
+                .expectedOrdinals(dto.getExpectedOrdinals())
+                .points(dto.getPoints())
+                .mistakeCost(dto.getMistakeCost())
+                .maxAttempts(dto.getMaxAttempts())
                 .build();
+    }
 
-        return SaveTaskCommand.builder()
-                .trainerIds(request.getTrainerIds())
-                .config(config)
+    private OpenAnswerConfig mapOpenAnswerConfig(OpenAnswerConfigRequestDto dto) {
+        return OpenAnswerConfig.builder()
+                .question(dto.getQuestion())
+                .context(dto.getContext())
+                .expectedAnswer(dto.getExpectedAnswer())
+                .points(dto.getPoints())
+                .mistakeCost(dto.getMistakeCost())
+                .maxAttempts(dto.getMaxAttempts())
                 .build();
     }
 

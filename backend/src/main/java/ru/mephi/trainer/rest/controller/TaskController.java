@@ -9,10 +9,7 @@ import ru.mephi.trainer.entity.TaskEntity;
 import ru.mephi.trainer.mapper.TaskMapper;
 import ru.mephi.trainer.models.command.SaveTaskCommand;
 import ru.mephi.trainer.rest.api.TaskApi;
-import ru.mephi.trainer.rest.dto.request.task.ErrorFindingTaskRequest;
-import ru.mephi.trainer.rest.dto.request.task.MultipleChoiceTaskRequest;
-import ru.mephi.trainer.rest.dto.request.task.OpenAnswerTaskRequest;
-import ru.mephi.trainer.rest.dto.request.task.SingleChoiceTaskRequest;
+import ru.mephi.trainer.rest.dto.request.task.SaveTaskRequest;
 import ru.mephi.trainer.rest.dto.response.task.admin.TaskAdminResponse;
 import ru.mephi.trainer.service.CurrentUserService;
 import ru.mephi.trainer.service.TaskService;
@@ -30,11 +27,11 @@ public class TaskController implements TaskApi {
 
     @Override
     @RolesAllowed({"expert", "admin"})
-    public RestResponse<TaskAdminResponse> createSingleChoiceTask(SingleChoiceTaskRequest request) {
-        log.info("Creating SINGLE_CHOICE task");
+    public RestResponse<TaskAdminResponse> createTask(SaveTaskRequest request) {
+        UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
+        log.info("Creating task: {}", request.getTaskType());
 
         SaveTaskCommand command = taskMapper.toCommand(request);
-        UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
 
         TaskEntity task = taskService.createTask(command, currentUserId);
 
@@ -46,98 +43,9 @@ public class TaskController implements TaskApi {
 
     @Override
     @RolesAllowed({"expert", "admin"})
-    public RestResponse<TaskAdminResponse> createMultipleChoiceTask(MultipleChoiceTaskRequest request) {
-        log.info("Creating MULTIPLE_CHOICE task");
-
-        SaveTaskCommand command = taskMapper.toCommand(request);
+    public RestResponse<TaskAdminResponse> updateTask(UUID id, SaveTaskRequest request) {
         UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
-
-        TaskEntity task = taskService.createTask(command, currentUserId);
-
-        TaskAdminResponse response = new TaskAdminResponse();
-        response.setId(task.getId());
-
-        return RestResponse.status(RestResponse.Status.CREATED, response);
-    }
-
-    @Override
-    @RolesAllowed({"expert", "admin"})
-    public RestResponse<TaskAdminResponse> createErrorFindingTask(ErrorFindingTaskRequest request) {
-        log.info("Creating ERROR_FINDING task");
-
-        SaveTaskCommand command = taskMapper.toCommand(request);
-        UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
-
-        TaskEntity task = taskService.createTask(command, currentUserId);
-
-        TaskAdminResponse response = new TaskAdminResponse();
-        response.setId(task.getId());
-
-        return RestResponse.status(RestResponse.Status.CREATED, response);
-    }
-
-    @Override
-    @RolesAllowed({"expert", "admin"})
-    public RestResponse<TaskAdminResponse> createOpenAnswerTask(OpenAnswerTaskRequest request) {
-        log.info("Creating OPEN_ANSWER task");
-
-        SaveTaskCommand command = taskMapper.toCommand(request);
-        UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
-
-        TaskEntity task = taskService.createTask(command, currentUserId);
-
-        TaskAdminResponse response = new TaskAdminResponse();
-        response.setId(task.getId());
-
-        return RestResponse.status(RestResponse.Status.CREATED, response);
-    }
-
-    @Override
-    @RolesAllowed({"expert", "admin"})
-    public RestResponse<TaskAdminResponse> updateSingleChoiceTask(UUID id, SingleChoiceTaskRequest request) {
-        log.info("Updating SINGLE_CHOICE task: id={}", id);
-
-        SaveTaskCommand command = taskMapper.toCommand(request);
-        TaskEntity task = taskService.updateTask(id, command);
-
-        TaskAdminResponse response = new TaskAdminResponse();
-        response.setId(task.getId());
-
-        return RestResponse.ok(response);
-    }
-
-    @Override
-    @RolesAllowed({"expert", "admin"})
-    public RestResponse<TaskAdminResponse> updateMultipleChoiceTask(UUID id, MultipleChoiceTaskRequest request) {
-        log.info("Updating MULTIPLE_CHOICE task: id={}", id);
-
-        SaveTaskCommand command = taskMapper.toCommand(request);
-        TaskEntity task = taskService.updateTask(id, command);
-
-        TaskAdminResponse response = new TaskAdminResponse();
-        response.setId(task.getId());
-
-        return RestResponse.ok(response);
-    }
-
-    @Override
-    @RolesAllowed({"expert", "admin"})
-    public RestResponse<TaskAdminResponse> updateErrorFindingTask(UUID id, ErrorFindingTaskRequest request) {
-        log.info("Updating ERROR_FINDING task: id={}", id);
-
-        SaveTaskCommand command = taskMapper.toCommand(request);
-        TaskEntity task = taskService.updateTask(id, command);
-
-        TaskAdminResponse response = new TaskAdminResponse();
-        response.setId(task.getId());
-
-        return RestResponse.ok(response);
-    }
-
-    @Override
-    @RolesAllowed({"expert", "admin"})
-    public RestResponse<TaskAdminResponse> updateOpenAnswerTask(UUID id, OpenAnswerTaskRequest request) {
-        log.info("Updating OPEN_ANSWER task: id={}", id);
+        log.info("Updating task: id: {} type: {} userId: {}", id, request.getTaskType(), currentUserId);
 
         SaveTaskCommand command = taskMapper.toCommand(request);
         TaskEntity task = taskService.updateTask(id, command);

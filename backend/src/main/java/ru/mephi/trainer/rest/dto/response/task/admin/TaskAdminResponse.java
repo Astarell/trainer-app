@@ -11,6 +11,7 @@ import ru.mephi.trainer.rest.dto.response.task.admin.config.ErrorFindingConfigDt
 import ru.mephi.trainer.rest.dto.response.task.admin.config.MultipleChoiceConfigDto;
 import ru.mephi.trainer.rest.dto.response.task.admin.config.OpenAnswerConfigDto;
 import ru.mephi.trainer.rest.dto.response.task.admin.config.SingleChoiceConfigDto;
+import ru.mephi.trainer.rest.dto.response.task.admin.config.TaskConfigDto;
 
 import java.time.OffsetDateTime;
 import java.util.Set;
@@ -36,7 +37,7 @@ public class TaskAdminResponse {
                     ErrorFindingConfigDto.class,
                     OpenAnswerConfigDto.class,
             })
-    private Object config;
+    private TaskConfigDto config;
 
     @Schema(description = "ID создателя задания", examples = "00000000-0000-0000-0000-000000000001")
     private UUID createdBy;

@@ -1,11 +1,11 @@
-package ru.mephi.trainer.rest.dto.response.task.admin.config;
+package ru.mephi.trainer.rest.dto.request.task;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
-import ru.mephi.trainer.rest.dto.request.task.AnswerChoiceDto;
+import ru.mephi.trainer.entity.enums.TaskType;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Конфигурация задания с множественным выбором")
-public class MultipleChoiceConfigDto implements TaskConfigDto {
+@Schema(title = "MultipleChoiceConfigRequestDto", description = "Конфигурация задания с множественным выбором")
+public class MultipleChoiceConfigRequestDto implements TaskConfigRequestDto {
 
     @Schema(description = "Текст вопроса",
             examples = "Какие утверждения верны для оператора WHERE в SQL?")
@@ -44,4 +44,9 @@ public class MultipleChoiceConfigDto implements TaskConfigDto {
             minimum = "1",
             maximum = "10")
     private Integer maxAttempts;
+
+    @Override
+    public TaskType getTaskType() {
+        return TaskType.MULTIPLE_CHOICE;
+    }
 }
