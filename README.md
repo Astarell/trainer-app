@@ -179,3 +179,45 @@ src/main
         └── changelog                      # Миграции Liquibase
             └── versions                   # SQL скрипты миграций
 ```
+
+
+## Пример использования сервиса
+
+### Запрос для проверки заданий
+
+```
+curl -X 'POST' \
+  'http://localhost:8080/api/trainers/{trainer_id}/tasks/{task_id}/submit' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer {token}' \
+  -d '{
+  "userAnswer": "{\"answer\": 1}"
+}'
+```
+
+```
+curl -X 'POST' \
+  'http://localhost:8080/api/trainers/{trainer_id}/tasks/{task_id}/submit' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer {token}' \
+  -d '{
+  "userAnswer": "{\"answer\": [1, 2]}"
+}'
+
+```
+curl -X 'POST' \
+  'http://localhost:8080/api/trainers/{trainer_id}/tasks/{task_id}/submit' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer {token}' \
+  -d '{
+  "userAnswer": "{\"answer\": \"Текст ответа\"}"
+}'
+```
+
+Примечания
+* {trainer_id} — UUID тренажёра
+* {task_id} — UUID задачи
+* {token} — JWT токен, полученный при входе
