@@ -10,7 +10,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Конфигурация задания с открытым ответом")
+@Schema(title = "OpenAnswerConfigDto", description = "Конфигурация задания с открытым ответом")
 public class OpenAnswerConfigDto implements TaskConfigDto {
 
     @Schema(description = "Текст вопроса",

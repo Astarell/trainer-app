@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Конфигурация задания с множественным выбором")
+@Schema(title = "MultipleChoiceConfigDto", description = "Конфигурация задания с множественным выбором")
 public class MultipleChoiceConfigDto implements TaskConfigDto {
 
     @Schema(description = "Текст вопроса",

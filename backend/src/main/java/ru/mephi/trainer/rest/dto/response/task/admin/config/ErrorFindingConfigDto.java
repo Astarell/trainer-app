@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Конфигурация задания на поиск ошибок")
+@Schema(title = "ErrorFindingConfigDto", description = "Конфигурация задания на поиск ошибок")
 public class ErrorFindingConfigDto implements TaskConfigDto {
 
     @Schema(description = "Текст вопроса",

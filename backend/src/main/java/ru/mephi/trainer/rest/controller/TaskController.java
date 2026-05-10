@@ -35,8 +35,7 @@ public class TaskController implements TaskApi {
 
         TaskEntity task = taskService.createTask(command, currentUserId);
 
-        TaskAdminResponse response = new TaskAdminResponse();
-        response.setId(task.getId());
+        TaskAdminResponse response = taskMapper.toTaskAdminResponse(task);
 
         return RestResponse.status(RestResponse.Status.CREATED, response);
     }
@@ -50,8 +49,7 @@ public class TaskController implements TaskApi {
         SaveTaskCommand command = taskMapper.toCommand(request);
         TaskEntity task = taskService.updateTask(id, command);
 
-        TaskAdminResponse response = new TaskAdminResponse();
-        response.setId(task.getId());
+        TaskAdminResponse response = taskMapper.toTaskAdminResponse(task);
 
         return RestResponse.ok(response);
     }

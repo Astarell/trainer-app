@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Конфигурация задания с одиночным выбором")
+@Schema(title = "SingleChoiceConfigDto", description = "Конфигурация задания с одиночным выбором")
 public class SingleChoiceConfigDto implements TaskConfigDto {
 
     @Schema(description = "Текст вопроса",
