@@ -7,6 +7,7 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import ru.mephi.trainer.entity.TaskAttemptEntity;
 import ru.mephi.trainer.rest.dto.response.task.expert.AnswerTaskResponse;
+import ru.mephi.trainer.rest.dto.response.task.expert.ReviewTaskResponse;
 
 import java.time.OffsetDateTime;
 import java.util.List;

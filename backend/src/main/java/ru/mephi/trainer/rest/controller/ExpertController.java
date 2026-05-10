@@ -9,6 +9,7 @@ import ru.mephi.trainer.rest.api.ExpertApi;
 import ru.mephi.trainer.rest.dto.request.SubmitReviewRequest;
 import ru.mephi.trainer.rest.dto.response.task.expert.AnswerTaskResponse;
 import ru.mephi.trainer.rest.dto.response.MessageResponse;
+import ru.mephi.trainer.rest.dto.response.task.expert.ReviewTaskResponse;
 import ru.mephi.trainer.service.ExpertService;
 
 import java.util.List;

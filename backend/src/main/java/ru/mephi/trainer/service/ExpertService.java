@@ -12,6 +12,7 @@ import ru.mephi.trainer.exception.TaskAttemptNotFoundException;
 import ru.mephi.trainer.repository.TaskAttemptRepository;
 import ru.mephi.trainer.rest.dto.response.task.expert.AnswerTaskResponse;
 import ru.mephi.trainer.rest.dto.response.MessageResponse;
+import ru.mephi.trainer.rest.dto.response.task.expert.ReviewTaskResponse;
 
 import java.time.Instant;
 import java.util.List;
