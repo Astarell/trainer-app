@@ -5,10 +5,7 @@ import jakarta.ws.rs.ext.Provider;
 import lombok.extern.slf4j.Slf4j;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
-import ru.mephi.trainer.exception.EmailAlreadyExistsException;
-import ru.mephi.trainer.exception.FailedLoginException;
-import ru.mephi.trainer.exception.TaskAttemptNotFoundException;
-import ru.mephi.trainer.exception.TrainerNotFoundException;
+import ru.mephi.trainer.exception.*;
 import ru.mephi.trainer.rest.dto.response.ErrorResponse;
 
 @Slf4j
@@ -55,6 +52,42 @@ public class GlobalExceptionHandler {
 
     @ServerExceptionMapper
     public RestResponse<ErrorResponse> handleTaskAttemptNotFoundException(TaskAttemptNotFoundException e) {
+        ErrorResponse response = ErrorResponse.builder()
+                .message(e.getMessage())
+                .build();
+
+        return RestResponse.status(Response.Status.NOT_FOUND, response);
+    }
+
+    @ServerExceptionMapper
+    public RestResponse<ErrorResponse> handleLastTaskAttemptStatusNotFailedException(LastTaskAttemptStatusNotFailedException e) {
+        ErrorResponse response = ErrorResponse.builder()
+                .message(e.getMessage())
+                .build();
+
+        return RestResponse.status(Response.Status.NOT_FOUND, response);
+    }
+
+    @ServerExceptionMapper
+    public RestResponse<ErrorResponse> handleTaskForAnswerNotFound(TaskForAnswerNotFound e) {
+        ErrorResponse response = ErrorResponse.builder()
+                .message(e.getMessage())
+                .build();
+
+        return RestResponse.status(Response.Status.NOT_FOUND, response);
+    }
+
+    @ServerExceptionMapper
+    public RestResponse<ErrorResponse> handleTaskNotFound(TaskNotFound e) {
+        ErrorResponse response = ErrorResponse.builder()
+                .message(e.getMessage())
+                .build();
+
+        return RestResponse.status(Response.Status.NOT_FOUND, response);
+    }
+
+    @ServerExceptionMapper
+    public RestResponse<ErrorResponse> handleTypeForTaskIsNotFound(TypeForTaskIsNotFound e) {
         ErrorResponse response = ErrorResponse.builder()
                 .message(e.getMessage())
                 .build();

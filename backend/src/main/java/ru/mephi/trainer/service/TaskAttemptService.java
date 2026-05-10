@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import ru.mephi.trainer.entity.*;
 import ru.mephi.trainer.entity.enums.AttemptStatus;
 import ru.mephi.trainer.entity.enums.TaskType;
+import ru.mephi.trainer.exception.*;
 import ru.mephi.trainer.repository.ProfileRepository;
 import ru.mephi.trainer.repository.TaskAttemptRepository;
 import ru.mephi.trainer.repository.TaskRepository;
@@ -71,7 +72,7 @@ public class TaskAttemptService {
                     break;
 
                 default:
-                    throw new RuntimeException("Неподдерживаемый тип задачи: " + task.getTaskType());
+                    throw new TypeForTaskIsNotFound("Неподдерживаемый тип задачи: " + task.getTaskType());
             }
 
             String message = isCorrect
@@ -92,20 +93,27 @@ public class TaskAttemptService {
     private TaskTrainerEntity validateAndGetTaskTrainer(UUID trainerId, UUID taskId) {
         return taskTrainerRepository
                 .findByTrainerIdAndTaskId(trainerId, taskId)
-                .orElseThrow(() -> new RuntimeException("Задача не найдена в этом тренажёре"));
+                .orElseThrow(() -> {
+                    log.warn("Get task in trainer failed - id not found: trainerId={}, taskId={}", trainerId, taskId);
+                    return new TaskForAnswerNotFound("Задача для отправки ответа не найдена");
+                });
     }
 
     private UserEntity getUserOrThrow(UUID userId) {
         UserEntity user = profileRepository.getUserData(userId);
         if (user == null) {
-            throw new RuntimeException("Пользователь не найден");
+            log.warn("User not found: userId={}", userId);
+            throw new CurrentUserNotFoundException("Пользователь не найден");
         }
         return user;
     }
 
     private TaskEntity getTaskOrThrow(UUID taskId) {
         return taskRepository.findByIdOptional(taskId)
-                .orElseThrow(() -> new RuntimeException("Задача не найдена"));
+                .orElseThrow(() -> {
+                    log.warn("Task not found: taskId={}", taskId);
+                    return new TaskNotFound("Задача не найдена");
+                });
     }
 
     private int getAndCheckAttemptsLimit(UUID taskTrainerId, UUID userId, JsonNode config) {
@@ -128,10 +136,12 @@ public class TaskAttemptService {
 
         TaskAttemptEntity attempt = lastAttempt.get();
         if (attempt.getStatus() == AttemptStatus.COMPLETED) {
-            throw new RuntimeException("Задача уже решена правильно");
+            log.warn("Last task attempt is COMPLETED");
+            throw new LastTaskAttemptStatusNotFailedException("Задача уже решена правильно");
         }
         if (attempt.getStatus() == AttemptStatus.REVIEW) {
-            throw new RuntimeException("Предыдущий ответ уже на проверке");
+            log.warn("Last task attempt on REVIEW");
+            throw new LastTaskAttemptStatusNotFailedException("Предыдущий ответ уже на проверке");
         }
     }
 
