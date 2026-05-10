@@ -5,8 +5,8 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
@@ -18,8 +18,8 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
 import ru.mephi.trainer.rest.dto.request.trainer.CreateTrainerRequest;
-import ru.mephi.trainer.rest.dto.response.trainer.TrainerInfoResponse;
 import ru.mephi.trainer.rest.dto.response.ErrorResponse;
+import ru.mephi.trainer.rest.dto.response.trainer.TrainerInfoResponse;
 import ru.mephi.trainer.rest.dto.response.trainer.TrainerResponse;
 
 import java.util.List;

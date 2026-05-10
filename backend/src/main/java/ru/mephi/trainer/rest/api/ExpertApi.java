@@ -13,9 +13,9 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
 import ru.mephi.trainer.rest.dto.request.SubmitReviewRequest;
 import ru.mephi.trainer.rest.dto.response.AnswerTaskResponse;
-import ru.mephi.trainer.rest.dto.response.ReviewTaskResponse;
 import ru.mephi.trainer.rest.dto.response.ErrorResponse;
 import ru.mephi.trainer.rest.dto.response.MessageResponse;
+import ru.mephi.trainer.rest.dto.response.ReviewTaskResponse;
 
 import java.util.List;
 import java.util.UUID;

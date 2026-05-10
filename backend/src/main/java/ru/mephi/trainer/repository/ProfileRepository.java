@@ -7,7 +7,6 @@ import ru.mephi.trainer.rest.dto.response.profile.TrainerProgressPercentResponse
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class ProfileRepository implements PanacheRepositoryBase<UserEntity, UUID> {

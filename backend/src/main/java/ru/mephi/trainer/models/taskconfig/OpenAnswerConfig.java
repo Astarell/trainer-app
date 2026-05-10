@@ -1,9 +1,9 @@
 package ru.mephi.trainer.models.taskconfig;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 import ru.mephi.trainer.entity.enums.TaskType;
 
 @Data
