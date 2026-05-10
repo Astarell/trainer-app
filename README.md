@@ -205,6 +205,7 @@ curl -X 'POST' \
   -d '{
   "userAnswer": "{\"answer\": [1, 2]}"
 }'
+```
 
 ```
 curl -X 'POST' \
