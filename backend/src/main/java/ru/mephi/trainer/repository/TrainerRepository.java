@@ -41,7 +41,6 @@ public class TrainerRepository implements PanacheRepositoryBase<TrainerEntity, U
                         t.id,
                         t.config->>'question',
                         t.task_type,
-                        CAST(t.config->>'points' AS INTEGER)
                     FROM tasks t
                     JOIN tasks_trainers tt ON tt.task_id = t.id
                     WHERE tt.trainer_id = ?1
