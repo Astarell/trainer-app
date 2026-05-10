@@ -65,7 +65,7 @@ public class GlobalExceptionHandler {
                 .message(e.getMessage())
                 .build();
 
-        return RestResponse.status(Response.Status.NOT_FOUND, response);
+        return RestResponse.status(Response.Status.CONFLICT, response);
     }
 
     @ServerExceptionMapper
@@ -92,7 +92,7 @@ public class GlobalExceptionHandler {
                 .message(e.getMessage())
                 .build();
 
-        return RestResponse.status(Response.Status.NOT_FOUND, response);
+        return RestResponse.status(Response.Status.CONFLICT, response);
     }
 
     @ServerExceptionMapper
@@ -101,6 +101,6 @@ public class GlobalExceptionHandler {
                 .message(e.getMessage())
                 .build();
 
-        return RestResponse.status(Response.Status.NOT_FOUND, response);
+        return RestResponse.status(Response.Status.CONFLICT, response);
     }
 }

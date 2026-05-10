@@ -171,6 +171,11 @@ public interface TrainersAPI {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             ),
             @APIResponse(
+                    responseCode = "409",
+                    description = "Неверный ответ",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @APIResponse(
                     responseCode = "500",
                     description = "Неожиданная ошибка",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
