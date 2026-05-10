@@ -18,6 +18,7 @@ import ru.mephi.trainer.repository.TaskTrainerRepository;
 import ru.mephi.trainer.rest.dto.response.test.MessageResponse;
 
 import java.time.Instant;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -59,21 +60,21 @@ public class TaskAttemptService {
 
                 case SINGLE_CHOICE:
                     isCorrect = checkSingleChoice(answer, config);
-                    points = isCorrect ? config.get("points").asInt() - mistakeCost * count : 0;
-                    status = isCorrect ? AttemptStatus.COMPLETED : AttemptStatus.FAILED;
-                    saveAttempt(taskTrainer, user, answer, points, status);
                     break;
 
-                case MULTIPLE_CHOICE, ERROR_FINDING:
+                case MULTIPLE_CHOICE:
                     isCorrect = checkMultipleChoice(answer, config);
-                    points = isCorrect ? config.get("points").asInt() - mistakeCost * count : 0;
-                    status = isCorrect ? AttemptStatus.COMPLETED : AttemptStatus.FAILED;
-                    saveAttempt(taskTrainer, user, answer, points, status);
+                    break;
+                case ERROR_FINDING:
+                    isCorrect = checkFindingError(answer, config);
                     break;
 
                 default:
                     throw new TypeForTaskIsNotFound("Неподдерживаемый тип задачи: " + task.getTaskType());
             }
+            points = isCorrect ? config.get("points").asInt() - mistakeCost * count : 0;
+            status = isCorrect ? AttemptStatus.COMPLETED : AttemptStatus.FAILED;
+            saveAttempt(taskTrainer, user, answer, points, status);
 
             String message = isCorrect
                     ? "Правильно! Вы получили " + points + " баллов"
@@ -186,5 +187,12 @@ public class TaskAttemptService {
             if (!found) return false;
         }
         return true;
+    }
+
+    private boolean checkFindingError(String answer, JsonNode config) throws JsonProcessingException {
+        JsonNode answerNode = MAPPER.readTree(answer);
+        String userChoice = answerNode.asText();
+        String correctChoice = String.valueOf(config.get("answer"));
+        return userChoice.equals(correctChoice);
     }
 }
