@@ -65,7 +65,7 @@ public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptE
                         u.email as student_email,
                         ta.user_answer as answer,
                         ta.points as points,
-                        CAST(t.config->>'points' AS DOUBLE PRECISION) as max_points,
+                        CAST(t.config->>'points' AS INTEGER) as max_points,
                         ta.created_at
                     FROM task_attempts ta
                     JOIN tasks_trainers tt ON tt.id = ta.task_id
@@ -86,8 +86,8 @@ public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptE
                     .studentName((String) result[3])
                     .studentEmail((String) result[4])
                     .answer((String) result[5])
-                    .points((Double) result[6])
-                    .maxPoints((Double) result[7])
+                    .points(((Number) result[6]).intValue())
+                    .maxPoints(((Number) result[7]).intValue())
                     .createdAt((OffsetDateTime) result[8])
                     .build());
         }
@@ -96,9 +96,9 @@ public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptE
         }
     }
 
-    public Double getMaxPointsForAttempt(UUID id) {
+    public Integer getMaxPointsForAttempt(UUID id) {
         String sql = """
-                    SELECT CAST(t.config->>'points' AS DOUBLE PRECISION)
+                    SELECT CAST(t.config->>'points' AS INTEGER)
                     FROM task_attempts ta
                     JOIN tasks_trainers tt ON tt.id = ta.task_id
                     JOIN tasks t ON t.id = tt.task_id
@@ -110,7 +110,7 @@ public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptE
                 .setParameter(1, id)
                 .getSingleResult();
 
-        return ((Number) result).doubleValue();
+        return ((Number) result).intValue();
     }
 
     public Integer getMistakeCost(UUID id) {
