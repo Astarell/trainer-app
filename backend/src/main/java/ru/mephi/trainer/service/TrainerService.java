@@ -9,6 +9,7 @@ import ru.mephi.trainer.exception.EntityNotFoundException;
 import ru.mephi.trainer.exception.InvalidCommandException;
 import ru.mephi.trainer.models.command.SaveTrainerCommand;
 import ru.mephi.trainer.repository.TrainerRepository;
+import ru.mephi.trainer.rest.dto.response.task.user.TaskInfoResponse;
 import ru.mephi.trainer.rest.dto.response.trainer.TrainerInfoResponse;
 
 import java.util.List;
@@ -36,12 +37,15 @@ public class TrainerService {
 
         Integer totalTasks = trainerRepository.getTotalTasks(id);
 
+        List<TaskInfoResponse> taskInfoResponseList = trainerRepository.findTasksByTrainerId(id);
+
         return TrainerInfoResponse.builder()
                 .id(entity.getId())
                 .name(entity.getName())
                 .totalTasks(totalTasks)
                 .createdAt(entity.getCreatedAt())
                 .createdBy(entity.getCreatedBy())
+                .tasks(taskInfoResponseList)
                 .build();
     }
 
