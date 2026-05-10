@@ -201,6 +201,11 @@ public class TrainerService {
                         valid = false;
                         break;
                     }
+                    if (ac.getChecked() && mapTrueAnswer.get(ac.getOrdinal()) == null) {
+                        // неправильно
+                        valid = false;
+                        break;
+                    }
                 }
 
                 if (valid) {
@@ -293,7 +298,7 @@ public class TrainerService {
                 // сохранение попытки
                 taskAttemptRepository.saveTrainerTasksSubmit(taskTrainerEntity, userEntity,
                         taskSubmitRequest.getUserAnswer(),
-                        taskModel.getPoints() - minusPoints,
+                        0,
                         AttemptStatus.REVIEW);
 
                 return REVIEW;

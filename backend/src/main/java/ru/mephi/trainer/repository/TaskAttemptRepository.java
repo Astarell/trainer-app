@@ -152,15 +152,16 @@ public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptE
     public void saveTrainerTasksSubmit(TaskTrainerEntity taskTrainerEntity, UserEntity userEntity,
                                        String userAnswer, Integer points, AttemptStatus status) {
 
-        persist(new TaskAttemptEntity(
-                UUID.randomUUID(),
-                userAnswer,
-                Double.valueOf(points),
-                status,
-                OffsetDateTime.now(),
-                taskTrainerEntity,
-                userEntity
-        ));
+        TaskAttemptEntity taskAttemptEntity = TaskAttemptEntity.builder()
+                .userAnswer(userAnswer)
+                .points(Double.valueOf(points))
+                .status(status)
+                .createdAt(OffsetDateTime.now())
+                .task(taskTrainerEntity)
+                .user(userEntity)
+                .build();
+
+        persist(taskAttemptEntity);
     }
 }
 

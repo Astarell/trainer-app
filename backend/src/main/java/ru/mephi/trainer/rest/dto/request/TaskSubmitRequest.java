@@ -12,7 +12,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Schema(description = "Запрос сохранения задачи для тренажера")
 public class TaskSubmitRequest {
-    private String taskType;
     private String userAnswer;
     private UUID user;
 }

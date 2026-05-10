@@ -27,14 +27,15 @@ public class TaskRepository implements PanacheRepositoryBase<TaskEntity, UUID> {
         Object[] result = (Object[])getEntityManager()
                 .createNativeQuery(sql)
                 .setParameter(1, taskId)
-                .getSingleResult();
+                .getSingleResultOrNull();
 
-        return Optional.of(TaskResponse.builder()
-                .id((UUID) result[0])
-                .taskType((String) result[1])
-                .config((String) result[2])
-                .createdBy((UUID) result[3])
-                .createdAt((OffsetDateTime) result[4])
-                .build());
+        return Optional.ofNullable(result)
+                .map(res -> TaskResponse.builder()
+                    .id((UUID) res[0])
+                    .taskType((String) res[1])
+                    .config((String) res[2])
+                    .createdBy((UUID) res[3])
+                    .createdAt((OffsetDateTime) res[4])
+                    .build());
     }
 }
