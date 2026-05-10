@@ -1,4 +1,4 @@
-package ru.mephi.trainer.rest.dto.response.test;
+package ru.mephi.trainer.rest.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

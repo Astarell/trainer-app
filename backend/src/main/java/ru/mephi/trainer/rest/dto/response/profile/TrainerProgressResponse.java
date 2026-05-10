@@ -1,4 +1,4 @@
-package ru.mephi.trainer.rest.dto.response;
+package ru.mephi.trainer.rest.dto.response.profile;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,8 +15,8 @@ import java.util.UUID;
 public class TrainerProgressResponse {
     private UUID trainerId;
     private String trainerName;
-    private Double earnedScore;
-    private Double maxPossibleScore;
+    private Integer earnedScore;
+    private Integer maxPossibleScore;
     private Integer tasksCompleted;
     private Integer totalTasks;
     private List<CompletedTaskTrainerPointResponse> tasksInTrainer;

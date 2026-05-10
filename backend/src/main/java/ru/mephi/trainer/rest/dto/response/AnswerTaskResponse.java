@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -18,7 +19,7 @@ public class AnswerTaskResponse {
     private String studentName;
     private String studentEmail;
     private String answer;
-    private Double points;
-    private Double maxPoints;
+    private Integer points;
+    private Integer maxPoints;
     private OffsetDateTime createdAt;
 }
