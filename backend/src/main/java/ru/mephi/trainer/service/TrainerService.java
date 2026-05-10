@@ -83,7 +83,7 @@ public class TrainerService {
     }
 
     @Transactional
-    public String saveTrainerTasksSubmit (UUID trainerId, UUID taskId, TaskSubmitRequest taskSubmitRequest) {
+    public String saveTrainerTasksSubmit (UUID currentUserId, UUID trainerId, UUID taskId, TaskSubmitRequest taskSubmitRequest) {
         log.info("Save task of trainer: id={}, task_id", trainerId, taskId);
 
         // проверка наличия тренажера
@@ -110,10 +110,10 @@ public class TrainerService {
                 });
 
         // найдем пользователя
-        UserEntity userEntity = userRepository.findByIdOptional(taskSubmitRequest.getUser())
+        UserEntity userEntity = userRepository.findByIdOptional(currentUserId)
                 .orElseThrow(() -> {
-                    log.warn("Get user info failed - id not found: id={}", taskSubmitRequest.getUser());
-                    return new UserNotFoundException("Пользователь с id " + taskSubmitRequest.getUser() + " не найден");
+                    log.warn("Get user info failed - id not found: id={}", currentUserId);
+                    return new UserNotFoundException("Пользователь с id " + currentUserId + " не найден");
                 });
 
         // преобразуем задачу

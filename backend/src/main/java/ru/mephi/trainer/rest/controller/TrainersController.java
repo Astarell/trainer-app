@@ -12,6 +12,7 @@ import ru.mephi.trainer.rest.dto.request.TaskSubmitRequest;
 import ru.mephi.trainer.rest.dto.response.TaskResponse;
 import ru.mephi.trainer.rest.dto.response.TrainerInfoResponse;
 import ru.mephi.trainer.rest.dto.response.TrainerResponse;
+import ru.mephi.trainer.service.CurrentUserService;
 import ru.mephi.trainer.service.TrainerService;
 
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.UUID;
 @ApplicationScoped
 public class TrainersController implements TrainersAPI {
 
+    private final CurrentUserService currentUserService;
     private final TrainerService trainerService;
 
     @Override
@@ -58,7 +60,8 @@ public class TrainersController implements TrainersAPI {
                                                        @RequestBody TaskSubmitRequest taskSubmitRequest
     ) {
         log.info("Save task of trainer: id={}, task_id", trainerId, taskId);
-        String result = trainerService.saveTrainerTasksSubmit(trainerId, taskId, taskSubmitRequest);
+        UUID currentUserId = currentUserService.getCurrentUserIdOrThrow();
+        String result = trainerService.saveTrainerTasksSubmit(currentUserId, trainerId, taskId, taskSubmitRequest);
         return RestResponse.ok(result);
     }
 }

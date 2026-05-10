@@ -10,7 +10,6 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
-import ru.mephi.trainer.entity.TrainerEntity;
 import ru.mephi.trainer.rest.dto.request.TaskSubmitRequest;
 import ru.mephi.trainer.rest.dto.response.TaskResponse;
 import ru.mephi.trainer.rest.dto.response.TrainerInfoResponse;
