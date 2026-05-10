@@ -33,6 +33,17 @@ openssl genrsa -out privateKey.pem 2048
 openssl rsa -in privateKey.pem -pubout -out publicKey.pem
 ```
 
+## Тестирование
+### Тестовые данные
+Команда подготовила небольшое количество трейнеров с заданиями, типы которых указаны в требованиях.<br>
+Идентификаторы трейнеров (можно получить содержимое трейнера по спец. ручке через сваггер):
+1. SQL trainer #1: bcc6f453-e4e4-49fc-b1e3-ca687d3f20a6
+2. Test trainer #2: 34f097a9-1542-4a43-8b30-bef905d4f925
+3. Business analyses trainer #3: 8d3d4a57-c179-4f34-afc5-6a4e272fc26b
+
+### Ход тестирования
+
+
 ## Схема БД
 ### Диаграмма
 <details>
