@@ -42,7 +42,40 @@ openssl rsa -in privateKey.pem -pubout -out publicKey.pem
 3. Business analyses trainer #3: 8d3d4a57-c179-4f34-afc5-6a4e272fc26b
 
 ### Ход тестирования
+<details>
+  
+#### 1. Получить список имеющихся тренажеров
+<img width="384" height="55" alt="image" src="https://github.com/user-attachments/assets/1e5ab706-b56c-413e-ac77-94007754da3d" />
 
+**Формат ответа:**
+
+<img width="398" height="296" alt="image" src="https://github.com/user-attachments/assets/35af865a-75b9-4c98-9a5c-2bc47a2ac205" />
+
+
+#### 2. Получить конкретный тренажер по ID
+<img width="460" height="56" alt="image" src="https://github.com/user-attachments/assets/60fa2120-ee7d-43db-a318-6987d7a3f250" />
+
+**Формат ответа:**
+
+<img width="1106" height="411" alt="image" src="https://github.com/user-attachments/assets/9762132c-c360-49ba-a6bd-5cc83e6c0400" />
+
+
+#### 3. Получить выбранную задачу из списка задач тренажера
+<img width="637" height="87" alt="image" src="https://github.com/user-attachments/assets/a4eff99d-30e9-43e1-9833-f204379e6e0b" />
+
+**Формат ответа:**
+
+<img width="1114" height="214" alt="image" src="https://github.com/user-attachments/assets/a6dfa729-8acf-4efd-ac02-58921eccb37a" />
+
+#### 4. Отправить ответ на выбранный вопрос из списка вопросов тренажера
+<img width="680" height="106" alt="image" src="https://github.com/user-attachments/assets/382753b3-a949-4092-af5a-7693e6a18f88" />
+
+**Формат ответа:**
+
+<img width="335" height="77" alt="image" src="https://github.com/user-attachments/assets/61185f2a-37b3-4c3f-9fc8-818ea1f07dcc" />
+<img width="371" height="87" alt="image" src="https://github.com/user-attachments/assets/cbfb38fb-f63d-40cb-9ee6-a2a62c0f0d0f" />
+
+</details>
 
 ## Схема БД
 ### Диаграмма
