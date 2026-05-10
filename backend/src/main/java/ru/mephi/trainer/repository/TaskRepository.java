@@ -6,7 +6,7 @@ import jakarta.persistence.NoResultException;
 import ru.mephi.trainer.entity.TaskEntity;
 import ru.mephi.trainer.entity.enums.AttemptStatus;
 import ru.mephi.trainer.entity.enums.TaskType;
-import ru.mephi.trainer.rest.dto.response.TaskResponse;
+import ru.mephi.trainer.rest.dto.response.task.user.TaskResponse;
 
 import java.util.Optional;
 import java.util.UUID;

@@ -10,9 +10,8 @@ import ru.mephi.trainer.entity.TaskAttemptEntity;
 import ru.mephi.trainer.entity.enums.AttemptStatus;
 import ru.mephi.trainer.exception.TaskAttemptNotFoundException;
 import ru.mephi.trainer.repository.TaskAttemptRepository;
-import ru.mephi.trainer.rest.dto.response.AnswerTaskResponse;
+import ru.mephi.trainer.rest.dto.response.task.expert.AnswerTaskResponse;
 import ru.mephi.trainer.rest.dto.response.MessageResponse;
-import ru.mephi.trainer.rest.dto.response.ReviewTaskResponse;
 
 import java.time.Instant;
 import java.util.List;

@@ -15,7 +15,7 @@ import ru.mephi.trainer.models.taskconfig.TaskConfig;
 import ru.mephi.trainer.repository.TaskAttemptRepository;
 import ru.mephi.trainer.repository.TaskRepository;
 import ru.mephi.trainer.repository.TrainerRepository;
-import ru.mephi.trainer.rest.dto.response.TaskResponse;
+import ru.mephi.trainer.rest.dto.response.task.user.TaskResponse;
 
 import java.util.HashSet;
 import java.util.Map;

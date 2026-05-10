@@ -6,8 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import ru.mephi.trainer.entity.TaskAttemptEntity;
-import ru.mephi.trainer.rest.dto.response.AnswerTaskResponse;
-import ru.mephi.trainer.rest.dto.response.ReviewTaskResponse;
+import ru.mephi.trainer.rest.dto.response.task.expert.AnswerTaskResponse;
 
 import java.time.OffsetDateTime;
 import java.util.List;

@@ -14,7 +14,7 @@ import ru.mephi.trainer.rest.api.TrainersAPI;
 import ru.mephi.trainer.rest.dto.request.AnswerRequest;
 import ru.mephi.trainer.rest.dto.request.trainer.CreateTrainerRequest;
 import ru.mephi.trainer.rest.dto.response.MessageResponse;
-import ru.mephi.trainer.rest.dto.response.TaskResponse;
+import ru.mephi.trainer.rest.dto.response.task.user.TaskResponse;
 import ru.mephi.trainer.rest.dto.response.trainer.TrainerInfoResponse;
 import ru.mephi.trainer.rest.dto.response.trainer.TrainerResponse;
 import ru.mephi.trainer.service.CurrentUserService;

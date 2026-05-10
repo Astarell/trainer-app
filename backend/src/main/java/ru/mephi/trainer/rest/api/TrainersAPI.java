@@ -1,6 +1,5 @@
 package ru.mephi.trainer.rest.api;
 
-import io.quarkus.security.Authenticated;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -22,7 +21,7 @@ import ru.mephi.trainer.rest.dto.request.AnswerRequest;
 import ru.mephi.trainer.rest.dto.request.trainer.CreateTrainerRequest;
 import ru.mephi.trainer.rest.dto.response.ErrorResponse;
 import ru.mephi.trainer.rest.dto.response.MessageResponse;
-import ru.mephi.trainer.rest.dto.response.TaskResponse;
+import ru.mephi.trainer.rest.dto.response.task.user.TaskResponse;
 import ru.mephi.trainer.rest.dto.response.trainer.TrainerInfoResponse;
 import ru.mephi.trainer.rest.dto.response.trainer.TrainerResponse;
 
