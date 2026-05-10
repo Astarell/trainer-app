@@ -5,9 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
-import ru.mephi.trainer.rest.dto.request.task.AnswerChoiceDto;
-
-import java.util.List;
 
 @Data
 @Builder
@@ -20,16 +17,8 @@ public class ErrorFindingConfigDto implements TaskConfigDto {
             examples = "Найдите недостатки или риски валидации.")
     private String question;
 
-    @Schema(description = "Контекст задания (описание ситуации, код, диаграмма)",
-            examples = "Для поля ИНН организации в форме партнёрства заданы правила: только цифры, не может начинаться с 0...")
-    private String context;
-
-    @Schema(description = "Список вариантов ответов (возможные ошибки)")
-    private List<AnswerChoiceDto> answerChoices;
-
-    @Schema(description = "Список порядковых номеров правильных ответов (начиная с 1)",
-            examples = "[1, 2, 4]")
-    private List<Integer> expectedOrdinals;
+    @Schema(description = "Ответ")
+    private String answer;
 
     @Schema(description = "Максимальное количество баллов за задание",
             examples = "20",

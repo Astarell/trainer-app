@@ -6,17 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.mephi.trainer.entity.enums.TaskType;
 
-import java.util.List;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ErrorFindingConfig implements TaskConfig {
     private String question;
-    private String context;
-    private List<AnswerChoice> answerChoices;
-    private List<Integer> expectedOrdinals;
+    private String answer;
     private Integer points;
     private Integer mistakeCost;
     private Integer maxAttempts;

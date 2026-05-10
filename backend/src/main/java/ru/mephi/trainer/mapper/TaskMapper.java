@@ -139,9 +139,7 @@ public class TaskMapper {
 
         return ErrorFindingConfigDto.builder()
                 .question(config.getQuestion())
-                .context(config.getContext())
-                .answerChoices(toAnswerChoiceDtoList(config.getAnswerChoices()))
-                .expectedOrdinals(config.getExpectedOrdinals())
+                .answer(config.getAnswer())
                 .points(config.getPoints())
                 .mistakeCost(config.getMistakeCost())
                 .maxAttempts(config.getMaxAttempts())
@@ -203,9 +201,7 @@ public class TaskMapper {
     private ErrorFindingConfig mapErrorFindingConfig(ErrorFindingConfigRequestDto dto) {
         return ErrorFindingConfig.builder()
                 .question(dto.getQuestion())
-                .context(dto.getContext())
-                .answerChoices(toAnswerChoices(dto.getAnswerChoices()))
-                .expectedOrdinals(dto.getExpectedOrdinals())
+                .answer(dto.getAnswer())
                 .points(dto.getPoints())
                 .mistakeCost(dto.getMistakeCost())
                 .maxAttempts(dto.getMaxAttempts())

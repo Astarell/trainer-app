@@ -1,10 +1,8 @@
 package ru.mephi.trainer.rest.dto.request.task;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
@@ -14,8 +12,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import ru.mephi.trainer.entity.enums.TaskType;
-
-import java.util.List;
 
 @Data
 @Builder
@@ -31,25 +27,12 @@ public class ErrorFindingConfigRequestDto implements TaskConfigRequestDto {
     @Size(min = 5, max = 1000, message = "Текст вопроса должен быть от 5 до 1000 символов")
     private String question;
 
-    @Schema(description = "Контекст задания (описание ситуации, код, диаграмма)",
-            examples = "Для поля ИНН организации в форме партнёрства заданы правила: только цифры, не может начинаться с 0...",
+    @Schema(description = "Ответ",
+            examples = "БД",
             required = true)
-    @NotBlank(message = "Контекст задания не может быть пустым")
-    @Size(min = 10, max = 5000, message = "Контекст должен быть от 10 до 5000 символов")
-    private String context;
-
-    @Schema(description = "Варианты ответов (возможные ошибки)",
-            required = true)
-    @NotEmpty(message = "Должен быть хотя бы один вариант ответа")
-    @Size(min = 2, max = 20, message = "Количество вариантов должно быть от 2 до 20")
-    @Valid
-    private List<AnswerChoiceDto> answerChoices;
-
-    @Schema(description = "Список порядковых номеров правильных ответов",
-            examples = "[1, 2, 4]",
-            required = true)
-    @NotEmpty(message = "Необходимо указать хотя бы один правильный ответ")
-    private List<@Min(1) Integer> expectedOrdinals;
+    @NotBlank(message = "Ответ не может быть пустым")
+    @Size(min = 1, max = 50, message = "Ответ должен быть от 1 до 50 символов")
+    private String answer;
 
     @Schema(description = "Максимальное количество баллов за задание",
             examples = "15",
