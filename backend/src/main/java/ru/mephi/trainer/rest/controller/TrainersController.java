@@ -2,10 +2,14 @@ package ru.mephi.trainer.rest.controller;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
+import jakarta.ws.rs.PathParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.jboss.resteasy.reactive.RestResponse;
 import ru.mephi.trainer.rest.api.TrainersAPI;
+import ru.mephi.trainer.rest.dto.request.TaskSubmitRequest;
+import ru.mephi.trainer.rest.dto.response.TaskResponse;
 import ru.mephi.trainer.rest.dto.response.TrainerInfoResponse;
 import ru.mephi.trainer.rest.dto.response.TrainerResponse;
 import ru.mephi.trainer.service.TrainerService;
@@ -39,5 +43,22 @@ public class TrainersController implements TrainersAPI {
         log.info("Get trainer: id={}", trainerId);
         TrainerInfoResponse trainerInfoResponse = trainerService.getTrainerInfo(trainerId);
         return RestResponse.ok(trainerInfoResponse);
+    }
+
+    @Override
+    public RestResponse<List<TaskResponse>> getTrainerTasks(UUID trainerId) {
+        log.info("Get tasks of trainer: id={}", trainerId);
+        List<TaskResponse> taskTrainerResponse = trainerService.getTrainerTasks(trainerId);
+        return RestResponse.ok(taskTrainerResponse);
+    }
+
+    @Override
+    public RestResponse<String> saveTrainerTasksSubmit(@PathParam("id") UUID trainerId,
+                                                       @PathParam("task_id") UUID taskId,
+                                                       @RequestBody TaskSubmitRequest taskSubmitRequest
+    ) {
+        log.info("Save task of trainer: id={}, task_id", trainerId, taskId);
+        String result = trainerService.saveTrainerTasksSubmit(trainerId, taskId, taskSubmitRequest);
+        return RestResponse.ok(result);
     }
 }

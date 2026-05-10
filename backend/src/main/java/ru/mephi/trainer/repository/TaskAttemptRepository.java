@@ -6,6 +6,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import ru.mephi.trainer.entity.TaskAttemptEntity;
+import ru.mephi.trainer.entity.TaskTrainerEntity;
+import ru.mephi.trainer.entity.UserEntity;
+import ru.mephi.trainer.rest.dto.request.TaskSubmitRequest;
 import ru.mephi.trainer.rest.dto.response.AnswerTaskResponse;
 import ru.mephi.trainer.rest.dto.response.ReviewTaskResponse;
 
@@ -146,8 +149,19 @@ public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptE
         return ((Number) result).intValue();
     }
 
+    public void saveTrainerTasksSubmit(TaskTrainerEntity taskTrainerEntity, UserEntity userEntity,
+                                       TaskSubmitRequest taskSubmitRequest) {
 
-
+        persist(new TaskAttemptEntity(
+                UUID.randomUUID(),
+                taskSubmitRequest.getUserAnswer(),
+                taskSubmitRequest.getPoints(),
+                taskSubmitRequest.getStatus(),
+                taskSubmitRequest.getCreatedAt(),
+                taskTrainerEntity,
+                userEntity
+        ));
+    }
 }
 
 
