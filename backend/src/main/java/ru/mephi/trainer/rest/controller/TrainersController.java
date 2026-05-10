@@ -1,6 +1,8 @@
 package ru.mephi.trainer.rest.controller;
 
 import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
@@ -10,10 +12,11 @@ import ru.mephi.trainer.entity.TrainerEntity;
 import ru.mephi.trainer.models.command.SaveTrainerCommand;
 import ru.mephi.trainer.rest.api.TrainersAPI;
 import ru.mephi.trainer.rest.dto.request.AnswerRequest;
+import ru.mephi.trainer.rest.dto.request.trainer.CreateTrainerRequest;
+import ru.mephi.trainer.rest.dto.response.MessageResponse;
 import ru.mephi.trainer.rest.dto.response.TaskResponse;
-import ru.mephi.trainer.rest.dto.response.TrainerInfoResponse;
-import ru.mephi.trainer.rest.dto.response.TrainerResponse;
-import ru.mephi.trainer.rest.dto.response.test.MessageResponse;
+import ru.mephi.trainer.rest.dto.response.trainer.TrainerInfoResponse;
+import ru.mephi.trainer.rest.dto.response.trainer.TrainerResponse;
 import ru.mephi.trainer.service.CurrentUserService;
 import ru.mephi.trainer.service.TaskAttemptService;
 import ru.mephi.trainer.service.TaskService;
@@ -31,7 +34,6 @@ public class TrainersController implements TrainersAPI {
     private final TaskAttemptService taskAttemptService;
     private final CurrentUserService currentUserService;
     private final TaskService taskService;
-    private final CurrentUserService currentUserService;
 
     @Override
     @PermitAll

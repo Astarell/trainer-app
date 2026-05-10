@@ -1,5 +1,6 @@
 package ru.mephi.trainer.rest.api;
 
+import io.quarkus.security.Authenticated;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -17,11 +18,14 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
+import ru.mephi.trainer.rest.dto.request.AnswerRequest;
 import ru.mephi.trainer.rest.dto.request.trainer.CreateTrainerRequest;
 import ru.mephi.trainer.rest.dto.response.ErrorResponse;
+import ru.mephi.trainer.rest.dto.response.MessageResponse;
+import ru.mephi.trainer.rest.dto.response.TaskResponse;
 import ru.mephi.trainer.rest.dto.response.trainer.TrainerInfoResponse;
 import ru.mephi.trainer.rest.dto.response.trainer.TrainerResponse;
-import ru.mephi.trainer.rest.dto.response.test.MessageResponse;
+
 
 import java.util.List;
 import java.util.UUID;
@@ -158,8 +162,13 @@ public interface TrainersAPI {
                     content = @Content(schema = @Schema(implementation = MessageResponse.class))
             ),
             @APIResponse(
+                    responseCode = "401",
+                    description = "Пользователь не авторизован",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @APIResponse(
                     responseCode = "404",
-                    description = "Тренажёр не найден",
+                    description = "Ошибка при отправке ответа",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             ),
             @APIResponse(

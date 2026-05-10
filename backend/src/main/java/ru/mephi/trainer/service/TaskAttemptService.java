@@ -14,7 +14,7 @@ import ru.mephi.trainer.repository.ProfileRepository;
 import ru.mephi.trainer.repository.TaskAttemptRepository;
 import ru.mephi.trainer.repository.TaskRepository;
 import ru.mephi.trainer.repository.TaskTrainerRepository;
-import ru.mephi.trainer.rest.dto.response.test.MessageResponse;
+import ru.mephi.trainer.rest.dto.response.MessageResponse;
 
 import java.time.Instant;
 import java.util.Optional;
