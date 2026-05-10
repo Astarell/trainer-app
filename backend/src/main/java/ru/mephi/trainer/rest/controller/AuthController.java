@@ -11,6 +11,7 @@ import ru.mephi.trainer.rest.dto.request.auth.RegistrationRequest;
 import ru.mephi.trainer.rest.dto.response.auth.LoginResponse;
 import ru.mephi.trainer.rest.dto.response.auth.RegistrationResponse;
 import ru.mephi.trainer.service.AuthService;
+import ru.mephi.trainer.util.SecurityUtil;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -43,7 +44,7 @@ public class AuthController implements AuthApi {
         return RestResponse.ok(LoginResponse.builder()
                 .token(token)
                 .email(authenticatedUser.getEmail())
-                .role(authenticatedUser.getUserRole().getSecurityRole())
+                .role(SecurityUtil.toSecurityRole(authenticatedUser.getUserRole()))
                 .build());
     }
 }

@@ -16,6 +16,8 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
 
+import static ru.mephi.trainer.util.SecurityUtil.toSecurityRole;
+
 @Slf4j
 @ApplicationScoped
 @RequiredArgsConstructor
@@ -60,7 +62,7 @@ public class AuthService {
     public String generateToken(UserEntity user) {
         return Jwt.issuer("trainer-app")
                 .upn(user.getEmail())
-                .groups(Set.of(user.getUserRole().getSecurityRole()))
+                .groups(Set.of(toSecurityRole(user.getUserRole())))
                 .claim("userId", user.getId())
                 .expiresAt(Instant.now().plusSeconds(3600).getEpochSecond()) // 1 час
                 .sign();

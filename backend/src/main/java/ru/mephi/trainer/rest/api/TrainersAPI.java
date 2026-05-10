@@ -108,6 +108,7 @@ public interface TrainersAPI {
             )
     })
     RestResponse<TrainerResponse> createTrainer(@RequestBody @Valid CreateTrainerRequest createTrainerRequest);
+
     @GET
     @Path("/{trainerId}/tasks/{taskId}")
     @Operation(
@@ -115,6 +116,7 @@ public interface TrainersAPI {
             summary = "Информация о задаче",
             description = "Получить информацию о задаче с учётом последней попытки пользователя"
     )
+    @SecurityRequirement(name = "bearerAuth")
     @APIResponses(value = {
             @APIResponse(
                     responseCode = "200",
@@ -154,6 +156,7 @@ public interface TrainersAPI {
             summary = "Отправить ответ на задание",
             description = "Получить информацию о тренажере"
     )
+    @SecurityRequirement(name = "bearerAuth")
     @APIResponses(value = {
             @APIResponse(
                     responseCode = "200",

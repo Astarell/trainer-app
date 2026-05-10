@@ -28,8 +28,7 @@ public class TaskAttemptService {
     private final TaskTrainerRepository taskTrainerRepository;
     private final ProfileRepository profileRepository;
     private final TaskRepository taskRepository;
-
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
     @Transactional
     public MessageResponse insertTaskAttempt(UUID userId, UUID trainerId, UUID taskId, String answer) {
@@ -37,7 +36,7 @@ public class TaskAttemptService {
             TaskTrainerEntity taskTrainer = validateAndGetTaskTrainer(trainerId, taskId);
             UserEntity user = getUserOrThrow(userId);
             TaskEntity task = getTaskOrThrow(taskId);
-            JsonNode config = MAPPER.readTree(task.getConfig());
+            JsonNode config = objectMapper.readTree(task.getConfig());
 
             int count = getAndCheckAttemptsLimit(taskTrainer.getId(), userId, config);
             checkLastAttemptStatus(userId, taskTrainer.getId());
@@ -157,14 +156,14 @@ public class TaskAttemptService {
     }
 
     private boolean checkSingleChoice(String answer, JsonNode config) throws JsonProcessingException {
-        JsonNode answerNode = MAPPER.readTree(answer);
+        JsonNode answerNode = objectMapper.readTree(answer);
         int userChoice = answerNode.asInt();
         int correctChoice = config.get("expectedOrdinal").asInt();
         return userChoice == correctChoice;
     }
 
     private boolean checkMultipleChoice(String answer, JsonNode config) throws JsonProcessingException {
-        JsonNode answerNode = MAPPER.readTree(answer);
+        JsonNode answerNode = objectMapper.readTree(answer);
         if (!answerNode.isArray()) {
             return false;
         }
@@ -188,7 +187,7 @@ public class TaskAttemptService {
     }
 
     private boolean checkFindingError(String answer, JsonNode config) throws JsonProcessingException {
-        JsonNode answerNode = MAPPER.readTree(answer);
+        JsonNode answerNode = objectMapper.readTree(answer);
         String userChoice = answerNode.asText();
         String correctChoice = String.valueOf(config.get("answer"));
         return userChoice.equals(correctChoice);
