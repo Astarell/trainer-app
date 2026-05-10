@@ -6,7 +6,6 @@ import ru.mephi.trainer.entity.enums.TaskType;
 public interface TaskConfigRequestDto {
     @JsonIgnore
     TaskType getTaskType();
-
     String getQuestion();
     Integer getPoints();
     Integer getMistakeCost();
