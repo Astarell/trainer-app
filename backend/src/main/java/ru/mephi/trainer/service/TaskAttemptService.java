@@ -158,6 +158,9 @@ public class TaskAttemptService {
 
     private boolean checkSingleChoice(String answer, JsonNode config) throws JsonProcessingException {
         JsonNode answerNode = MAPPER.readTree(answer);
+        if (!answerNode.isNumber()) {
+            return false;
+        }
         int userChoice = answerNode.asInt();
         int correctChoice = config.get("expectedOrdinal").asInt();
         return userChoice == correctChoice;
