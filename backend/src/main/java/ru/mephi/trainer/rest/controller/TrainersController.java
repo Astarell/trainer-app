@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jboss.resteasy.reactive.RestResponse;
 import ru.mephi.trainer.entity.TrainerEntity;
-import ru.mephi.trainer.models.command.CreateTrainerCommand;
+import ru.mephi.trainer.models.command.SaveTrainerCommand;
 import ru.mephi.trainer.rest.api.TrainersAPI;
 import ru.mephi.trainer.rest.dto.request.trainer.CreateTrainerRequest;
 import ru.mephi.trainer.rest.dto.response.trainer.TrainerInfoResponse;
@@ -53,9 +53,11 @@ public class TrainersController implements TrainersAPI {
     @Override
     @RolesAllowed({"expert", "admin"})
     public RestResponse<TrainerResponse> createTrainer(CreateTrainerRequest createTrainerRequest) {
-
         UUID userId = currentUserService.getCurrentUserIdOrThrow();
-        TrainerEntity trainer = trainerService.createTrainer(new CreateTrainerCommand(createTrainerRequest.getName(), userId));
+        log.info("Creating trainer: {} userId: {}", createTrainerRequest.getName(), userId);
+
+        SaveTrainerCommand command = new SaveTrainerCommand(createTrainerRequest.getName());
+        TrainerEntity trainer = trainerService.createTrainer(command, userId);
 
         return RestResponse.status(Response.Status.CREATED, toTrainerResponse(trainer));
     }

@@ -1,6 +1,5 @@
 package ru.mephi.trainer.service;
 
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import ru.mephi.trainer.entity.TrainerEntity;
 import ru.mephi.trainer.exception.InvalidCommandException;
 import ru.mephi.trainer.exception.TrainerNotFoundException;
-import ru.mephi.trainer.models.command.CreateTrainerCommand;
+import ru.mephi.trainer.models.command.SaveTrainerCommand;
 import ru.mephi.trainer.repository.TrainerRepository;
 import ru.mephi.trainer.rest.dto.response.trainer.TrainerInfoResponse;
 
@@ -47,17 +46,17 @@ public class TrainerService {
     }
 
     @Transactional
-    public TrainerEntity createTrainer(CreateTrainerCommand createTrainerCommand) {
-        log.info("User {} creating trainer {}", createTrainerCommand.userId(), createTrainerCommand.name());
-        validateCreateTrainerCommand(createTrainerCommand);
+    public TrainerEntity createTrainer(SaveTrainerCommand saveTrainerCommand, UUID userId) {
+        log.info("User {} creating trainer {}", userId, saveTrainerCommand.name());
+        validateCreateTrainerCommand(saveTrainerCommand);
 
-        TrainerEntity trainer = buildTrainerEntity(createTrainerCommand);
+        TrainerEntity trainer = buildTrainerEntity(saveTrainerCommand, userId);
         trainerRepository.persist(trainer);
 
         return trainer;
     }
 
-    private void validateCreateTrainerCommand(CreateTrainerCommand command) {
+    private void validateCreateTrainerCommand(SaveTrainerCommand command) {
         if (command == null) {
             throw new InvalidCommandException("Command can not be null");
         }
@@ -66,10 +65,10 @@ public class TrainerService {
         }
     }
 
-    private TrainerEntity buildTrainerEntity(CreateTrainerCommand createTrainerCommand) {
+    private TrainerEntity buildTrainerEntity(SaveTrainerCommand saveTrainerCommand, UUID userId) {
         return TrainerEntity.builder()
-                .name(createTrainerCommand.name())
-                .createdBy(createTrainerCommand.userId())
+                .name(saveTrainerCommand.name())
+                .createdBy(userId)
                 .build();
     }
 }
