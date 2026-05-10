@@ -191,8 +191,8 @@ public class TaskAttemptService {
 
     private boolean checkFindingError(String answer, JsonNode config) throws JsonProcessingException {
         JsonNode answerNode = objectMapper.readTree(answer);
-        String userChoice = answerNode.asText();
-        String correctChoice = String.valueOf(config.get("answer"));
+        String userChoice = answerNode.get("answer").asText();
+        String correctChoice = config.get("answer").asText();
         return userChoice.equals(correctChoice);
     }
 }
