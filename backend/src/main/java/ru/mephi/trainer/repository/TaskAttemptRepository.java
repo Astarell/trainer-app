@@ -114,7 +114,7 @@ public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptE
 
     public Integer getMistakeCost(UUID id) {
         String sql = """
-                    SELECT CAST(t.config->>'mistake_cost' AS INTEGER)
+                    SELECT CAST(t.config->>'mistakeCost' AS INTEGER)
                     FROM task_attempts ta
                     JOIN tasks_trainers tt ON tt.id = ta.task_id
                     JOIN tasks t ON t.id = tt.task_id
