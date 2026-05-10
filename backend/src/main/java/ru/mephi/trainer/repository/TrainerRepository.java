@@ -40,7 +40,7 @@ public class TrainerRepository implements PanacheRepositoryBase<TrainerEntity, U
                     SELECT 
                         t.id,
                         t.config->>'question',
-                        t.task_type,
+                        t.task_type
                     FROM tasks t
                     JOIN tasks_trainers tt ON tt.task_id = t.id
                     WHERE tt.trainer_id = ?1
