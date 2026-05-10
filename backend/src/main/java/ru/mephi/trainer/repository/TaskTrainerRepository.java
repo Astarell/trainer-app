@@ -54,7 +54,7 @@ public class TaskTrainerRepository implements PanacheRepositoryBase<TaskTrainerE
 
     public Optional<TaskTrainerEntity> findByTaskAndTrainer (UUID trainerId, UUID taskId) {
         return find("SELECT * FROM TaskTrainerEntity WHERE trainerId = ?1 AND taskId = ?2)",
-                trainerId.toString(), taskId.toString())
+                trainerId, taskId)
                 .firstResultOptional();
     }
 }

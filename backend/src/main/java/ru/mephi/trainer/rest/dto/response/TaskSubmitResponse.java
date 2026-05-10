@@ -1,4 +1,4 @@
-package ru.mephi.trainer.rest.dto.request;
+package ru.mephi.trainer.rest.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,9 +10,10 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Запрос сохранения задачи для тренажера")
-public class TaskSubmitRequest {
-    private String taskType;
+@Schema(description = "Ответ сохранения задачи для тренажера")
+public class TaskSubmitResponse {
     private String userAnswer;
+    private Double points;
+    private UUID taskId;
     private UUID user;
 }

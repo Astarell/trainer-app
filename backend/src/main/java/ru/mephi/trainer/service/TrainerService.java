@@ -1,6 +1,8 @@
 package ru.mephi.trainer.service;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -9,15 +11,16 @@ import ru.mephi.trainer.entity.TaskEntity;
 import ru.mephi.trainer.entity.TaskTrainerEntity;
 import ru.mephi.trainer.entity.TrainerEntity;
 import ru.mephi.trainer.entity.UserEntity;
-import ru.mephi.trainer.exception.TaskNotFoundException;
-import ru.mephi.trainer.exception.TaskTrainerNotFoundException;
-import ru.mephi.trainer.exception.TrainerNotFoundException;
-import ru.mephi.trainer.exception.UserNotFoundException;
+import ru.mephi.trainer.entity.enums.AttemptStatus;
+import ru.mephi.trainer.entity.enums.TaskType;
+import ru.mephi.trainer.exception.*;
+import ru.mephi.trainer.models.tasks.*;
 import ru.mephi.trainer.repository.*;
 import ru.mephi.trainer.rest.dto.request.TaskSubmitRequest;
 import ru.mephi.trainer.rest.dto.response.TaskResponse;
 import ru.mephi.trainer.rest.dto.response.TrainerInfoResponse;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,6 +33,14 @@ public class TrainerService {
     private final TaskTrainerRepository taskTrainerRepository;
     private final TaskAttemptRepository taskAttemptRepository;
     private final UserRepository userRepository;
+    private final ObjectMapper mapper;
+
+    private final static String LIMIT = "Превышено количество ответов на задачу";
+    private final static String INCORRECT_TYPE = "Некорректный тип задачи";
+
+    private final static String SUCCESS = "Попытка успешна";
+    private final static String REVIEW = "Попытка принята и направлена на проверку";
+    private final static String FAIL = "Попытка не успешна";
 
     public List<TrainerEntity> getAllTrainers() {
         log.info("Get all trainers");
@@ -105,9 +116,194 @@ public class TrainerService {
                     return new UserNotFoundException("Пользователь с id " + taskSubmitRequest.getUser() + " не найден");
                 });
 
-        // сохраняем данные о попытке
-        taskAttemptRepository.saveTrainerTasksSubmit(taskTrainerEntity, userEntity, taskSubmitRequest);
+        // преобразуем задачу
+        try {
+            TaskResponse task = taskRepository.getTask(taskId)
+                    .orElseThrow(() -> {
+                        log.warn("Get task info failed - id not found: id={}", taskId);
+                        return new TaskNotFoundException("Задача с id " + taskId + " не найдена");
+                    });
 
-        return "Ответ на задачу сохранен";
+            if (TaskType.SINGLE_CHOICE.name().equals(task.getTaskType())) {
+                // прочитаем задачу
+                SingleChoiceModel taskModel = mapper.readValue(task.getConfig(), SingleChoiceModel.class);
+
+                // прочитаем ответ пользователя
+                SingleChoiceModel answerModel = mapper.readValue(taskSubmitRequest.getUserAnswer(), SingleChoiceModel.class);
+
+                // превышено количество попыток ответа на вопрос?
+                Integer minusPoints = 0;
+                Integer attemptsCount = taskAttemptRepository.getAttemptsCount(taskEntity.getId(), userEntity.getId());
+                if (attemptsCount >= taskModel.getMaxAttempts()) {
+                    throw new FailedAttemptSubmitException(LIMIT);
+                } else {
+                    // получить сколько оставлось возможно баллов за задачу
+                    minusPoints = taskAttemptRepository.getMistakeCost(taskEntity.getId());
+                }
+
+                // проверим
+                boolean valid = false;
+                for (AnswerChoices ac : answerModel.getAnswerChoices()) {
+                    if (ac.getOrdinal() == taskModel.getExpectedOrdinal() && ac.getChecked()) {
+                        // правильно
+                        valid = true;
+                        break;
+                    }
+                }
+
+                if (valid) {
+                    // сохранение попытки
+                    taskAttemptRepository.saveTrainerTasksSubmit(taskTrainerEntity, userEntity,
+                            taskSubmitRequest.getUserAnswer(),
+                            taskModel.getPoints() - minusPoints,
+                            AttemptStatus.COMPLETED);
+
+                    return SUCCESS;
+                } else {
+                    // сохранение попытки
+                    taskAttemptRepository.saveTrainerTasksSubmit(taskTrainerEntity, userEntity,
+                            taskSubmitRequest.getUserAnswer(),
+                            0,
+                            AttemptStatus.FAILED);
+
+                    return FAIL;
+                }
+
+            } else if (TaskType.MULTIPLE_CHOICE.name().equals(task.getTaskType())) {
+                // прочитаем задачу
+                MultiChoiceModel taskModel = mapper.readValue(task.getConfig(), MultiChoiceModel.class);
+
+                // прочитаем ответ пользователя
+                MultiChoiceModel answerModel = mapper.readValue(taskSubmitRequest.getUserAnswer(), MultiChoiceModel.class);
+
+                // превышено количество попыток ответа на вопрос?
+                Integer minusPoints = 0;
+                Integer attemptsCount = taskAttemptRepository.getAttemptsCount(taskEntity.getId(), userEntity.getId());
+                if (attemptsCount >= taskModel.getMaxAttempts()) {
+                    throw new FailedAttemptSubmitException(LIMIT);
+                } else {
+                    // получить сколько оставлось возможно баллов за задачу
+                    minusPoints = taskAttemptRepository.getMistakeCost(taskEntity.getId());
+                }
+
+                // проверим
+                boolean valid = true;
+                HashMap<Integer, Boolean> mapTrueAnswer = new HashMap<>();
+                if (taskModel.getExpectedOrdinals() != null) {
+                    for (Integer expectedOrdinal : taskModel.getExpectedOrdinals()) {
+                        mapTrueAnswer.put(expectedOrdinal, Boolean.TRUE);
+                    }
+                }
+
+                for (AnswerChoices ac : answerModel.getAnswerChoices()) {
+                    if (mapTrueAnswer.get(ac.getOrdinal()) == null) {
+                        // неправильно
+                        valid = false;
+                        break;
+                    }
+                }
+
+                if (valid) {
+                    // сохранение попытки
+                    taskAttemptRepository.saveTrainerTasksSubmit(taskTrainerEntity, userEntity,
+                            taskSubmitRequest.getUserAnswer(),
+                            taskModel.getPoints() - minusPoints,
+                            AttemptStatus.COMPLETED);
+
+                    return SUCCESS;
+                } else {
+                    // сохранение попытки
+                    taskAttemptRepository.saveTrainerTasksSubmit(taskTrainerEntity, userEntity,
+                            taskSubmitRequest.getUserAnswer(),
+                            0,
+                            AttemptStatus.FAILED);
+
+                    return FAIL;
+                }
+
+            } else if (TaskType.ERROR_FINDING.name().equals(task.getTaskType())) {
+                // прочитаем задачу
+                ErrorFindingModel taskModel = mapper.readValue(task.getConfig(), ErrorFindingModel.class);
+
+                // прочитаем ответ пользователя
+                ErrorFindingModel answerModel = mapper.readValue(taskSubmitRequest.getUserAnswer(), ErrorFindingModel.class);
+
+                // превышено количество попыток ответа на вопрос?
+                Integer minusPoints = 0;
+                Integer attemptsCount = taskAttemptRepository.getAttemptsCount(taskEntity.getId(), userEntity.getId());
+                if (attemptsCount >= taskModel.getMaxAttempts()) {
+                    throw new FailedAttemptSubmitException(LIMIT);
+                } else {
+                    // получить сколько оставлось возможно баллов за задачу
+                    minusPoints = taskAttemptRepository.getMistakeCost(taskEntity.getId());
+                }
+
+                // проверим
+                boolean valid = true;
+                HashMap<Integer, Boolean> mapTrueAnswer = new HashMap<>();
+                if (taskModel.getExpectedOrdinals() != null) {
+                    for (Integer expectedOrdinal : taskModel.getExpectedOrdinals()) {
+                        mapTrueAnswer.put(expectedOrdinal, Boolean.TRUE);
+                    }
+                }
+
+                for (AnswerChoices ac : answerModel.getAnswerChoices()) {
+                    if (mapTrueAnswer.get(ac.getOrdinal()) == null) {
+                        // неправильно
+                        valid = false;
+                        break;
+                    }
+                }
+
+                if (valid) {
+                    // сохранение попытки
+                    taskAttemptRepository.saveTrainerTasksSubmit(taskTrainerEntity, userEntity,
+                            taskSubmitRequest.getUserAnswer(),
+                            taskModel.getPoints() - minusPoints,
+                            AttemptStatus.COMPLETED);
+
+                    return SUCCESS;
+                } else {
+                    // сохранение попытки
+                    taskAttemptRepository.saveTrainerTasksSubmit(taskTrainerEntity, userEntity,
+                            taskSubmitRequest.getUserAnswer(),
+                            0,
+                            AttemptStatus.FAILED);
+
+                    return FAIL;
+                }
+
+            } else if (TaskType.OPEN_ANSWER.name().equals(task.getTaskType())) {
+                // прочитаем задачу
+                OpenAnswerModel taskModel = mapper.readValue(task.getConfig(), OpenAnswerModel.class);
+
+                // прочитаем ответ пользователя
+                OpenAnswerModel answerModel = mapper.readValue(taskSubmitRequest.getUserAnswer(), OpenAnswerModel.class);
+
+                // превышено количество попыток ответа на вопрос?
+                Integer minusPoints = 0;
+                Integer attemptsCount = taskAttemptRepository.getAttemptsCount(taskEntity.getId(), userEntity.getId());
+                if (attemptsCount >= taskModel.getMaxAttempts()) {
+                    throw new FailedAttemptSubmitException(LIMIT);
+                } else {
+                    // получить сколько оставлось возможно баллов за задачу
+                    minusPoints = taskAttemptRepository.getMistakeCost(taskEntity.getId());
+                }
+
+                // сохранение попытки
+                taskAttemptRepository.saveTrainerTasksSubmit(taskTrainerEntity, userEntity,
+                        taskSubmitRequest.getUserAnswer(),
+                        taskModel.getPoints() - minusPoints,
+                        AttemptStatus.REVIEW);
+
+                return REVIEW;
+
+            } else {
+                throw new FailedAttemptSubmitException(INCORRECT_TYPE);
+            }
+        } catch (JsonProcessingException exc) {
+            log.error(exc.getMessage(), exc);
+            throw new FailedAttemptSubmitException(exc.getMessage());
+        }
     }
 }
