@@ -37,6 +37,7 @@ public interface TrainersAPI {
 
     @GET
     @Path("/")
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(
             operationId = "getTrainers",
             summary = "Список тренажеров",
@@ -58,6 +59,7 @@ public interface TrainersAPI {
 
     @GET
     @Path("/{id}")
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(
             operationId = "getTrainerInfo",
             summary = "Информация о тренажере",
