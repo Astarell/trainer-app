@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jboss.resteasy.reactive.RestResponse;
 import ru.mephi.trainer.entity.TrainerEntity;
+import ru.mephi.trainer.models.attempt.SubmissionCheckResult;
 import ru.mephi.trainer.models.command.SaveTrainerCommand;
 import ru.mephi.trainer.rest.api.TrainersAPI;
 import ru.mephi.trainer.rest.dto.request.AnswerRequest;
@@ -93,8 +94,9 @@ public class TrainersController implements TrainersAPI {
     public RestResponse<MessageResponse> submitTaskAttempt(UUID trainerId, UUID taskId, AnswerRequest request) {
         UUID userId = currentUserService.getCurrentUserIdOrThrow();
         log.info("Submit task attempt: userId={}, trainerId={}, taskId={}", userId, trainerId, taskId);
-        MessageResponse response = taskAttemptService.submitTaskAttempt(userId, trainerId, taskId,
+        SubmissionCheckResult checkResult = taskAttemptService.submitTaskAttempt(userId, trainerId, taskId,
                 request.getUserAnswer());
-        return RestResponse.ok(response);
+
+        return RestResponse.ok(MessageResponse.withMessage(checkResult.getMessage()));
     }
 }

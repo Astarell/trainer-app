@@ -10,10 +10,8 @@ import ru.mephi.trainer.exception.EntityNotFoundException;
 import ru.mephi.trainer.exception.StatusTaskNotReviewException;
 import ru.mephi.trainer.repository.TaskAttemptRepository;
 import ru.mephi.trainer.rest.dto.response.task.expert.AnswerTaskResponse;
-import ru.mephi.trainer.rest.dto.response.MessageResponse;
 import ru.mephi.trainer.rest.dto.response.task.expert.ReviewTaskResponse;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,6 +19,7 @@ import java.util.UUID;
 @ApplicationScoped
 @RequiredArgsConstructor
 public class ExpertService {
+
     private final TaskAttemptRepository taskAttemptRepository;
 
     public List<ReviewTaskResponse> getReviewTask() {
@@ -38,7 +37,7 @@ public class ExpertService {
     }
 
     @Transactional
-    public MessageResponse setPointsForTask(UUID taskAttemptId, Boolean isCorrect) {
+    public int setPointsForTask(UUID taskAttemptId, Boolean isCorrect) {
         log.info("Setting points for attempt: {} with points: {}", taskAttemptId, isCorrect);
         TaskAttemptEntity taskAttempt = taskAttemptRepository.findByIdOptional(taskAttemptId)
                 .orElseThrow(() -> {
@@ -71,9 +70,6 @@ public class ExpertService {
         }
 
         taskAttemptRepository.persist(taskAttempt);
-        return MessageResponse.builder()
-                .message("Работа оценена. Поставлено баллов: " + points)
-                .timestamp(Instant.now())
-                .build();
+        return points;
     }
 }

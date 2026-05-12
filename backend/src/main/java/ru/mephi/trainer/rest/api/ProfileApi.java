@@ -1,9 +1,7 @@
 package ru.mephi.trainer.rest.api;
 
-import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -11,51 +9,87 @@ import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
-import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
-import ru.mephi.trainer.rest.dto.request.task.SaveTaskRequest;
 import ru.mephi.trainer.rest.dto.response.ErrorResponse;
-import ru.mephi.trainer.rest.dto.response.task.admin.TaskAdminResponse;
+import ru.mephi.trainer.rest.dto.response.profile.ProfileResponse;
+import ru.mephi.trainer.rest.dto.response.profile.TrainerProgressResponse;
 
 import java.util.UUID;
 
-@Path("/tasks")
+@Path("/profile")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Tag(name = "Задания", description = "Управление заданиями")
-public interface TaskAPI {
+@Tag(name = "Профиль", description = "Эндпоинты для профиля")
+public interface ProfileApi {
 
-    @POST
+    @GET
     @Path("/")
     @Operation(
-            operationId = "createTask",
-            summary = "Создание задания",
-            description = "Создать задание"
+            operationId = "getProfile",
+            summary = "Профиль пользователя",
+            description = "Получить информацию о пользователе"
     )
     @SecurityRequirement(name = "bearerAuth")
     @APIResponses(value = {
             @APIResponse(
-                    responseCode = "201",
-                    description = "Задание успешно создано",
-                    content = @Content(schema = @Schema(implementation = TaskAdminResponse.class))
+                    responseCode = "200",
+                    description = "Данные пользователя успешно получены",
+                    content = @Content(schema = @Schema(implementation = ProfileResponse.class))
             ),
             @APIResponse(
                     responseCode = "400",
-                    description = "Неверные параметры запроса",
+                    description = "Неверный запрос",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             ),
             @APIResponse(
                     responseCode = "401",
-                    description = "Не авторизован",
+                    description = "Пользователь не авторизован",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             ),
             @APIResponse(
                     responseCode = "403",
-                    description = "Доступ запрещён",
+                    description = "Нет прав",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @APIResponse(
+                    responseCode = "500",
+                    description = "Неожиданная ошибка",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            )
+    })
+    RestResponse<ProfileResponse> getProfile();
+
+    @GET
+    @Path("/trainers/{id}")
+    @Operation(
+            operationId = "getProfileTrainer",
+            summary = "Информация о прохождении тренажера",
+            description = "Получить информацию о статусе прохождения тренажера"
+    )
+    @SecurityRequirement(name = "bearerAuth")
+    @APIResponses(value = {
+            @APIResponse(
+                    responseCode = "200",
+                    description = "Данные о прохождении тренажера успешно получены",
+                    content = @Content(schema = @Schema(implementation = TrainerProgressResponse.class))
+            ),
+            @APIResponse(
+                    responseCode = "400",
+                    description = "Неверные данные запроса",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @APIResponse(
+                responseCode = "401",
+                description = "Пользователь не авторизован",
+                content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @APIResponse(
+                    responseCode = "403",
+                    description = "Нет прав",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             ),
             @APIResponse(
@@ -69,50 +103,5 @@ public interface TaskAPI {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<TaskAdminResponse> createTask(@RequestBody @Valid SaveTaskRequest request);
-
-    @PUT
-    @Path("/{id}")
-    @Operation(
-            operationId = "updateTask",
-            summary = "Обновление задания",
-            description = "Обновить существующее задание"
-    )
-    @SecurityRequirement(name = "bearerAuth")
-    @APIResponses(value = {
-            @APIResponse(
-                    responseCode = "200",
-                    description = "Задание успешно обновлено",
-                    content = @Content(schema = @Schema(implementation = TaskAdminResponse.class))
-            ),
-            @APIResponse(
-                    responseCode = "400",
-                    description = "Неверные параметры запроса",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-            ),
-            @APIResponse(
-                    responseCode = "401",
-                    description = "Не авторизован",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-            ),
-            @APIResponse(
-                    responseCode = "403",
-                    description = "Доступ запрещён",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-            ),
-            @APIResponse(
-                    responseCode = "404",
-                    description = "Задание или тренажёр не найдены",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-            ),
-            @APIResponse(
-                    responseCode = "500",
-                    description = "Неожиданная ошибка",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-            )
-    })
-    RestResponse<TaskAdminResponse> updateTask(
-            @PathParam("id") UUID id,
-            @RequestBody @Valid SaveTaskRequest request
-    );
+    RestResponse<TrainerProgressResponse> getTrainerProgress(@PathParam("id") UUID trainerId);
 }

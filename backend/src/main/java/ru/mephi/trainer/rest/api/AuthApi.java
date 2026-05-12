@@ -24,7 +24,7 @@ import ru.mephi.trainer.rest.dto.response.auth.RegistrationResponse;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Аутентификация", description = "Эндпоинты для регистрации и входа в систему")
-public interface AuthAPI {
+public interface AuthApi {
 
     @POST
     @Path("/register")

@@ -9,11 +9,11 @@ import ru.mephi.trainer.entity.TaskTrainerEntity;
 import ru.mephi.trainer.entity.UserEntity;
 import ru.mephi.trainer.entity.enums.TaskType;
 import ru.mephi.trainer.exception.EntityNotFoundException;
+import ru.mephi.trainer.models.attempt.SubmissionCheckResult;
 import ru.mephi.trainer.models.attempt.answer.UserAnswer;
 import ru.mephi.trainer.models.taskconfig.TaskConfig;
 import ru.mephi.trainer.repository.TaskTrainerRepository;
 import ru.mephi.trainer.repository.UserRepository;
-import ru.mephi.trainer.rest.dto.response.MessageResponse;
 import ru.mephi.trainer.service.attempt.TaskAttemptHandler;
 import ru.mephi.trainer.service.attempt.TaskAttemptValidator;
 import ru.mephi.trainer.service.attempt.UserAnswerParser;
@@ -34,7 +34,7 @@ public class TaskAttemptService {
     private final TaskTrainerRepository taskTrainerRepository;
 
     @Transactional
-    public MessageResponse submitTaskAttempt(UUID userId, UUID trainerId, UUID taskId, String answer) {
+    public SubmissionCheckResult submitTaskAttempt(UUID userId, UUID trainerId, UUID taskId, String answer) {
         TaskTrainerEntity taskTrainer = getTaskTrainerLink(trainerId, taskId);
         UserEntity user = getUser(userId);
         TaskEntity task = taskService.getTask(taskId);

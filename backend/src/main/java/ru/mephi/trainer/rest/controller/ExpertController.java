@@ -5,7 +5,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jboss.resteasy.reactive.RestResponse;
-import ru.mephi.trainer.rest.api.ExpertAPI;
+import ru.mephi.trainer.rest.api.ExpertApi;
 import ru.mephi.trainer.rest.dto.request.SubmitReviewRequest;
 import ru.mephi.trainer.rest.dto.response.task.expert.AnswerTaskResponse;
 import ru.mephi.trainer.rest.dto.response.MessageResponse;
@@ -18,7 +18,8 @@ import java.util.UUID;
 @Slf4j
 @ApplicationScoped
 @RequiredArgsConstructor
-public class ExpertController implements ExpertAPI {
+public class ExpertController implements ExpertApi {
+
     private final ExpertService expertService;
 
     @Override
@@ -41,7 +42,10 @@ public class ExpertController implements ExpertAPI {
     @RolesAllowed({"expert"})
     public RestResponse<MessageResponse> setPointForTask(UUID taskAttemptId, SubmitReviewRequest request) {
         log.info("Expert endpoint set task point accessed: id={}, correct={}", taskAttemptId, request.getIsCorrect());
-        MessageResponse response = expertService.setPointsForTask(taskAttemptId, request.getIsCorrect());
+        int points = expertService.setPointsForTask(taskAttemptId, request.getIsCorrect());
+
+        MessageResponse response = MessageResponse.withMessage("Работа оценена. Поставлено баллов: " + points);
+
         return RestResponse.ok(response);
     }
 }

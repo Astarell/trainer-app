@@ -9,12 +9,10 @@ import ru.mephi.trainer.entity.TaskTrainerEntity;
 import ru.mephi.trainer.entity.UserEntity;
 import ru.mephi.trainer.entity.enums.AttemptStatus;
 import ru.mephi.trainer.entity.enums.TaskType;
+import ru.mephi.trainer.models.attempt.SubmissionCheckResult;
 import ru.mephi.trainer.models.attempt.answer.UserAnswer;
 import ru.mephi.trainer.models.taskconfig.TaskConfig;
 import ru.mephi.trainer.repository.TaskAttemptRepository;
-import ru.mephi.trainer.rest.dto.response.MessageResponse;
-
-import java.time.Instant;
 
 @ApplicationScoped
 @RequiredArgsConstructor
@@ -23,17 +21,17 @@ public class TaskAttemptHandler {
     private final AnswerCheckerRegistry checkerRegistry;
     private final ObjectMapper objectMapper;
 
-    public MessageResponse handleReviewAttempt(TaskTrainerEntity taskTrainer,
-                                               UserEntity user,
-                                               UserAnswer answer) {
+    public SubmissionCheckResult handleReviewAttempt(TaskTrainerEntity taskTrainer,
+                                                     UserEntity user,
+                                                     UserAnswer answer) {
         saveAttempt(taskTrainer, user, answer, 0, AttemptStatus.REVIEW);
-        return MessageResponse.builder()
+        return SubmissionCheckResult.builder()
+                .attemptStatus(AttemptStatus.REVIEW)
                 .message("Ответ отправлен на проверку эксперту")
-                .timestamp(Instant.now())
                 .build();
     }
 
-    public <C extends TaskConfig, A extends UserAnswer> MessageResponse handleAutoCheckAttempt(
+    public <C extends TaskConfig, A extends UserAnswer> SubmissionCheckResult handleAutoCheckAttempt(
             TaskTrainerEntity taskTrainer,
             UserEntity user,
             C config,
@@ -46,9 +44,9 @@ public class TaskAttemptHandler {
 
         if (!isCorrect) {
             saveAttempt(taskTrainer, user, parsedAnswer, 0, AttemptStatus.FAILED);
-            return MessageResponse.builder()
+            return SubmissionCheckResult.builder()
+                    .attemptStatus(AttemptStatus.FAILED)
                     .message("Введен неверный ответ")
-                    .timestamp(Instant.now())
                     .build();
         }
 
@@ -56,9 +54,9 @@ public class TaskAttemptHandler {
         points = Math.max(0, points);
         saveAttempt(taskTrainer, user, parsedAnswer, points, AttemptStatus.COMPLETED);
 
-        return MessageResponse.builder()
+        return SubmissionCheckResult.builder()
+                .attemptStatus(AttemptStatus.COMPLETED)
                 .message(String.format("Правильно! Вы получили %d баллов", points))
-                .timestamp(Instant.now())
                 .build();
     }
 
