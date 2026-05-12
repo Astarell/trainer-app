@@ -10,7 +10,7 @@ public class OpenAnswerChecker implements AnswerChecker<OpenAnswerConfig, OpenAn
 
     @Override
     public boolean check(OpenAnswer answer, OpenAnswerConfig config) {
-        return false; // Not used - requires review
+        return false;
     }
 
     @Override
