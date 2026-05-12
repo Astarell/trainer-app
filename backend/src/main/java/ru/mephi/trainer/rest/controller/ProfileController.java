@@ -11,7 +11,7 @@ import ru.mephi.trainer.rest.api.ProfileApi;
 import ru.mephi.trainer.rest.dto.response.profile.ProfileResponse;
 import ru.mephi.trainer.rest.dto.response.profile.TrainerProgressResponse;
 import ru.mephi.trainer.service.CurrentUserService;
-import ru.mephi.trainer.service.ProfileService;
+import ru.mephi.trainer.service.UserService;
 import ru.mephi.trainer.service.TrainerProgressService;
 
 import java.util.UUID;
@@ -23,7 +23,7 @@ public class ProfileController implements ProfileApi {
 
     private final CurrentUserService currentUserService;
     private final TrainerProgressService trainerProgressService;
-    private final ProfileService profileService;
+    private final UserService userService;
     private final ProfileMapper profileMapper;
 
     @Override
@@ -32,7 +32,7 @@ public class ProfileController implements ProfileApi {
         UUID userId = currentUserService.getCurrentUserIdOrThrow();
         log.info("Profile endpoint accessed by: {}", userId);
 
-        UserProfile profile = profileService.getProfile(userId);
+        UserProfile profile = userService.getProfile(userId);
 
         return RestResponse.ok(profileMapper.toProfileResponse(profile));
     }

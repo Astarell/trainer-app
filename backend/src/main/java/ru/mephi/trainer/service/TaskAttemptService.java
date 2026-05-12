@@ -13,7 +13,6 @@ import ru.mephi.trainer.models.attempt.SubmissionCheckResult;
 import ru.mephi.trainer.models.attempt.answer.UserAnswer;
 import ru.mephi.trainer.models.taskconfig.TaskConfig;
 import ru.mephi.trainer.repository.TaskTrainerRepository;
-import ru.mephi.trainer.repository.UserRepository;
 import ru.mephi.trainer.service.attempt.TaskAttemptHandler;
 import ru.mephi.trainer.service.attempt.TaskAttemptValidator;
 import ru.mephi.trainer.service.attempt.UserAnswerParser;
@@ -30,13 +29,13 @@ public class TaskAttemptService {
     private final UserAnswerParser answerParser;
     private final TaskAttemptHandler attemptHandler;
     private final TaskService taskService;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final TaskTrainerRepository taskTrainerRepository;
 
     @Transactional
     public SubmissionCheckResult submitTaskAttempt(UUID userId, UUID trainerId, UUID taskId, String answer) {
         TaskTrainerEntity taskTrainer = getTaskTrainerLink(trainerId, taskId);
-        UserEntity user = getUser(userId);
+        UserEntity user = userService.getUser(userId);
         TaskEntity task = taskService.getTask(taskId);
 
         TaskConfig config = configFactory.createConfig(task.getConfig(), task.getTaskType());
@@ -53,14 +52,6 @@ public class TaskAttemptService {
         return attemptHandler.handleAutoCheckAttempt(
                 taskTrainer, user, config, parsedAnswer, task.getTaskType()
         );
-    }
-
-    private UserEntity getUser(UUID userId) {
-        UserEntity user = userRepository.findById(userId);
-        if (user == null) {
-            throw new EntityNotFoundException("Пользователь не найден");
-        }
-        return user;
     }
 
     public TaskTrainerEntity getTaskTrainerLink(UUID trainerId, UUID taskId) {
