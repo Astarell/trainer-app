@@ -159,9 +159,6 @@ public class TaskService {
             log.warn("Task not found: taskId={}, trainerId={}", taskId, trainerId);
             return new EntityNotFoundException("Задача не найдена в этом тренажёре");
         });
-        int countAttempts = taskAttemptRepository.getAttemptsCountByTaskAndTrainer(taskId, trainerId, userId);
-        taskResponse.setUserAttempts(countAttempts);
-
         log.info("Task retrieved successfully: {}", taskResponse.getId());
         return taskResponse;
     }

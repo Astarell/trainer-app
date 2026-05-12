@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.mephi.trainer.rest.dto.response.task.user.TaskInfoResponse;
+import ru.mephi.trainer.rest.dto.response.task.user.TaskResponse;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -20,5 +20,5 @@ public class TrainerInfoResponse {
     private Integer totalTasks;
     private OffsetDateTime createdAt;
     private UUID createdBy;
-    private List<TaskInfoResponse> tasks;
+    private List<TaskResponse> tasks;
 }
