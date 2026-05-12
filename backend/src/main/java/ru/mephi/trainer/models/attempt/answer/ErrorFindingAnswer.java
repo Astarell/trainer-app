@@ -1,4 +1,4 @@
-package ru.mephi.trainer.models.taskconfig;
+package ru.mephi.trainer.models.attempt.answer;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,12 +10,8 @@ import ru.mephi.trainer.entity.enums.TaskType;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ErrorFindingConfig implements TaskConfig {
-    private String question;
+public class ErrorFindingAnswer implements UserAnswer {
     private String answer;
-    private Integer points;
-    private Integer mistakeCost;
-    private Integer maxAttempts;
 
     @Override
     public TaskType getTaskType() {
