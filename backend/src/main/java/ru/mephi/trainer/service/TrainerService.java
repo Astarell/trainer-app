@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.mephi.trainer.entity.TrainerEntity;
 import ru.mephi.trainer.exception.EntityNotFoundException;
-import ru.mephi.trainer.exception.InvalidCommandException;
+import ru.mephi.trainer.exception.InvalidCommandDataException;
 import ru.mephi.trainer.models.command.SaveTrainerCommand;
 import ru.mephi.trainer.repository.TaskRepository;
 import ru.mephi.trainer.repository.TrainerRepository;
@@ -64,10 +64,10 @@ public class TrainerService {
 
     private void validateCreateTrainerCommand(SaveTrainerCommand command) {
         if (command == null) {
-            throw new InvalidCommandException("Command can not be null");
+            throw new InvalidCommandDataException("Command can not be null");
         }
         if (command.name() == null || command.name().trim().length() < 3) {
-            throw new InvalidCommandException("Trainer name must contain at least 3 characters");
+            throw new InvalidCommandDataException("Trainer name must contain at least 3 characters");
         }
     }
 

@@ -147,8 +147,8 @@ public interface TrainersAPI {
             )
     })
     RestResponse<TaskResponse> getTaskWithAttempt(
-            @PathParam("trainerId") UUID trainerId,
-            @PathParam("taskId") UUID taskId
+            @PathParam("trainer-id") UUID trainerId,
+            @PathParam("task-id") UUID taskId
     );
 
     @POST

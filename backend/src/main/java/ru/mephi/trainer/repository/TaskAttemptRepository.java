@@ -2,27 +2,19 @@ package ru.mephi.trainer.repository;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.PersistenceContext;
 import ru.mephi.trainer.entity.TaskAttemptEntity;
 import ru.mephi.trainer.entity.enums.AttemptStatus;
 import ru.mephi.trainer.rest.dto.response.task.expert.AnswerTaskResponse;
 import ru.mephi.trainer.rest.dto.response.task.expert.ReviewTaskResponse;
 
-import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @ApplicationScoped
 public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptEntity, UUID> {
-
-    @PersistenceContext
-    private EntityManager em;
 
     public List<ReviewTaskResponse> getReviewTasksWithDetails() {
         String sql = """
@@ -79,7 +71,7 @@ public class TaskAttemptRepository implements PanacheRepositoryBase<TaskAttemptE
                     WHERE ta.id = ?1
                 """;
         try {
-            Object[] result = (Object[]) em.createNativeQuery(sql)
+            Object[] result = (Object[]) getEntityManager().createNativeQuery(sql)
                     .setParameter(1, id)
                     .getSingleResult();
 

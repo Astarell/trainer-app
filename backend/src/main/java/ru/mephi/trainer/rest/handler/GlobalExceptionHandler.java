@@ -77,4 +77,14 @@ public class GlobalExceptionHandler {
 
         return RestResponse.status(Response.Status.CONFLICT, response);
     }
+
+    @ServerExceptionMapper
+    public RestResponse<ErrorResponse> handleInvalidCommandDataException(InvalidCommandDataException e) {
+        ErrorResponse response = ErrorResponse.builder()
+                .message(e.getMessage())
+                .errors(e.getErrors())
+                .build();
+
+        return RestResponse.status(Response.Status.BAD_REQUEST, response);
+    }
 }
