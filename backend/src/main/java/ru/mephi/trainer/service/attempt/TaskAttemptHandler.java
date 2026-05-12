@@ -53,6 +53,7 @@ public class TaskAttemptHandler {
         }
 
         int points = config.getPoints() - config.getMistakeCost() * attemptsCount;
+        points = Math.max(0, points);
         saveAttempt(taskTrainer, user, parsedAnswer, points, AttemptStatus.COMPLETED);
 
         return MessageResponse.builder()

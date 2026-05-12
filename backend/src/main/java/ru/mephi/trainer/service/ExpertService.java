@@ -66,6 +66,7 @@ public class ExpertService {
             if (attemptsCount > 1) {
                 points -= mistakeCost * (attemptsCount - 1);
             }
+            points = Math.max(0, points);
             taskAttempt.setPoints(points);
             taskAttempt.setStatus(AttemptStatus.COMPLETED);
         }
