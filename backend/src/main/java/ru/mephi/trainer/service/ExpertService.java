@@ -1,6 +1,5 @@
 package ru.mephi.trainer.service;
 
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

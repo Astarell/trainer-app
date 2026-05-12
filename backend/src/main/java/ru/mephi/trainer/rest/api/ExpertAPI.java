@@ -24,7 +24,7 @@ import java.util.UUID;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Эксперт", description = "Эндпоинты для эксперта")
-public interface ExpertApi {
+public interface ExpertAPI {
 
     @GET
     @Path("/examination")

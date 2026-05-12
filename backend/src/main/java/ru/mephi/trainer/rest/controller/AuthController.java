@@ -1,11 +1,12 @@
 package ru.mephi.trainer.rest.controller;
 
 import jakarta.annotation.security.PermitAll;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jboss.resteasy.reactive.RestResponse;
 import ru.mephi.trainer.entity.UserEntity;
-import ru.mephi.trainer.rest.api.AuthApi;
+import ru.mephi.trainer.rest.api.AuthAPI;
 import ru.mephi.trainer.rest.dto.request.auth.LoginRequest;
 import ru.mephi.trainer.rest.dto.request.auth.RegistrationRequest;
 import ru.mephi.trainer.rest.dto.response.auth.LoginResponse;
@@ -14,8 +15,9 @@ import ru.mephi.trainer.service.AuthService;
 import ru.mephi.trainer.util.SecurityUtil;
 
 @Slf4j
+@ApplicationScoped
 @RequiredArgsConstructor
-public class AuthController implements AuthApi {
+public class AuthController implements AuthAPI {
 
     private final AuthService authService;
 

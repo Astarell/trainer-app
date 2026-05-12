@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jboss.resteasy.reactive.RestResponse;
 import ru.mephi.trainer.mapper.ProfileMapper;
 import ru.mephi.trainer.models.UserProfile;
-import ru.mephi.trainer.rest.api.ProfileApi;
+import ru.mephi.trainer.rest.api.ProfileAPI;
 import ru.mephi.trainer.rest.dto.response.profile.ProfileResponse;
 import ru.mephi.trainer.rest.dto.response.profile.TrainerProgressResponse;
 import ru.mephi.trainer.service.CurrentUserService;
@@ -17,9 +17,9 @@ import ru.mephi.trainer.service.TrainerProgressService;
 import java.util.UUID;
 
 @Slf4j
-@RequiredArgsConstructor
 @ApplicationScoped
-public class ProfileController implements ProfileApi {
+@RequiredArgsConstructor
+public class ProfileController implements ProfileAPI {
 
     private final CurrentUserService currentUserService;
     private final TrainerProgressService trainerProgressService;

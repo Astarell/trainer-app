@@ -8,7 +8,7 @@ import org.jboss.resteasy.reactive.RestResponse;
 import ru.mephi.trainer.entity.TaskEntity;
 import ru.mephi.trainer.mapper.TaskMapper;
 import ru.mephi.trainer.models.command.SaveTaskCommand;
-import ru.mephi.trainer.rest.api.TaskApi;
+import ru.mephi.trainer.rest.api.TaskAPI;
 import ru.mephi.trainer.rest.dto.request.task.SaveTaskRequest;
 import ru.mephi.trainer.rest.dto.response.task.admin.TaskAdminResponse;
 import ru.mephi.trainer.service.CurrentUserService;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @Slf4j
 @ApplicationScoped
 @RequiredArgsConstructor
-public class TaskController implements TaskApi {
+public class TaskController implements TaskAPI {
 
     private final TaskService taskService;
     private final CurrentUserService currentUserService;

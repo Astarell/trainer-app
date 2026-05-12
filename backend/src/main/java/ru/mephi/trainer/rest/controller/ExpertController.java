@@ -5,7 +5,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jboss.resteasy.reactive.RestResponse;
-import ru.mephi.trainer.rest.api.ExpertApi;
+import ru.mephi.trainer.rest.api.ExpertAPI;
 import ru.mephi.trainer.rest.dto.request.SubmitReviewRequest;
 import ru.mephi.trainer.rest.dto.response.task.expert.AnswerTaskResponse;
 import ru.mephi.trainer.rest.dto.response.MessageResponse;
@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.UUID;
 
 @Slf4j
-@RequiredArgsConstructor
 @ApplicationScoped
-public class ExpertController implements ExpertApi {
+@RequiredArgsConstructor
+public class ExpertController implements ExpertAPI {
     private final ExpertService expertService;
 
     @Override

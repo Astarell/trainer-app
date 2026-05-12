@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Slf4j
-@RequiredArgsConstructor
 @ApplicationScoped
+@RequiredArgsConstructor
 public class TrainersController implements TrainersAPI {
 
     private final TrainerService trainerService;

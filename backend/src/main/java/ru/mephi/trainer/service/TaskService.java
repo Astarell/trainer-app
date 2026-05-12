@@ -155,11 +155,10 @@ public class TaskService {
 
     public TaskResponse getTaskWithAttempt(UUID userId, UUID trainerId, UUID taskId) {
         log.info("Get task with user attempt: userId={}, trainerId={}, taskId={}", userId, trainerId, taskId);
-        TaskResponse taskResponse = taskRepository.getTaskWithUserAttempt(userId, trainerId, taskId).orElseThrow(() -> {
-            log.warn("Task not found: taskId={}, trainerId={}", taskId, trainerId);
-            return new EntityNotFoundException("Задача не найдена в этом тренажёре");
-        });
-        log.info("Task retrieved successfully: {}", taskResponse.getId());
-        return taskResponse;
+        return taskRepository.getTaskWithUserAttempt(userId, trainerId, taskId)
+                .orElseThrow(() -> {
+                    log.warn("Task not found: taskId={}, trainerId={}", taskId, trainerId);
+                    return new EntityNotFoundException("Задача не найдена в этом тренажёре");
+                });
     }
 }
