@@ -3,7 +3,7 @@ package ru.mephi.trainer.repository;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 import ru.mephi.trainer.entity.UserEntity;
-import ru.mephi.trainer.rest.dto.response.profile.TrainerProgressPercentResponse;
+import ru.mephi.trainer.models.TrainerPercentProgress;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,7 +25,7 @@ public class ProfileRepository implements PanacheRepositoryBase<UserEntity, UUID
         return ((Number) result).intValue();
     }
 
-    public List<TrainerProgressPercentResponse> getUserTrainersProgress(UUID userId) {
+    public List<TrainerPercentProgress> getUserTrainersProgress(UUID userId) {
         String sql = """
                 SELECT
                     t.id,
@@ -55,7 +55,7 @@ public class ProfileRepository implements PanacheRepositoryBase<UserEntity, UUID
 
                     roundedProgress = Math.min(roundedProgress, 100.0);
 
-                    return TrainerProgressPercentResponse.builder()
+                    return TrainerPercentProgress.builder()
                             .id((UUID) row[0])
                             .name((String) row[1])
                             .progressPercent(roundedProgress)

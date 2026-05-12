@@ -4,8 +4,9 @@ import io.quarkus.security.Authenticated;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.resteasy.reactive.RestResponse;
+import ru.mephi.trainer.mapper.ProfileMapper;
+import ru.mephi.trainer.models.UserProfile;
 import ru.mephi.trainer.rest.api.ProfileApi;
 import ru.mephi.trainer.rest.dto.response.profile.ProfileResponse;
 import ru.mephi.trainer.rest.dto.response.profile.TrainerProgressResponse;
@@ -19,20 +20,21 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @ApplicationScoped
 public class ProfileController implements ProfileApi {
-    private final JsonWebToken jwt;
+
     private final CurrentUserService currentUserService;
     private final TrainerProgressService trainerProgressService;
     private final ProfileService profileService;
+    private final ProfileMapper profileMapper;
 
     @Override
     @Authenticated
     public RestResponse<ProfileResponse> getProfile() {
         UUID userId = currentUserService.getCurrentUserIdOrThrow();
         log.info("Profile endpoint accessed by: {}", userId);
-        ProfileResponse response = profileService.getProfile(userId);
-        log.info("Profile endpoint in successfully: {}", userId);
 
-        return RestResponse.ok(response);
+        UserProfile profile = profileService.getProfile(userId);
+
+        return RestResponse.ok(profileMapper.toProfileResponse(profile));
     }
 
     @Override
