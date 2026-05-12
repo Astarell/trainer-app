@@ -11,10 +11,6 @@ import java.util.UUID;
 @ApplicationScoped
 public class ProfileRepository implements PanacheRepositoryBase<UserEntity, UUID> {
 
-    public UserEntity getUserData(UUID userId) {
-        return find("id", userId).firstResult();
-    }
-
     public Integer getUserTotalScore(UUID userId) {
         String sql = """
                     SELECT COALESCE(SUM(ta.points), 0)
