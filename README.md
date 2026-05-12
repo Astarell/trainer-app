@@ -220,7 +220,7 @@ src/main
 
 ```
 curl -X 'POST' \
-  'http://localhost:8080/api/trainers/{trainer_id}/tasks/{task_id}/submit' \
+  'http://localhost:8080/api/trainers/{trainer-id}/tasks/{task-id}/submit' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer {token}' \
@@ -231,7 +231,7 @@ curl -X 'POST' \
 
 ```
 curl -X 'POST' \
-  'http://localhost:8080/api/trainers/{trainer_id}/tasks/{task_id}/submit' \
+  'http://localhost:8080/api/trainers/{trainer-id}/tasks/{task-id}/submit' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer {token}' \
@@ -242,7 +242,7 @@ curl -X 'POST' \
 
 ```
 curl -X 'POST' \
-  'http://localhost:8080/api/trainers/{trainer_id}/tasks/{task_id}/submit' \
+  'http://localhost:8080/api/trainers/{trainer-id}/tasks/{task-id}/submit' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer {token}' \
@@ -252,6 +252,6 @@ curl -X 'POST' \
 ```
 
 Примечания
-* {trainer_id} — UUID тренажёра
-* {task_id} — UUID задачи
+* {trainer-id} — UUID тренажёра
+* {task-id} — UUID задачи
 * {token} — JWT токен, полученный при входе

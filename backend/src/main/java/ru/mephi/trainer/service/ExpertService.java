@@ -73,7 +73,7 @@ public class ExpertService {
         taskAttemptRepository.persist(taskAttempt);
         return MessageResponse.builder()
                 .message("Работа оценена. Поставлено баллов: " + points)
-                .timestamp(Instant.now().toString())
+                .timestamp(Instant.now())
                 .build();
     }
 }

@@ -112,7 +112,7 @@ public interface TrainersAPI {
     RestResponse<TrainerResponse> createTrainer(@RequestBody @Valid CreateTrainerRequest createTrainerRequest);
 
     @GET
-    @Path("/{trainerId}/tasks/{taskId}")
+    @Path("/{trainer-id}/tasks/{task-id}")
     @Operation(
             operationId = "getTaskWithAttempt",
             summary = "Информация о задаче",
@@ -152,11 +152,11 @@ public interface TrainersAPI {
     );
 
     @POST
-    @Path("/{id}/tasks/{task_id}/submit")
+    @Path("/{trainer-id}/tasks/{task-id}/submit")
     @Operation(
-            operationId = "insertTaskAttempt",
+            operationId = "submitTaskAttempt",
             summary = "Отправить ответ на задание",
-            description = "Получить информацию о тренажере"
+            description = "Отправить ответ на задание"
     )
     @SecurityRequirement(name = "bearerAuth")
     @APIResponses(value = {
@@ -186,6 +186,6 @@ public interface TrainersAPI {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<MessageResponse> insertTaskAttempt(@PathParam("id") UUID trainerId, @PathParam("task_id") UUID taskId, @Valid AnswerRequest request);
+    RestResponse<MessageResponse> submitTaskAttempt(@PathParam("trainer-id") UUID trainerId, @PathParam("task-id") UUID taskId, @Valid AnswerRequest request);
 
 }

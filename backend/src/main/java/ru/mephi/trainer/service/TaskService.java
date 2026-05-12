@@ -148,8 +148,11 @@ public class TaskService {
         // TODO
     }
 
+    public TaskEntity getTask(UUID taskId) {
+        return taskRepository.findByIdOptional(taskId)
+                .orElseThrow(() -> new EntityNotFoundException("Задача не найдена"));
+    }
 
-    
     public TaskResponse getTaskWithAttempt(UUID userId, UUID trainerId, UUID taskId) {
         log.info("Get task with user attempt: userId={}, trainerId={}, taskId={}", userId, trainerId, taskId);
         TaskResponse taskResponse = taskRepository.getTaskWithUserAttempt(userId, trainerId, taskId).orElseThrow(() -> {

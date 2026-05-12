@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.mephi.trainer.entity.UserEntity;
 import ru.mephi.trainer.repository.ProfileRepository;
+import ru.mephi.trainer.repository.UserRepository;
 import ru.mephi.trainer.rest.dto.response.profile.ProfileResponse;
 import ru.mephi.trainer.rest.dto.response.profile.TrainerProgressPercentResponse;
 
@@ -15,12 +16,14 @@ import java.util.UUID;
 @ApplicationScoped
 @RequiredArgsConstructor
 public class ProfileService {
+
+    private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
 
     public ProfileResponse getProfile(UUID userId) {
         log.info("User info profile requested for: {}", userId);
 
-        UserEntity user = profileRepository.getUserData(userId);
+        UserEntity user = userRepository.findById(userId);
         List<TrainerProgressPercentResponse> progress = profileRepository.getUserTrainersProgress(userId);
         Integer score = profileRepository.getUserTotalScore(userId);
 
