@@ -3,12 +3,12 @@ package ru.mephi.trainer.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.mephi.trainer.entity.TaskAttemptEntity;
 import ru.mephi.trainer.entity.enums.AttemptStatus;
 import ru.mephi.trainer.exception.EntityNotFoundException;
+import ru.mephi.trainer.exception.StatusTaskNotReviewException;
 import ru.mephi.trainer.repository.TaskAttemptRepository;
 import ru.mephi.trainer.rest.dto.response.task.expert.AnswerTaskResponse;
 import ru.mephi.trainer.rest.dto.response.MessageResponse;
@@ -48,7 +48,7 @@ public class ExpertService {
                 });
         if (taskAttempt.getStatus() != AttemptStatus.REVIEW) {
             log.warn("Get task for review info failed - task not in review: id={}", taskAttemptId);
-            throw new BadRequestException("Работа не на проверке");
+            throw new StatusTaskNotReviewException("Работа не на проверке");
         }
 
         int points = 0;
