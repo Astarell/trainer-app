@@ -150,9 +150,9 @@ public interface TrainersAPI {
     );
 
     @POST
-    @Path("/{id}/tasks/{task_id}/submit")
+    @Path("/{id}/tasks/{task-id}/submit")
     @Operation(
-            operationId = "insertTaskAttempt",
+            operationId = "submitTaskAttempt",
             summary = "Отправить ответ на задание",
             description = "Получить информацию о тренажере"
     )
@@ -184,6 +184,6 @@ public interface TrainersAPI {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    RestResponse<MessageResponse> insertTaskAttempt(@PathParam("id") UUID trainerId, @PathParam("task_id") UUID taskId, @Valid AnswerRequest request);
+    RestResponse<MessageResponse> submitTaskAttempt(@PathParam("id") UUID trainerId, @PathParam("task-id") UUID taskId, @Valid AnswerRequest request);
 
 }

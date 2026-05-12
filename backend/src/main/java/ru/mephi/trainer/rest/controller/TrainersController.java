@@ -90,10 +90,10 @@ public class TrainersController implements TrainersAPI {
 
     @Override
     @Authenticated
-    public RestResponse<MessageResponse> insertTaskAttempt(UUID trainerId, UUID taskId, AnswerRequest request) {
+    public RestResponse<MessageResponse> submitTaskAttempt(UUID trainerId, UUID taskId, AnswerRequest request) {
         UUID userId = currentUserService.getCurrentUserIdOrThrow();
-        log.info("Insert task attempt: userId={}, trainerId={}, taskId={}", userId, trainerId, taskId);
-        MessageResponse response = taskAttemptService.insertTaskAttempt(userId, trainerId, taskId,
+        log.info("Submit task attempt: userId={}, trainerId={}, taskId={}", userId, trainerId, taskId);
+        MessageResponse response = taskAttemptService.submitTaskAttempt(userId, trainerId, taskId,
                 request.getUserAnswer());
         return RestResponse.ok(response);
     }

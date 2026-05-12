@@ -37,7 +37,7 @@ public class TrainerRepository implements PanacheRepositoryBase<TrainerEntity, U
 
     public List<TaskInfoResponse> findTasksByTrainerId(UUID trainerId) {
         String sql = """
-                    SELECT 
+                    SELECT
                         t.id,
                         t.config->>'question',
                         t.task_type

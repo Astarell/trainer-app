@@ -31,7 +31,7 @@ public class TaskAttemptService {
     private final ObjectMapper objectMapper;
 
     @Transactional
-    public MessageResponse insertTaskAttempt(UUID userId, UUID trainerId, UUID taskId, String answer) {
+    public MessageResponse submitTaskAttempt(UUID userId, UUID trainerId, UUID taskId, String answer) {
         try {
             TaskTrainerEntity taskTrainer = validateAndGetTaskTrainer(trainerId, taskId);
             UserEntity user = getUserOrThrow(userId);
@@ -84,7 +84,7 @@ public class TaskAttemptService {
         }
         catch (JsonProcessingException e) {
             log.error("Ошибка парсинга JSON: {}", e.getMessage());
-            throw new RuntimeException("Неверный формат ответа", e);
+            throw new IllegalArgumentException("Неверный формат ответа", e);
         }
     }
 

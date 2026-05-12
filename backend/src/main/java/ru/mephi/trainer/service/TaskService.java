@@ -148,8 +148,6 @@ public class TaskService {
         // TODO
     }
 
-
-    
     public TaskResponse getTaskWithAttempt(UUID userId, UUID trainerId, UUID taskId) {
         log.info("Get task with user attempt: userId={}, trainerId={}, taskId={}", userId, trainerId, taskId);
         TaskResponse taskResponse = taskRepository.getTaskWithUserAttempt(userId, trainerId, taskId).orElseThrow(() -> {
