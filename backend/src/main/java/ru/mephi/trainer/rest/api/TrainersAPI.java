@@ -154,7 +154,7 @@ public interface TrainersAPI {
     @Operation(
             operationId = "submitTaskAttempt",
             summary = "Отправить ответ на задание",
-            description = "Получить информацию о тренажере"
+            description = "Отправить ответ на задание"
     )
     @SecurityRequirement(name = "bearerAuth")
     @APIResponses(value = {
