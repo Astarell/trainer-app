@@ -27,7 +27,13 @@ public class TaskRepository implements PanacheRepositoryBase<TaskEntity, UUID> {
                     COALESCE(CAST(t.config->>'maxAttempts' AS INTEGER), 0) as max_attempts,
                     ta.points as user_points,
                     ta.status as attempt_status,
-                    t.config->>'context' as context
+                    t.config->>'context' as context,
+                    (SELECT COUNT(ta2.id)
+                         FROM task_attempts ta2
+                         JOIN tasks_trainers tt2 ON tt2.id = ta2.task_id
+                         WHERE tt2.task_id = t.id AND tt2.trainer_id = ?2 AND ta2.user_id = ?1
+                    ) as user_attempts_count,
+                    ta.user_answer as answer
                 FROM tasks t
                 JOIN tasks_trainers tt ON tt.task_id = t.id
                 LEFT JOIN task_attempts ta ON ta.task_id = tt.id AND ta.user_id = ?1
@@ -52,22 +58,28 @@ public class TaskRepository implements PanacheRepositoryBase<TaskEntity, UUID> {
 
     public List<TaskResponse> getTasksWithUserAttempt(UUID userId, UUID trainerId) {
         String sql = """
-                SELECT
-                    t.id,
-                    t.task_type,
-                    t.config->>'question' as question,
-                    t.config->>'answerChoices' as answer_choices,
-                    COALESCE(CAST(t.config->>'points' AS INTEGER), 0) as points,
-                    COALESCE(CAST(t.config->>'mistakeCost' AS INTEGER), 0) as mistake_cost,
-                    COALESCE(CAST(t.config->>'maxAttempts' AS INTEGER), 0) as max_attempts,
-                    ta.points as user_points,
-                    ta.status as attempt_status,
-                    t.config->>'context' as context
-                FROM tasks t
-                JOIN tasks_trainers tt ON tt.task_id = t.id
-                LEFT JOIN task_attempts ta ON ta.task_id = tt.id AND ta.user_id = ?1
-                WHERE tt.trainer_id = ?2
-                ORDER BY ta.created_at DESC
+                    SELECT DISTINCT ON (t.id)
+                        t.id,
+                        t.task_type,
+                        t.config->>'question' as question,
+                        t.config->>'answerChoices' as answer_choices,
+                        COALESCE(CAST(t.config->>'points' AS INTEGER), 0) as points,
+                        COALESCE(CAST(t.config->>'mistakeCost' AS INTEGER), 0) as mistake_cost,
+                        COALESCE(CAST(t.config->>'maxAttempts' AS INTEGER), 0) as max_attempts,
+                        ta.points as user_points,
+                        ta.status as attempt_status,
+                        t.config->>'context' as context,
+                        (SELECT COUNT(ta2.id)
+                         FROM task_attempts ta2
+                         JOIN tasks_trainers tt2 ON tt2.id = ta2.task_id
+                         WHERE tt2.task_id = t.id AND tt2.trainer_id = ?2 AND ta2.user_id = ?1
+                        ) as user_attempts_count,
+                        ta.user_answer as user_answer
+                    FROM tasks t
+                    JOIN tasks_trainers tt ON tt.task_id = t.id
+                    LEFT JOIN task_attempts ta ON ta.task_id = tt.id AND ta.user_id = ?1
+                    WHERE tt.trainer_id = ?2
+                    ORDER BY t.id, ta.created_at DESC
                 """;
         List<Object[]> rows = getEntityManager()
                 .createNativeQuery(sql)
@@ -90,6 +102,8 @@ public class TaskRepository implements PanacheRepositoryBase<TaskEntity, UUID> {
         dto.setMistakeCost(((Number) row[5]).intValue());
         dto.setMaxAttempts(((Number) row[6]).intValue());
         dto.setContext((String) row[9]);
+        dto.setUserAttempts(((Number) row[10]).intValue());
+        dto.setAnswer((String) row[11]);
 
         if (row[7] != null) {
             dto.setUserPoints(((Number) row[7]).intValue());
