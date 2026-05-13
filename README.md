@@ -20,6 +20,20 @@
 
 [Распределение](https://docs.google.com/spreadsheets/d/1EO8NqOaiaRsioVb-cQi24zAXVEvAujtDzxpHvW2JcFU/edit?gid=0#gid=0)
 
+## Технологии и инструменты
+
+### Backend
+- Java 21 — язык программирования
+- Quarkus — фреймворк
+- Maven — сборка проекта
+- PostgreSQL — база данных
+- Hibernate ORM with Panache — ORM
+- Liquibase — миграции БД
+- JWT — аутентификация
+- Lombok — генерация кода
+- MapStruct — маппинг DTO
+- OpenAPI + Swagger UI — документация API
+
 ## Инструкция по запуску
 Убедиться, что докер запущен локально и у него есть возможность скачивать образы.
 ```sh
