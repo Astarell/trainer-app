@@ -1,6 +1,5 @@
 package ru.mephi.trainer.rest.dto.response.task.admin;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,7 +42,6 @@ public class TaskAdminResponse {
     private UUID createdBy;
 
     @Schema(description = "Дата создания", examples = "2024-01-15T10:30:00+03:00")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private Instant createdAt;
 
     @Schema(description = "Список ID тренажёров, к которым привязано задание",

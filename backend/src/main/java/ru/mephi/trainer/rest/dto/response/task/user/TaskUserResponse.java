@@ -1,6 +1,5 @@
 package ru.mephi.trainer.rest.dto.response.task.user;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -25,7 +24,6 @@ public class TaskUserResponse {
     private UserTaskConfigDto config;
 
     @Schema(description = "Дата создания")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private Instant createdAt;
 
     @Schema(description = "Список ID тренажёров")
