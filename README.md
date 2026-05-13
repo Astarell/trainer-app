@@ -36,7 +36,7 @@ swagger-ui http://localhost:8080/api/q/swagger-ui/
 3. Business analyses trainer #3: 8d3d4a57-c179-4f34-afc5-6a4e272fc26b
 
 ### Ход тестирования
-👇Нажми чтобы раскрыть
+👇
 <details>
   
 #### 1. Получить список имеющихся тренажеров
