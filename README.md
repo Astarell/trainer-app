@@ -184,7 +184,7 @@ swagger-ui http://localhost:8080/api/q/swagger-ui/
 
 
 ## Структура проекта
-### Backend
+### backend
 ```
 src/main
 ├── java
@@ -212,9 +212,9 @@ src/main
             └── versions                   # SQL скрипты миграций
 ```
 
-### Frontend
+### frontend
 ```
-Frontend/
+frontend/
 ├── trainer-frontend/               # Основные файлы фронтенда (vanilla JS + Tailwind)
 │   ├── index.html
 │   ├── login.html
