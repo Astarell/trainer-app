@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задание</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="min-h-screen bg-slate-950 p-8">
+    <div class="max-w-3xl mx-auto">
+        <a href="#" id="backLink" onclick="goBack()" class="inline-block mb-6 text-cyan-400 hover:underline">← Назад к тренажёру</a>
+        
+        <div id="taskContainer" class="card p-8 min-h-[400px]">
+            <p class="text-slate-400">Загрузка задания...</p>
+        </div>
+    </div>
+
+    <script src="assets/js/common.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/trainers.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', loadTask);
+    </script>
+</body>
+</html>

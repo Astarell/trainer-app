@@ -43,6 +43,9 @@ docker-compose -f compose-devservices.yml up --build
 ## Swagger
 swagger-ui http://localhost:8080/api/q/swagger-ui/
 
+### Frontend
+Страница с логином http://localhost:3000
+
 ## Тестирование
 ### Тестовые данные
 Команда подготовила небольшое количество трейнеров с заданиями, типы которых указаны в требованиях.<br>
@@ -439,7 +442,7 @@ curl -X 'POST' \
 
 
 ## Структура проекта
-
+### backend
 ```
 src/main
 ├── java
@@ -467,6 +470,33 @@ src/main
             └── versions                   # SQL скрипты миграций
 ```
 
+### frontend
+```
+frontend/
+├── trainer-frontend/               # Основные файлы фронтенда (vanilla JS + Tailwind)
+│   ├── index.html
+│   ├── login.html
+│   ├── register.html
+│   ├── trainers.html
+│   ├── trainer-detail.html
+│   ├── task.html
+│   ├── profile.html
+│   ├── expert.html
+│   ├── assets/
+│   │   ├── css/
+│   │   │   └── style.css
+│   │   └── js/
+│   │       ├── api.js
+│   │       ├── auth.js
+│   │       ├── common.js
+│   │       ├── trainers.js
+│   │       ├── profile.js
+│   │       └── expert.js
+│   └── (другие html-файлы)
+│
+├── Dockerfile.frontend             # Docker-образ для фронтенда (Nginx)
+└── nginx.conf                      # Конфигурация nginx (редирект на login.html + SPA support)
+```
 
 ## Пример использования сервиса
 

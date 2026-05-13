@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Эксперт — Проверка заданий</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="min-h-screen bg-slate-950 p-8">
+    <div class="max-w-6xl mx-auto">
+        <a href="index.html" class="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 mb-6 transition">
+            ← На главную
+        </a>
+
+        <h1 class="text-4xl font-bold text-cyan-400 mb-8">🔍 Проверка заданий (Эксперт)</h1>
+        
+        <button onclick="loadForReview()" 
+                class="mb-8 btn btn-primary px-8 py-3">
+            Загрузить задания на проверку
+        </button>
+
+        <div id="reviewList" class="space-y-6"></div>
+    </div>
+
+    <script src="assets/js/common.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/expert.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', loadForReview);
+    </script>
+</body>
+</html>

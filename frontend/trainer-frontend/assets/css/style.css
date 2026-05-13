@@ -1,0 +1,30 @@
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+}
+
+.card {
+    background: #1e2937;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3);
+}
+
+.btn {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: #22d3ee;
+    color: #0f172a;
+}
+
+.btn-primary:hover {
+    background: #67e8f9;
+    transform: translateY(-2px);
+}
