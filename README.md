@@ -27,12 +27,6 @@ docker-compose -f compose-devservices.yml up --build
 ## Swagger
 swagger-ui http://localhost:8080/api/q/swagger-ui/
 
-команды для генерации закрытого и открытого ключа
-```sh
-openssl genrsa -out privateKey.pem 2048
-openssl rsa -in privateKey.pem -pubout -out publicKey.pem
-```
-
 ## Тестирование
 ### Тестовые данные
 Команда подготовила небольшое количество трейнеров с заданиями, типы которых указаны в требованиях.<br>
@@ -42,6 +36,7 @@ openssl rsa -in privateKey.pem -pubout -out publicKey.pem
 3. Business analyses trainer #3: 8d3d4a57-c179-4f34-afc5-6a4e272fc26b
 
 ### Ход тестирования
+👇
 <details>
   
 #### 1. Получить список имеющихся тренажеров
@@ -79,6 +74,7 @@ openssl rsa -in privateKey.pem -pubout -out publicKey.pem
 
 ## Схема БД
 ### Диаграмма
+👇
 <details>
   <img width="993" height="859" alt="postgres - public" src="https://github.com/user-attachments/assets/8ca8b101-bca7-4049-9e96-ae4ba55a07d5" />
 </details>
@@ -217,7 +213,7 @@ src/main
 ## Пример использования сервиса
 
 ### Запрос для проверки заданий
-
+SINGLE_CHOICE
 ```
 curl -X 'POST' \
   'http://localhost:8080/api/trainers/{trainer-id}/tasks/{task-id}/submit' \
@@ -228,7 +224,7 @@ curl -X 'POST' \
   "userAnswer": "1"
 }'
 ```
-
+MULTIPLE_CHOICE
 ```
 curl -X 'POST' \
   'http://localhost:8080/api/trainers/{trainer-id}/tasks/{task-id}/submit' \
@@ -239,7 +235,7 @@ curl -X 'POST' \
   "userAnswer": "[1, 2]"
 }'
 ```
-
+ERROR_FINDING и OPEN_ANSWER
 ```
 curl -X 'POST' \
   'http://localhost:8080/api/trainers/{trainer-id}/tasks/{task-id}/submit' \
