@@ -115,6 +115,7 @@ async function loadTask() {
         console.log('🔍 ПОЛНЫЙ ОБЪЕКТ ЗАДАНИЯ:', task);
 
         const questionText = task.question || 'Текст задания отсутствует';
+        const contextText = task.context || null;
         const taskType = task.taskType || 'UNKNOWN';
         const isOpenAnswer = taskType === 'OPEN_ANSWER';
 
@@ -150,11 +151,29 @@ async function loadTask() {
 
         let html = `
             <h2 class="text-3xl font-bold mb-6 text-cyan-400">Задание</h2>
-            <div class="bg-slate-900 p-6 rounded-2xl mb-8 text-lg leading-relaxed">
-                ${questionText}
-            </div>
-            ${taskTypeLabel ? `<p class="text-cyan-400 text-sm mb-6 font-medium">${taskTypeLabel}</p>` : ''}
         `;
+
+        // Для OPEN_ANSWER показываем context перед вопросом
+        if (isOpenAnswer && contextText) {
+            html += `
+                <div class="bg-slate-900 p-6 rounded-2xl mb-6 text-lg leading-relaxed">
+                    <div class="text-cyan-400 font-medium mb-3">Контекст:</div>
+                    ${escapeHtml(contextText)}
+                </div>
+            `;
+        }
+
+        // Вопрос
+        html += `
+            <div class="bg-slate-900 p-6 rounded-2xl mb-8 text-lg leading-relaxed">
+                <span class="text-cyan-400 font-medium block mb-3">Вопрос:</span>
+                ${escapeHtml(questionText)}
+            </div>
+        `;
+
+        if (taskTypeLabel) {
+            html += `<p class="text-cyan-400 text-sm mb-6 font-medium">${taskTypeLabel}</p>`;
+        }
 
         // Статус
         if (isOpenAnswer) {
@@ -225,7 +244,7 @@ async function loadTask() {
                             <input type="${isMultiple ? 'checkbox' : 'radio'}"
                                    name="ans" value="${ch.ordinal}" ${disabledAttr}
                                    class="mt-1 accent-cyan-400">
-                            <span class="text-slate-200">${ch.choice}</span>
+                            <span class="text-slate-200">${escapeHtml(ch.choice)}</span>
                         </label>`;
                 });
                 document.getElementById('choices').innerHTML = chHtml;
@@ -249,6 +268,17 @@ async function loadTask() {
         console.error('❌ Ошибка loadTask:', e);
         document.getElementById('taskContainer').innerHTML = `<p class="text-red-400">Ошибка: ${e.message}</p>`;
     }
+}
+
+// Вспомогательная функция для безопасного экранирования HTML
+function escapeHtml(str) {
+    if (!str) return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
 }
 
 // ====================== ОТПРАВКА ОТВЕТА ======================
