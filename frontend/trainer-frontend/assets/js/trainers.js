@@ -120,11 +120,15 @@ async function loadTask() {
 
         const attemptStatus = task.attemptStatus || '';
         const userPoints = task.userPoints || 0;
+        const attemptsUsed = task.userAttempts || 0;
+        const maxAttempts = task.maxAttempts || 3;
 
         const isCompleted = attemptStatus === 'COMPLETED' || userPoints > 0;
         const isUnderReview = attemptStatus === 'REVIEW';
         const isFailed = attemptStatus === 'FAILED';
-        const isFinalized = isCompleted || isUnderReview || isFailed;
+
+        const hasRemainingAttempts = attemptsUsed < maxAttempts;
+        const isDisabled = isCompleted || isUnderReview || (!hasRemainingAttempts && isFailed);
 
         // Парсинг предыдущего ответа
         let lastAnswer = null;
@@ -157,24 +161,23 @@ async function loadTask() {
             let statusHTML = '';
             if (isUnderReview) statusHTML = `<span class="px-5 py-2 bg-amber-600/20 text-amber-400 rounded-2xl text-sm font-medium">⏳ На проверке у эксперта</span>`;
             else if (isCompleted) statusHTML = `<span class="px-5 py-2 bg-emerald-600/20 text-emerald-400 rounded-2xl text-sm font-medium">✅ Принято (+${userPoints} баллов)</span>`;
-            else if (isFailed) statusHTML = `<span class="px-5 py-2 bg-red-600/20 text-red-400 rounded-2xl text-sm font-medium">❌ Отклонено экспертом</span>`;
+            else if (isFailed && !hasRemainingAttempts) statusHTML = `<span class="px-5 py-2 bg-red-600/20 text-red-400 rounded-2xl text-sm font-medium">❌ Отклонено экспертом</span>`;
 
             html += `<div class="flex justify-center mb-6">${statusHTML}</div>`;
         } else {
-            const attemptsUsed = task.userAttempts || 0;
-            const maxAttempts = task.maxAttempts || 3;
-
             let statusHTML = '';
-            if (isFailed) {
-                statusHTML = `<span class="px-5 py-2 bg-red-600/20 text-red-400 rounded-2xl text-sm font-medium">❌ Неправильно</span>`;
+            if (isFailed && !hasRemainingAttempts) {
+                statusHTML = `<span class="px-5 py-2 bg-red-600/20 text-red-400 rounded-2xl text-sm font-medium">❌ Попытки закончились</span>`;
             } else if (isCompleted) {
                 statusHTML = `<span class="px-5 py-2 bg-emerald-600/20 text-emerald-400 rounded-2xl text-sm font-medium">✅ Выполнено (+${userPoints} баллов)</span>`;
+            } else if (isFailed && hasRemainingAttempts) {
+                statusHTML = `<span class="px-5 py-2 bg-red-600/20 text-red-400 rounded-2xl text-sm font-medium">❌ Неправильно, осталось попыток: ${maxAttempts - attemptsUsed}</span>`;
             }
 
             html += `
                 <div class="flex items-center justify-between bg-slate-900/70 p-4 rounded-xl mb-6 border border-slate-700">
                     <div class="flex items-center gap-3">
-                        <span class="text-slate-400">Попытки:</span> 
+                        <span class="text-slate-400">Попытки:</span>
                         <span class="font-mono font-bold text-xl">${attemptsUsed}/${maxAttempts}</span>
                     </div>
                     ${statusHTML}
@@ -183,28 +186,31 @@ async function loadTask() {
 
         // Поле ответа
         if (isOpenAnswer || !task.answerChoices) {
-            const disabled = isFinalized ? 'readonly disabled' : '';
-            html += `<textarea id="openAnswer" rows="10" ${disabled}
-                       class="w-full p-5 bg-slate-900 rounded-2xl text-white resize-y min-h-[180px] ${isFinalized ? 'opacity-75' : ''}" 
+            const disabledAttr = isDisabled ? 'readonly disabled' : '';
+            html += `<textarea id="openAnswer" rows="10" ${disabledAttr}
+                       class="w-full p-5 bg-slate-900 rounded-2xl text-white resize-y min-h-[180px] ${isDisabled ? 'opacity-75' : ''}"
                        placeholder="Введите ваш ответ..."></textarea>`;
         } else {
             html += `<div class="space-y-4" id="choices"></div>`;
         }
 
-        const disabled = isFinalized ? 'disabled' : '';
+        // Кнопка отправки
+        let buttonText = 'Отправить ответ';
+        if (isUnderReview) buttonText = '⏳ На проверке у эксперта';
+        else if (isCompleted) buttonText = '✅ Задание выполнено';
+        else if (isFailed && !hasRemainingAttempts) buttonText = '❌ Попытки закончились';
+
         html += `
-            <button onclick="submitAnswer('${trainerId}', '${taskId}', '${taskType}')" 
-                    id="submitBtn" ${disabled}
-                    class="mt-10 w-full btn btn-primary py-5 text-lg font-semibold ${disabled ? 'opacity-50 cursor-not-allowed' : ''}">
-                ${isUnderReview ? '⏳ На проверке у эксперта' : 
-                  isCompleted ? '✅ Задание выполнено' : 
-                  isFailed && isOpenAnswer ? '❌ Отклонено экспертом' : 'Отправить ответ'}
+            <button onclick="submitAnswer('${trainerId}', '${taskId}', '${taskType}')"
+                    id="submitBtn" ${isDisabled ? 'disabled' : ''}
+                    class="mt-10 w-full btn btn-primary py-5 text-lg font-semibold ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}">
+                ${buttonText}
             </button>`;
 
         document.getElementById('taskContainer').innerHTML = html;
 
-        // Рендер вариантов
-        if (!isOpenAnswer) {
+        // Рендер вариантов (только если НЕ openAnswer)
+        if (!isOpenAnswer && task.answerChoices) {
             let choices = [];
             if (typeof task.answerChoices === 'string') {
                 try { choices = JSON.parse(task.answerChoices); } catch(e) {}
@@ -213,10 +219,12 @@ async function loadTask() {
                 let chHtml = '';
                 const isMultiple = taskType === 'MULTIPLE_CHOICE';
                 choices.forEach(ch => {
+                    const disabledAttr = isDisabled ? 'disabled' : '';
                     chHtml += `
                         <label class="flex gap-3 p-5 bg-slate-900 rounded-2xl cursor-pointer hover:bg-slate-800 transition-all">
-                            <input type="${isMultiple ? 'checkbox' : 'radio'}" 
-                                   name="ans" value="${ch.ordinal}" class="mt-1 accent-cyan-400">
+                            <input type="${isMultiple ? 'checkbox' : 'radio'}"
+                                   name="ans" value="${ch.ordinal}" ${disabledAttr}
+                                   class="mt-1 accent-cyan-400">
                             <span class="text-slate-200">${ch.choice}</span>
                         </label>`;
                 });
@@ -224,7 +232,7 @@ async function loadTask() {
             }
         }
 
-        // Предзаполнение
+        // Предзаполнение ответа
         if (lastAnswer !== null) {
             if (!isOpenAnswer) {
                 const prev = Array.isArray(lastAnswer) ? lastAnswer.map(String) : [String(lastAnswer)];
