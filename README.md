@@ -234,6 +234,10 @@ curl -X 'GET' \
 **Формат ответа:**
 <img width="874" height="475" alt="image" src="https://github.com/user-attachments/assets/08d04a58-2c91-48c9-9cc9-fb7f96f9477d" />
 
+После проверки экспертом:
+<img width="870" height="488" alt="image" src="https://github.com/user-attachments/assets/974ef31c-f4ed-4e34-a092-c2c75481b851" />
+
+
 #### 8. Получить прогресс пользователя по тренажеру
 ```
 curl -X 'GET' \
@@ -243,6 +247,10 @@ curl -X 'GET' \
 ```
 **Формат ответа:**
 <img width="880" height="548" alt="image" src="https://github.com/user-attachments/assets/6a0e0744-0378-439a-be14-1d461c9951b9" />
+После проверки экспертом:
+
+<img width="877" height="545" alt="image" src="https://github.com/user-attachments/assets/dead24e8-dfb0-432b-9da2-7d01a4cb07ec" />
+<img width="908" height="549" alt="image" src="https://github.com/user-attachments/assets/ed0b8a38-19de-4f78-bc27-9a19a79473f8" />
 
 
 #### 9. Получить список задач на проверку
