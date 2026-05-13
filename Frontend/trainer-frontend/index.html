@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainer App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="min-h-screen bg-slate-950 p-8">
+    <div class="max-w-5xl mx-auto">
+        <div class="flex justify-between items-center mb-10">
+            <h1 class="text-5xl font-bold text-cyan-400">🔥 Trainer App</h1>
+            <button onclick="logout()" 
+                    class="btn bg-red-600 hover:bg-red-700 px-6 py-3 text-white font-bold">
+                Выйти
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="mainMenu">
+            <!-- Будет заполнено через JS -->
+        </div>
+    </div>
+
+    <script src="assets/js/common.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script>
+        async function loadMenu() {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            try {
+                // Простая проверка роли (можно улучшить позже)
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                const isExpert = payload.groups?.includes('expert') || 
+                               payload.roles?.includes('APP_EXPERT');
+
+                let html = `
+                    <a href="trainers.html" class="card p-8 hover:scale-105 transition text-center">
+                        <h2 class="text-3xl font-bold mb-3">📚 Тренажёры</h2>
+                        <p class="text-slate-400">SQL, Тесты, Бизнес-анализ</p>
+                    </a>
+                    <a href="profile.html" class="card p-8 hover:scale-105 transition text-center">
+                        <h2 class="text-3xl font-bold mb-3">👤 Профиль</h2>
+                        <p class="text-slate-400">Статистика и достижения</p>
+                    </a>`;
+
+                if (isExpert) {
+                    html += `
+                        <a href="expert.html" class="card p-8 hover:scale-105 transition text-center">
+                            <h2 class="text-3xl font-bold mb-3">🔍 Эксперт</h2>
+                            <p class="text-slate-400">Проверка заданий</p>
+                        </a>`;
+                }
+
+                document.getElementById('mainMenu').innerHTML = html;
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadMenu);
+    </script>
+</body>
+</html>

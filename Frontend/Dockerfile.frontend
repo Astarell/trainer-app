@@ -1,0 +1,9 @@
+FROM nginx:alpine
+
+# Копируем собранный фронтенд
+COPY trainer-frontend /usr/share/nginx/html
+
+# Копируем конфиг nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 3000

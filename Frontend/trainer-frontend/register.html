@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация — Trainer App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="min-h-screen bg-slate-950 flex items-center justify-center">
+    <div class="max-w-md w-full p-8 card">
+        <h1 class="text-4xl font-bold text-cyan-400 text-center mb-8">Регистрация</h1>
+        
+        <input id="regEmail" type="email" placeholder="Email" 
+               class="w-full p-4 mb-4 bg-slate-900 rounded-xl text-white">
+
+        <div class="grid grid-cols-2 gap-4">
+            <input id="regFirstName" type="text" placeholder="Имя" 
+                   class="w-full p-4 bg-slate-900 rounded-xl text-white">
+            <input id="regLastName" type="text" placeholder="Фамилия" 
+                   class="w-full p-4 bg-slate-900 rounded-xl text-white">
+        </div>
+
+        <input id="regPass" type="password" placeholder="Пароль (минимум 6 символов)" 
+               class="w-full p-4 mt-4 mb-4 bg-slate-900 rounded-xl text-white">
+
+        <select id="regRole" class="w-full p-4 mb-6 bg-slate-900 rounded-xl text-white">
+            <option value="APP_USER">Обычный пользователь (APP_USER)</option>
+            <option value="APP_EXPERT">Эксперт (APP_EXPERT)</option>
+            <option value="APP_ADMIN">Админ (APP_ADMIN)</option>
+        </select>
+        
+        <button onclick="register()" 
+                class="w-full btn btn-primary text-lg py-4">Создать аккаунт</button>
+        
+        <p class="text-center mt-6 text-slate-400">
+            Уже есть аккаунт? <a href="login.html" class="text-cyan-400 hover:underline">Войти</a>
+        </p>
+    </div>
+
+    <script src="assets/js/common.js"></script>
+    <script src="assets/js/auth.js"></script>
+</body>
+</html>
