@@ -18,7 +18,7 @@
 * Трошина Анастасия - контейнеризация
 * Малнар Иван
 
-[Распледеление](https://docs.google.com/spreadsheets/d/1EO8NqOaiaRsioVb-cQi24zAXVEvAujtDzxpHvW2JcFU/edit?gid=0#gid=0)
+[Распределение](https://docs.google.com/spreadsheets/d/1EO8NqOaiaRsioVb-cQi24zAXVEvAujtDzxpHvW2JcFU/edit?gid=0#gid=0)
 
 ## Инструкция по запуску
 Убедиться, что докер запущен локально и у него есть возможность скачивать образы.
