@@ -87,7 +87,9 @@ curl -X 'POST' \
   "userRole": "APP_EXPERT"
 }'
 ```
+
 **Формат ответа:**
+
 <img width="866" height="251" alt="image" src="https://github.com/user-attachments/assets/15dc0159-55c2-474e-b5ef-c28f574d5652" />
 
 
@@ -103,7 +105,9 @@ curl -X 'POST' \
   "password": "password123"
 }'
 ```
+
 **Формат ответа:**
+
 <img width="885" height="271" alt="image" src="https://github.com/user-attachments/assets/761e4311-2db1-4b74-844f-d1ed350762c2" />
 
 
@@ -159,6 +163,7 @@ curl -X 'POST' \
   "userAnswer": 2
 }'
 ```
+
 **Формат ответа:**
 
 <img width="895" height="186" alt="image" src="https://github.com/user-attachments/assets/37882a97-b002-415a-af2f-07a496e7ddf9" />
@@ -177,7 +182,9 @@ curl -X 'POST' \
   "userAnswer": "Ответ на задание"
 }'
 ```
+
 **Формат ответа:**
+
 <img width="891" height="192" alt="image" src="https://github.com/user-attachments/assets/c172ca62-95fd-4521-a1d4-488ab90060f0" />
 <img width="893" height="208" alt="image" src="https://github.com/user-attachments/assets/c59092b3-4610-4700-a693-3602194c7c9c" />
 
@@ -192,9 +199,12 @@ curl -X 'POST' \
   "userAnswer": "Ответ на задание"
 }'
 ```
+
 **Формат ответа:**
 
 <img width="889" height="181" alt="image" src="https://github.com/user-attachments/assets/c2f1a4f0-51f2-4231-94ca-b3fff69adc71" />
+
+
 ```
 curl -X 'POST' \
   'http://localhost:8080/api/trainers/bcc6f453-e4e4-49fc-b1e3-ca687d3f20a6/tasks/fa74c630-97b4-40ed-a74f-8ee885573b33/submit' \
@@ -205,6 +215,7 @@ curl -X 'POST' \
   "userAnswer": "FROM"
 }'
 ```
+
 **Формат ответа:**
 
 <img width="876" height="206" alt="image" src="https://github.com/user-attachments/assets/cc5cff27-da75-404c-a65f-3d32a76d98dd" />
@@ -220,6 +231,7 @@ curl -X 'POST' \
   "userAnswer": "[1]"
 }'
 ```
+
 **Формат ответа:**
 
 <img width="884" height="191" alt="image" src="https://github.com/user-attachments/assets/8c14e025-fcd8-41b2-8da1-25070de0a844" />
@@ -234,7 +246,9 @@ curl -X 'POST' \
   "userAnswer": "[4,2]"
 }'
 ```
+
 **Формат ответа:**
+
 <img width="875" height="164" alt="image" src="https://github.com/user-attachments/assets/855e756c-4db5-408e-8830-0345e2860167" />
 
 
@@ -245,10 +259,13 @@ curl -X 'GET' \
   -H 'accept: application/json' \
   -H 'Authorization: Bearer TOKEN'
 ```
+
 **Формат ответа:**
+
 <img width="874" height="475" alt="image" src="https://github.com/user-attachments/assets/08d04a58-2c91-48c9-9cc9-fb7f96f9477d" />
 
 После проверки экспертом:
+
 <img width="870" height="488" alt="image" src="https://github.com/user-attachments/assets/974ef31c-f4ed-4e34-a092-c2c75481b851" />
 
 
@@ -260,7 +277,9 @@ curl -X 'GET' \
   -H 'Authorization: Bearer TOKEN'
 ```
 **Формат ответа:**
+
 <img width="880" height="548" alt="image" src="https://github.com/user-attachments/assets/6a0e0744-0378-439a-be14-1d461c9951b9" />
+
 После проверки экспертом:
 
 <img width="877" height="545" alt="image" src="https://github.com/user-attachments/assets/dead24e8-dfb0-432b-9da2-7d01a4cb07ec" />
@@ -275,6 +294,7 @@ curl -X 'GET' \
   -H 'Authorization: Bearer TOKEN'
 ```
 **Формат ответа:**
+
 <img width="884" height="277" alt="image" src="https://github.com/user-attachments/assets/6a3d554b-5bbe-409c-9b57-a70daf46b073" />
 
 
@@ -286,6 +306,7 @@ curl -X 'GET' \
   -H 'Authorization: Bearer TOKEN'
 ```
 **Формат ответа:**
+
 <img width="865" height="314" alt="image" src="https://github.com/user-attachments/assets/932ff20c-28c9-4af0-b2f7-afa54250d441" />
 
 
@@ -312,7 +333,8 @@ curl -X 'POST' \
 ### Диаграмма
 👇
 <details>
-  <img width="993" height="859" alt="postgres - public" src="https://github.com/user-attachments/assets/8ca8b101-bca7-4049-9e96-ae4ba55a07d5" />
+  <img width="987" height="487" alt="image" src="https://github.com/user-attachments/assets/7aee89c8-c288-49fd-811a-f568f7bcbb2d" />
+
 </details>
 
 ### Основные сущности
